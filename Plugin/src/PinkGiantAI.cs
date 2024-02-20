@@ -25,9 +25,9 @@ namespace GiantSpecimens {
         System.Random enemyRandom;
         bool isDeadAnimationDone;
         enum State {
-            SearchingForPlayer,
-            StickingInFrontOfPlayer,
-            HeadSwingAttackInProgress,
+            SearchingForForestKeeper, // Wandering
+            RunningToForestKeeper, // Chasing
+            EatingForestKeeper, // Eating
         }
 
         void LogIfDebugBuild(string text) {
@@ -39,7 +39,7 @@ namespace GiantSpecimens {
         public override void Start()
         {
             base.Start();
-            LogIfDebugBuild("Example Enemy Spawned");
+            LogIfDebugBuild("Pink Giant Enemy Spawned");
             timeSinceHittingLocalPlayer = 0;
             creatureAnimator.SetTrigger("startWalk");
             timeSinceNewRandPos = 0;
@@ -48,7 +48,7 @@ namespace GiantSpecimens {
             isDeadAnimationDone = false;
             // NOTE: Add your behavior states in your enemy script in Unity, where you can configure fun stuff
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
-            currentBehaviourStateIndex = (int)State.SearchingForPlayer;
+            currentBehaviourStateIndex = (int)State.SearchingForForestKeeper;
             // We make the enemy start searching. This will make it start wandering around.
             StartSearch(transform.position);
         }
@@ -86,28 +86,28 @@ namespace GiantSpecimens {
             };
 
             switch(currentBehaviourStateIndex) {
-                case (int)State.SearchingForPlayer:
+                case (int)State.SearchingForForestKeeper:
                     agent.speed = 3f;
                     if (FoundClosestPlayerInRange(25f)){
                         LogIfDebugBuild("Start Target Player");
                         StopSearch(currentSearch);
-                        SwitchToBehaviourClientRpc((int)State.StickingInFrontOfPlayer);
+                        SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     }
                     break;
 
-                case (int)State.StickingInFrontOfPlayer:
+                case (int)State.RunningToForestKeeper:
                     agent.speed = 5f;
                     // Keep targetting closest player, unless they are over 20 units away and we can't see them.
                     if (!TargetClosestPlayerInAnyCase() || (Vector3.Distance(transform.position, targetPlayer.transform.position) > 20 && !HasLineOfSightToPosition(targetPlayer.transform.position))){
                         LogIfDebugBuild("Stop Target Player");
                         StartSearch(transform.position);
-                        SwitchToBehaviourClientRpc((int)State.SearchingForPlayer);
+                        SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }
                     StickingInFrontOfPlayer();
                     break;
 
-                case (int)State.HeadSwingAttackInProgress:
+                case (int)State.EatingForestKeeper:
                     // We don't care about doing anything here
                     break;
                     
@@ -162,7 +162,7 @@ namespace GiantSpecimens {
         }
 
         IEnumerator SwingAttack(){
-            SwitchToBehaviourClientRpc((int)State.HeadSwingAttackInProgress);
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             StalkPos = targetPlayer.transform.position;
             SetDestinationToPosition(StalkPos);
             yield return new WaitForSeconds(0.5f);
@@ -173,10 +173,10 @@ namespace GiantSpecimens {
             yield return new WaitForSeconds(0.35f);
             SwingAttackHitClientRpc();
             // In case the player has already gone away, we just yield break (basically same as return, but for IEnumerator)
-            if(currentBehaviourStateIndex != (int)State.HeadSwingAttackInProgress){
+            if(currentBehaviourStateIndex != (int)State.EatingForestKeeper){
                 yield break;
             }
-            SwitchToBehaviourClientRpc((int)State.StickingInFrontOfPlayer);
+            SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
         }
 
         public override void OnCollideWithPlayer(Collider other)
