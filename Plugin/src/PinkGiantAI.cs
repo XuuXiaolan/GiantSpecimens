@@ -15,7 +15,7 @@ namespace GiantSpecimens {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
-        // public Transform turnCompass;
+        // public Transform turnCompass
         public Transform attackArea;
         #pragma warning restore 0649
         float timeSinceHittingLocalPlayer;
