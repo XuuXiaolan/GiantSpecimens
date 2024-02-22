@@ -15,7 +15,7 @@ namespace GiantSpecimens {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
-        public Transform turnCompass;
+        // public Transform turnCompass;
         public Transform attackArea;
         #pragma warning restore 0649
         float timeSinceHittingLocalPlayer;
@@ -50,6 +50,7 @@ namespace GiantSpecimens {
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
             currentBehaviourStateIndex = (int)State.SearchingForForestKeeper;
             // We make the enemy start searching. This will make it start wandering around.
+
             StartSearch(transform.position);
         }
 
@@ -68,8 +69,8 @@ namespace GiantSpecimens {
             timeSinceHittingLocalPlayer += Time.deltaTime;
             timeSinceNewRandPos += Time.deltaTime;
             if(targetPlayer != null && PlayerIsTargetable(targetPlayer) && !currentSearch.inProgress){
-                turnCompass.LookAt(targetPlayer.gameplayCamera.transform.position);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0f, turnCompass.eulerAngles.y, 0f)), 4f * Time.deltaTime);
+                // turnCompass.LookAt(targetPlayer.gameplayCamera.transform.position);
+                // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0f, turnCompass.eulerAngles.y, 0f)), 4f * Time.deltaTime);
             }
             if (stunNormalizedTimer > 0f)
             {

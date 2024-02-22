@@ -20,7 +20,7 @@ namespace GiantSpecimens {
             Logger = base.Logger;
             Assets.PopulateAssets();
 
-            PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiant");
+            PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             var tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
             var tlTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             
