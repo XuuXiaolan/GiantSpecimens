@@ -25,6 +25,7 @@ namespace GiantSpecimens {
         System.Random enemyRandom;
         bool isDeadAnimationDone;
         enum State {
+            IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
             RunningToForestKeeper, // Chasing
             EatingForestKeeper, // Eating
