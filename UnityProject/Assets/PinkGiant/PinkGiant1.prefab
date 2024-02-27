@@ -1101,7 +1101,39 @@ MonoBehaviour:
   creatureSFX: {fileID: 5806923193357297658}
   eye: {fileID: 103021238534859168}
   dieSFX: {fileID: 0}
-  enemyBehaviourStates: []
+  enemyBehaviourStates:
+  - name: IdleAnimation
+    VoiceClip: {fileID: 0}
+    playOneShotVoice: 0
+    SFXClip: {fileID: 0}
+    playOneShotSFX: 0
+    IsAnimTrigger: 0
+    parameterString: 
+    boolValue: 0
+  - name: SearchingForForestKeeper
+    VoiceClip: {fileID: 0}
+    playOneShotVoice: 0
+    SFXClip: {fileID: 0}
+    playOneShotSFX: 0
+    IsAnimTrigger: 0
+    parameterString: 
+    boolValue: 0
+  - name: RunningToForestKeeper
+    VoiceClip: {fileID: 0}
+    playOneShotVoice: 0
+    SFXClip: {fileID: 0}
+    playOneShotSFX: 0
+    IsAnimTrigger: 0
+    parameterString: 
+    boolValue: 0
+  - name: EatingForestKeeper
+    VoiceClip: {fileID: 0}
+    playOneShotVoice: 0
+    SFXClip: {fileID: 0}
+    playOneShotSFX: 0
+    IsAnimTrigger: 0
+    parameterString: 
+    boolValue: 0
   currentBehaviourState:
     name: 
     VoiceClip: {fileID: 0}

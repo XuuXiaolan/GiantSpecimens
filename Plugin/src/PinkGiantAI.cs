@@ -19,11 +19,8 @@ namespace GiantSpecimens {
         public Transform attackArea;
         #pragma warning restore 0649
         float timeSinceHittingLocalPlayer;
-        float timeSinceNewRandPos;
-        Vector3 positionRandomness;
-        Vector3 StalkPos;
-        System.Random enemyRandom;
-        bool isDeadAnimationDone;
+        float timer = 0;
+        EnemyAI targetEnemy;
         enum State {
             IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
@@ -42,14 +39,11 @@ namespace GiantSpecimens {
             base.Start();
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             timeSinceHittingLocalPlayer = 0;
-            creatureAnimator.SetTrigger("startWalk");
-            timeSinceNewRandPos = 0;
-            positionRandomness = new Vector3(0, 0, 0);
-            enemyRandom = new System.Random(StartOfRound.Instance.randomMapSeed + thisEnemyIndex);
-            isDeadAnimationDone = false;
+            // creatureAnimator.SetTrigger("startWalk");
+
             // NOTE: Add your behavior states in your enemy script in Unity, where you can configure fun stuff
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
-            currentBehaviourStateIndex = (int)State.SearchingForForestKeeper;
+            currentBehaviourStateIndex = (int)State.IdleAnimation;
             // We make the enemy start searching. This will make it start wandering around.
 
             StartSearch(transform.position);
@@ -57,56 +51,53 @@ namespace GiantSpecimens {
 
         public override void Update(){
             base.Update();
-            if(isEnemyDead){
-                // For some weird reason I can't get an RPC to get called from HitEnemy() (works from other methods), so we do this workaround. We just want the enemy to stop playing the song.
-                if(!isDeadAnimationDone){ 
-                    LogIfDebugBuild("Stopping enemy voice with janky code.");
-                    isDeadAnimationDone = true;
-                    creatureVoice.Stop();
-                    creatureVoice.PlayOneShot(dieSFX);
-                }
-                return;
-            }
-            timeSinceHittingLocalPlayer += Time.deltaTime;
-            timeSinceNewRandPos += Time.deltaTime;
-            if(targetPlayer != null && PlayerIsTargetable(targetPlayer) && !currentSearch.inProgress){
-                // turnCompass.LookAt(targetPlayer.gameplayCamera.transform.position);
-                // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0f, turnCompass.eulerAngles.y, 0f)), 4f * Time.deltaTime);
-            }
-            if (stunNormalizedTimer > 0f)
-            {
-                agent.speed = 0f;
-            }
+
+            timer += Time.deltaTime;
         }
 
         public override void DoAIInterval()
         {
-            
             base.DoAIInterval();
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
 
             switch(currentBehaviourStateIndex) {
-                case (int)State.SearchingForForestKeeper:
-                    agent.speed = 3f;
-                    if (FoundClosestPlayerInRange(25f)){
-                        LogIfDebugBuild("Start Target Player");
+                case (int)State.IdleAnimation:
+                    agent.speed = 0f;
+                    if (FoundForestKeeperInRange(100f)){
+                        DoAnimationClientRpc("startChase");
+                        LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
+                    } // Look for Forest Keeper
+                    else if (timer > 14f) {
+                        DoAnimationClientRpc("startWalk");
+                        LogIfDebugBuild("Start Walking Around");
+                        SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                     }
+                    
+                    break;
+                case (int)State.SearchingForForestKeeper:
+                    agent.speed = 1.5f;
+                    if (FoundForestKeeperInRange(100f)){
+                        DoAnimationClientRpc("startChase");
+                        LogIfDebugBuild("Start Target ForestKeeper");
+                        StopSearch(currentSearch);
+                        SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
+                    } // Look for Forest Keeper
                     break;
 
                 case (int)State.RunningToForestKeeper:
-                    agent.speed = 5f;
-                    // Keep targetting closest player, unless they are over 20 units away and we can't see them.
-                    if (!TargetClosestPlayerInAnyCase() || (Vector3.Distance(transform.position, targetPlayer.transform.position) > 20 && !HasLineOfSightToPosition(targetPlayer.transform.position))){
-                        LogIfDebugBuild("Stop Target Player");
+                    agent.speed = 6f;
+                    // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 100f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
+                        LogIfDebugBuild("Stop Target ForestKeeper");
                         StartSearch(transform.position);
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }
-                    StickingInFrontOfPlayer();
+                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: false);
                     break;
 
                 case (int)State.EatingForestKeeper:
@@ -119,100 +110,25 @@ namespace GiantSpecimens {
             }
         }
 
-        bool FoundClosestPlayerInRange(float range){
-            TargetClosestPlayer(bufferDistance: 1.5f, requireLineOfSight: true);
-            if(targetPlayer == null) return false;
-            return targetPlayer != null && Vector3.Distance(transform.position, targetPlayer.transform.position) < range;
-        }
-        
-        bool TargetClosestPlayerInAnyCase(){
-            mostOptimalDistance = 2000f;
-            targetPlayer = null;
-            for (int i = 0; i < StartOfRound.Instance.connectedPlayersAmount + 1; i++)
-            {
-                tempDist = Vector3.Distance(transform.position, StartOfRound.Instance.allPlayerScripts[i].transform.position);
-                if (tempDist < mostOptimalDistance)
-                {
-                    mostOptimalDistance = tempDist;
-                    targetPlayer = StartOfRound.Instance.allPlayerScripts[i];
+        bool FoundForestKeeperInRange(float range) {
+            for (int i = 0; i < RoundManager.Instance.SpawnedEnemies.Count; i++) {
+                if (RoundManager.Instance.SpawnedEnemies[i].enemyType.enemyName == "ForestGiant") {
+                    if (Vector3.Distance(transform.position, RoundManager.Instance.SpawnedEnemies[i].transform.position) < range) {
+                        targetEnemy = RoundManager.Instance.SpawnedEnemies[i];
+                        return true;
+                    }
                 }
             }
-            if(targetPlayer == null) return false;
-            return true;
-        }
-
-        void StickingInFrontOfPlayer(){
-            // We only run this method for the host because I'm paranoid about randomness not syncing I guess
-            // This is fine because the game does sync the position of the enemy.
-            // Also the attack is a ClientRpc so it should always sync
-            if (targetPlayer == null || !IsOwner) {
-                return;
-            }
-            if(timeSinceNewRandPos > 0.7f){
-                timeSinceNewRandPos = 0;
-                if(enemyRandom.Next(0, 5) == 0){
-                    // Attack
-                    StartCoroutine(SwingAttack());
-                }
-                else{
-                    // Go in front of player
-                    positionRandomness = new Vector3(enemyRandom.Next(-2, 2), 0, enemyRandom.Next(-2, 2));
-                    StalkPos = targetPlayer.transform.position - Vector3.Scale(new Vector3(-5, 0, -5), targetPlayer.transform.forward) + positionRandomness;
-                }
-                SetDestinationToPosition(StalkPos, checkForPath: false);
-            }
-        }
-
-        IEnumerator SwingAttack(){
-            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
-            StalkPos = targetPlayer.transform.position;
-            SetDestinationToPosition(StalkPos);
-            yield return new WaitForSeconds(0.5f);
-            if(isEnemyDead){
-                yield break;
-            }
-            DoAnimationClientRpc("swingAttack");
-            yield return new WaitForSeconds(0.35f);
-            SwingAttackHitClientRpc();
-            // In case the player has already gone away, we just yield break (basically same as return, but for IEnumerator)
-            if(currentBehaviourStateIndex != (int)State.EatingForestKeeper){
-                yield break;
-            }
-            SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
+            return false;
         }
 
         public override void OnCollideWithPlayer(Collider other)
         {
-            if (timeSinceHittingLocalPlayer < 1f) {
-                return;
-            }
             PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(other);
             if (playerControllerB != null)
             {
-                LogIfDebugBuild("Example Enemy Collision with Player!");
-                timeSinceHittingLocalPlayer = 0f;
-                playerControllerB.DamagePlayer(20);
-            }
-        }
-
-        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false)
-        {
-            base.HitEnemy(force, playerWhoHit, playHitSFX);
-            if(isEnemyDead){
-                return;
-            }
-            enemyHP -= force;
-            if (IsOwner) {
-                if (enemyHP <= 0 && !isEnemyDead) {
-                    // Our death sound will be played through creatureVoice when KillEnemy() is called.
-                    // KillEnemy() will also attempt to call creatureAnimator.SetTrigger("KillEnemy"),
-                    // so we don't need to call a death animation ourselves.
-
-                    StopCoroutine(SwingAttack());
-                    // We need to stop our search coroutine, because the game does not do that by default.
-                    StopCoroutine(searchCoroutine);
-                    KillEnemyOnOwnerClient();
-                }
+                LogIfDebugBuild("Pink Giant Feet Collision with Player!");
+                playerControllerB.DamagePlayer(100);
             }
         }
 
@@ -221,25 +137,6 @@ namespace GiantSpecimens {
         {
             LogIfDebugBuild($"Animation: {animationName}");
             creatureAnimator.SetTrigger(animationName);
-        }
-
-        [ClientRpc]
-        public void SwingAttackHitClientRpc()
-        {
-            LogIfDebugBuild("SwingAttackHitClientRPC");
-            int playerLayer = 1 << 3; // This can be found from the game's Asset Ripper output in Unity
-            Collider[] hitColliders = Physics.OverlapBox(attackArea.position, attackArea.localScale, Quaternion.identity, playerLayer);
-            if(hitColliders.Length > 0){
-                foreach (var player in hitColliders){
-                    PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(player);
-                    if (playerControllerB != null)
-                    {
-                        LogIfDebugBuild("Swing attack hit player!");
-                        timeSinceHittingLocalPlayer = 0f;
-                        playerControllerB.DamagePlayer(40);
-                    }
-                }
-            }
         }
     }
 }
