@@ -52,7 +52,7 @@ namespace GiantSpecimens {
 
             timer += Time.deltaTime;
         }
-
+        
         public override void DoAIInterval()
         {
             base.DoAIInterval();
@@ -123,10 +123,13 @@ namespace GiantSpecimens {
 
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
-            yield return new WaitForSeconds(15);
-            Destroy(targetEnemy);
+            yield return new WaitForSeconds(13);
+
+            targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
+            yield return new WaitForSeconds(13);
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
+        
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             LogIfDebugBuild("Pink Giant hitting this guy:" + targetEnemy);
@@ -136,10 +139,17 @@ namespace GiantSpecimens {
             }
         }
 
+        public override void OnCollideWithPlayer(Collider other) {
+        PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(other);
+            if (playerControllerB != null)
+            {
+                LogIfDebugBuild("Pink Giant Feet Collision with Player!");
+                playerControllerB.DamagePlayer(100);
+            }
+        }
         private void OnTriggerStay(Collider other) {
             LogIfDebugBuild("This is happening." + other);
         }
-
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {
