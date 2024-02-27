@@ -18,7 +18,6 @@ namespace GiantSpecimens {
         // public Transform turnCompass
         public Transform attackArea;
         #pragma warning restore 0649
-        float timeSinceHittingLocalPlayer;
         float timer = 0;
         EnemyAI targetEnemy;
         enum State {
@@ -38,7 +37,6 @@ namespace GiantSpecimens {
         {
             base.Start();
             LogIfDebugBuild("Pink Giant Enemy Spawned");
-            timeSinceHittingLocalPlayer = 0;
             // creatureAnimator.SetTrigger("startWalk");
 
             // NOTE: Add your behavior states in your enemy script in Unity, where you can configure fun stuff
@@ -101,7 +99,8 @@ namespace GiantSpecimens {
                     break;
 
                 case (int)State.EatingForestKeeper:
-                    // We don't care about doing anything here
+                    agent.speed = 0f;
+                    // Does nothing so far.
                     break;
                     
                 default:
@@ -122,14 +121,23 @@ namespace GiantSpecimens {
             return false;
         }
 
-        public override void OnCollideWithPlayer(Collider other)
+        IEnumerator EatForestKeeper() {
+            DoAnimationClientRpc("eatForestKeeper");
+            yield return new WaitForSeconds(15);
+            Destroy(targetEnemy);
+            SwitchToBehaviourClientRpc((int)State.IdleAnimation);
+        }
+        public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(other);
-            if (playerControllerB != null)
-            {
-                LogIfDebugBuild("Pink Giant Feet Collision with Player!");
-                playerControllerB.DamagePlayer(100);
+            LogIfDebugBuild("Pink Giant hitting this guy:" + targetEnemy);
+            if (collidedEnemy == targetEnemy) {
+                SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
+                StartCoroutine(EatForestKeeper());
             }
+        }
+
+        private void OnTriggerStay(Collider other) {
+            LogIfDebugBuild("This is happening." + other);
         }
 
         [ClientRpc]

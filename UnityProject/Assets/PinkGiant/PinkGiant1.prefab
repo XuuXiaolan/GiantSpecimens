@@ -1005,6 +1005,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4401394998509801082}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd81896e5197bb642a78aaf63015cf00,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2566235619429656592}
   m_SourcePrefab: {fileID: 100100000, guid: dd81896e5197bb642a78aaf63015cf00, type: 3}
 --- !u!4 &4812617512586272789 stripped
 Transform:
@@ -1199,6 +1203,27 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   attackArea: {fileID: 1850689822685085934}
+--- !u!65 &-2566235619429656592
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154081962228259310}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &7495035452514452308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd81896e5197bb642a78aaf63015cf00,
