@@ -1055,6 +1055,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4401394998509801082}
   m_SourcePrefab: {fileID: 100100000, guid: dd81896e5197bb642a78aaf63015cf00, type: 3}
+--- !u!1 &1162948417695640257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9199324726499069566, guid: dd81896e5197bb642a78aaf63015cf00,
+    type: 3}
+  m_PrefabInstance: {fileID: 8036970909462439103}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4812617512586272789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5962532445148461910, guid: dd81896e5197bb642a78aaf63015cf00,
@@ -1248,6 +1254,8 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   attackArea: {fileID: 1850689822685085934}
+  rightBone: {fileID: 8887858775463097622}
+  leftBone: {fileID: 1162948417695640257}
 --- !u!4 &7495035452514452308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd81896e5197bb642a78aaf63015cf00,
@@ -1257,6 +1265,12 @@ Transform:
 --- !u!4 &8579212357477078337 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1767225638365180414, guid: dd81896e5197bb642a78aaf63015cf00,
+    type: 3}
+  m_PrefabInstance: {fileID: 8036970909462439103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8887858775463097622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7723380880009801303, guid: dd81896e5197bb642a78aaf63015cf00,
     type: 3}
   m_PrefabInstance: {fileID: 8036970909462439103}
   m_PrefabAsset: {fileID: 0}

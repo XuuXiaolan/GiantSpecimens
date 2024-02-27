@@ -20,6 +20,9 @@ namespace GiantSpecimens {
         #pragma warning restore 0649
         float timer = 0;
         EnemyAI targetEnemy;
+        [SerializeField]GameObject rightBone;
+        [SerializeField]GameObject leftBone;
+        Vector3 midpoint;
         enum State {
             IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
@@ -43,7 +46,8 @@ namespace GiantSpecimens {
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
             currentBehaviourStateIndex = (int)State.IdleAnimation;
             // We make the enemy start searching. This will make it start wandering around.
-
+            rightBone = GameObject.Find("Bone.005.R_end");
+            leftBone = GameObject.Find("Bone.005.L_end");
             StartSearch(transform.position);
         }
 
@@ -51,6 +55,12 @@ namespace GiantSpecimens {
             base.Update();
 
             timer += Time.deltaTime;
+
+            if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
+                //gameObject.GetComponentByName("Bone.005.L_end").transform.position
+                midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
+                targetEnemy.transform.position = midpoint - new Vector3(0,10,0);
+            }
         }
         
         public override void DoAIInterval()
@@ -124,7 +134,6 @@ namespace GiantSpecimens {
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
             yield return new WaitForSeconds(13);
-
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(13);
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
@@ -147,9 +156,9 @@ namespace GiantSpecimens {
                 playerControllerB.DamagePlayer(100);
             }
         }
-        private void OnTriggerStay(Collider other) {
+        /* private void OnTriggerStay(Collider other) {
             LogIfDebugBuild("This is happening." + other);
-        }
+        } */
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {
