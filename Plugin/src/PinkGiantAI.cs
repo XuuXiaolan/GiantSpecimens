@@ -2,6 +2,7 @@
 using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace GiantSpecimens {
 
@@ -59,7 +60,8 @@ namespace GiantSpecimens {
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 //gameObject.GetComponentByName("Bone.005.L_end").transform.position
                 midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
-                targetEnemy.transform.position = midpoint - new Vector3(0,10,0);
+                targetEnemy.transform.position = midpoint - new Vector3(0,5,0);
+                targetEnemy.transform.LookAt(transform);
             }
         }
         
@@ -73,7 +75,7 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (FoundForestKeeperInRange(100f)){
+                    if (FoundForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
@@ -133,9 +135,11 @@ namespace GiantSpecimens {
 
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
-            yield return new WaitForSeconds(13);
+            targetEnemy.enabled = false;
+            yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
-            yield return new WaitForSeconds(13);
+            yield return new WaitForSeconds(5);
+            StopCoroutine(EatForestKeeper());
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
         
