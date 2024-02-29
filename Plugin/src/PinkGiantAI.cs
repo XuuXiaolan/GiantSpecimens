@@ -20,6 +20,7 @@ namespace GiantSpecimens {
         public Transform attackArea;
         #pragma warning restore 0649
         float timer = 0;
+        bool eatingEnemy = false;
         EnemyAI targetEnemy;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
@@ -64,7 +65,6 @@ namespace GiantSpecimens {
                 targetEnemy.transform.LookAt(transform);
             }
         }
-        
         public override void DoAIInterval()
         {
             base.DoAIInterval();
@@ -90,7 +90,7 @@ namespace GiantSpecimens {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = 1.5f;
-                    if (FoundForestKeeperInRange(100f)){
+                    if (FoundForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
@@ -136,19 +136,25 @@ namespace GiantSpecimens {
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
             targetEnemy.enabled = false;
+            
+            LogIfDebugBuild($"{targetEnemy}");
             yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(5);
             StopCoroutine(EatForestKeeper());
+            eatingEnemy = false;
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             LogIfDebugBuild("Pink Giant hitting this guy:" + targetEnemy);
-            if (collidedEnemy == targetEnemy) {
+            if (collidedEnemy == targetEnemy && eatingEnemy == false) {
                 SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
-                StartCoroutine(EatForestKeeper());
+                eatingEnemy = true;
+                if (eatingEnemy) {
+                    StartCoroutine(EatForestKeeper());
+                }
             }
         }
 
