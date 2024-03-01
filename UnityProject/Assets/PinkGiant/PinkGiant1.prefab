@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainScript: {fileID: 4401394998509801082}
-  canCollideWithEnemies: 1
+  canCollideWithEnemies: 0
   onlyCollideWhenGrounded: 0
 --- !u!65 &3214131152133352157
 BoxCollider:
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainScript: {fileID: 4401394998509801082}
-  canCollideWithEnemies: 1
+  canCollideWithEnemies: 0
   onlyCollideWhenGrounded: 0
 --- !u!65 &9153458969431600830
 BoxCollider:
