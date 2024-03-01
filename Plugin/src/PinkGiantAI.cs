@@ -61,7 +61,7 @@ namespace GiantSpecimens {
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 //gameObject.GetComponentByName("Bone.005.L_end").transform.position
                 midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
-                targetEnemy.transform.position = midpoint + new Vector3(0,10,0);
+                targetEnemy.transform.position = midpoint + new Vector3(0,-3,0);
                 targetEnemy.transform.LookAt(transform);
             }
         }
@@ -75,6 +75,9 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
+                    if (timer > 3) {
+                        StartCoroutine(PauseDuringIdle());
+                    }
                     if (FoundForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
@@ -84,6 +87,7 @@ namespace GiantSpecimens {
                     else if (timer > 14f) {
                         DoAnimationClientRpc("startWalk");
                         LogIfDebugBuild("Start Walking Around");
+                        StartSearch(transform.position);
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                     }
                     
@@ -133,12 +137,15 @@ namespace GiantSpecimens {
             return false;
         }
 
+        IEnumerator PauseDuringIdle() {
+            yield return new WaitForSeconds(3);
+            StopCoroutine(PauseDuringIdle());
+        }
+
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
             targetEnemy.CancelSpecialAnimationWithPlayer();
             targetEnemy.enabled = false;
-            targetEnemy.agent.enabled = false;
-            targetEnemy.StopCoroutine(targetEnemy.searchCoroutine);
             
             LogIfDebugBuild($"{targetEnemy}");
             yield return new WaitForSeconds(10);
@@ -152,7 +159,7 @@ namespace GiantSpecimens {
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             if (collidedEnemy == targetEnemy && eatingEnemy == false) {
-                LogIfDebugBuild("11Pink Giant hitting this guy:" + targetEnemy);
+                LogIfDebugBuild("Pink Giant hitting this guy:" + targetEnemy);
                 SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
                 eatingEnemy = true;
                 if (eatingEnemy) {
