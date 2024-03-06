@@ -26,7 +26,7 @@ namespace GiantSpecimens {
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-			RegisterEnemy(PinkGiant, 100, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
+			RegisterEnemy(PinkGiant, 500, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
             
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 

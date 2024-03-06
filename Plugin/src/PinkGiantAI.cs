@@ -24,6 +24,7 @@ namespace GiantSpecimens {
         EnemyAI targetEnemy;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
+        [SerializeField]GameObject eatingArea;
         Vector3 midpoint;
         enum State {
             IdleAnimation, // Idling
@@ -50,6 +51,7 @@ namespace GiantSpecimens {
             // We make the enemy start searching. This will make it start wandering around.
             rightBone = GameObject.Find("Bone.005.R_end");
             leftBone = GameObject.Find("Bone.005.L_end");
+            eatingArea = GameObject.Find("Bone.002");
             StartSearch(transform.position);
         }
 
@@ -61,8 +63,9 @@ namespace GiantSpecimens {
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 //gameObject.GetComponentByName("Bone.005.L_end").transform.position
                 midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
-                targetEnemy.transform.position = midpoint + new Vector3(0,-3,0);
-                targetEnemy.transform.LookAt(transform);
+                targetEnemy.transform.position = midpoint + new Vector3(0,-7,0);
+                targetEnemy.transform.LookAt(eatingArea.transform);
+                targetEnemy.transform.rotation = Quaternion.Euler(new Vector3(0, targetEnemy.transform.rotation.eulerAngles.y + 65f, 0));
             }
         }
         public override void DoAIInterval()

@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 395006285449735638}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 10.02, z: 1.01}
-  m_LocalScale: {x: 9.3775015, y: 18.313837, z: 8.529589}
+  m_LocalPosition: {x: -0, y: 15.86, z: 1.01}
+  m_LocalScale: {x: 9.3775015, y: 23.848278, z: 8.529589}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7495035452514452308}
@@ -1055,6 +1055,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4401394998509801082}
   m_SourcePrefab: {fileID: 100100000, guid: dd81896e5197bb642a78aaf63015cf00, type: 3}
+--- !u!1 &738665752085352985 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1888896228270049626, guid: dd81896e5197bb642a78aaf63015cf00,
+    type: 3}
+  m_PrefabInstance: {fileID: 8036970909462439103}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1162948417695640257 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9199324726499069566, guid: dd81896e5197bb642a78aaf63015cf00,
@@ -1256,6 +1262,7 @@ MonoBehaviour:
   attackArea: {fileID: 1850689822685085934}
   rightBone: {fileID: 8887858775463097622}
   leftBone: {fileID: 1162948417695640257}
+  eatingArea: {fileID: 738665752085352985}
 --- !u!4 &7495035452514452308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd81896e5197bb642a78aaf63015cf00,

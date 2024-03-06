@@ -443,18 +443,8 @@ PrefabInstance:
     - target: {fileID: -8317972976410674631, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2171504763
+      value: 1744710549
       objectReference: {fileID: 0}
-    - target: {fileID: 4401394998509801082, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: leftBone
-      value: 
-      objectReference: {fileID: 1810608377}
-    - target: {fileID: 4401394998509801082, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: rightBone
-      value: 
-      objectReference: {fileID: 1810608378}
     - target: {fileID: 7154081962228259310, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
       propertyPath: m_Name
@@ -515,18 +505,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1da6ee042d4e3f042a751110489287e1, type: 3}
---- !u!1 &1810608377 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1162948417695640257, guid: 1da6ee042d4e3f042a751110489287e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1810608376}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1810608378 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8887858775463097622, guid: 1da6ee042d4e3f042a751110489287e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1810608376}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
