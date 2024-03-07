@@ -11,6 +11,54 @@ namespace GiantSpecimens {
     // Asset bundles cannot contain scripts, so our script lives here. It is important to get the
     // reference right, or else it will not find this file. See the guide for more information.
 
+    public class ColliderIdentifier : MonoBehaviour 
+    {
+
+        void LogIfDebugBuild(string text) {
+            #if DEBUG
+            Plugin.Logger.LogInfo(text);
+            #endif
+        }
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the collider is a player or another entity you're interested in
+        if (other.CompareTag("Player"))
+        {
+            // Determine which collider on your GameObject caused the trigger
+            DetectCollider(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check if the collider is a player or another entity you're interested in
+        if (collision.collider.CompareTag("Player"))
+        {
+            // Determine which collider on your GameObject caused the collision
+            DetectCollider(collision.gameObject);
+        }
+    }
+
+    void DetectCollider(GameObject collidedObject)
+    {
+        // Example: Detect which part of your GameObject caused the collision/trigger
+        if (collidedObject.name == "AttackArea")
+        {
+            LogIfDebugBuild("Collided with AttackArea");
+            // Handle AttackArea collision logic here
+        }
+        else if (collidedObject.name == "CollisionShockwaveL")
+        {
+            LogIfDebugBuild("Collided with ShockwaveLeft");
+            // Handle ShockwaveLeft collision logic here
+        }
+        else if (collidedObject.name == "CollisionShockwaveR")
+        {
+            LogIfDebugBuild("Collided with ShockwaveRight");
+            // Handle ShockwaveRight collision logic here
+        }
+    }
+    }
     class PinkGiantAI : EnemyAI {
 
         // We set these in our Asset Bundle, so we can disable warning CS0649:
@@ -174,12 +222,16 @@ namespace GiantSpecimens {
         }
 
         public override void OnCollideWithPlayer(Collider playerCollider) {
-            //TODO: Fix otherCollider, it's not setting itself to the correct collider when using gameObject.GetComponent<Collider>().
+            
             PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(playerCollider);
             if (playerControllerB != null) {
                 Collider otherCollider = gameObject.GetComponent<Collider>();
+
                 LogIfDebugBuild("collided with player: " + otherCollider);
-                if (playerControllerB != null && otherCollider != AttackArea && otherCollider != CollisionShockwaveLeft && otherCollider != CollisionShockwaveRight) {
+                
+
+
+                if (otherCollider != AttackArea && otherCollider != CollisionShockwaveLeft && otherCollider != CollisionShockwaveRight) {
                     LogIfDebugBuild("Pink Giant Feet Collision with Player! otherCollider: " + otherCollider);
                     playerControllerB.DamagePlayer(100);
                 }
@@ -189,8 +241,22 @@ namespace GiantSpecimens {
                 }
             }
         }
+
         /* private void OnTriggerStay(Collider other) {
             LogIfDebugBuild("This is happening." + other);
+
+            LogIfDebugBuild("Components:");
+            foreach(Component component in gameObject.GetComponents<Component>()) {
+                LogIfDebugBuild(component.GetType().Name);
+            }
+            LogIfDebugBuild("Children:");
+            foreach(Transform child in transform) {
+                LogIfDebugBuild(child.name);
+                foreach(Component component in child.GetComponents<Component>()) {
+                    LogIfDebugBuild("\t" + component.GetType().Name);
+                }
+            } 
+
         } */
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
