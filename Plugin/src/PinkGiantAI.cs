@@ -22,7 +22,10 @@ namespace GiantSpecimens {
         #pragma warning restore 0649
         float timer = 0;
         bool eatingEnemy = false;
+        bool creatureVoiceHasPlayed = false;
         EnemyAI targetEnemy;
+        AudioSource audioSource;
+        [SerializeField]AudioClip[] stompSounds;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
         [SerializeField]GameObject eatingArea;
@@ -50,6 +53,10 @@ namespace GiantSpecimens {
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
             currentBehaviourStateIndex = (int)State.IdleAnimation;
             // We make the enemy start searching. This will make it start wandering around.
+            audioSource = gameObject.GetComponent<AudioSource>();
+            stompSounds = this.enemyType.audioClips;
+            LogIfDebugBuild(stompSounds[0].name);
+            LogIfDebugBuild(this.enemyType.audioClips[0].name);
             rightBone = GameObject.Find("Bone.005.R_end");
             leftBone = GameObject.Find("Bone.005.L_end");
             eatingArea = GameObject.Find("Bone.002");
@@ -98,20 +105,34 @@ namespace GiantSpecimens {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = 1.5f;
+                    // TODO: Run CreatureVoice once
+                    if (!creatureVoiceHasPlayed) {
+                        creatureVoice.PlayOneShot(stompSounds[Random.Range(0, stompSounds.Length)]);
+                        creatureVoiceHasPlayed = true;   
+                    }
                     if (FoundForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
+                        creatureVoice.Stop();
+                        creatureVoiceHasPlayed = false;
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     } // Look for Forest Keeper
                     break;
 
                 case (int)State.RunningToForestKeeper:
                     agent.speed = 6f;
+                    // TODO: Run CreatureSFX once per 1.1775 seconds
+                    if (!creatureVoiceHasPlayed) {
+                        creatureVoice.PlayOneShot(stompSounds[Random.Range(0, stompSounds.Length)]);
+                        creatureVoiceHasPlayed = true;
+                    }
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
                     if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 100f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         StartSearch(transform.position);
+                        creatureVoice.Stop();
+                        creatureVoiceHasPlayed = false;
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }

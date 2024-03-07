@@ -587,10 +587,11 @@ AudioSource:
   m_GameObject: {fileID: 3836824449615940909}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 40248eaf708e242598b42c12c9adc3ed, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.6
+  OutputAudioMixerGroup: {fileID: 24300008, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -732,9 +733,8 @@ AudioSource:
   m_GameObject: {fileID: 4753347662551971062}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300008, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: ecb1a0cbaeb35804c82327aa22356d8c, type: 3}
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1528,6 +1528,10 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   AttackArea: {fileID: 6472980503789184990}
+  stompSounds:
+  - {fileID: 8300000, guid: ecb1a0cbaeb35804c82327aa22356d8c, type: 3}
+  - {fileID: 8300000, guid: 9c3a8f4e5ca314c4b855a8b08413ae4f, type: 3}
+  - {fileID: 8300000, guid: fc31f77b31a885641af79b974908280e, type: 3}
   rightBone: {fileID: 8887858775463097622}
   leftBone: {fileID: 1162948417695640257}
   eatingArea: {fileID: 738665752085352985}
