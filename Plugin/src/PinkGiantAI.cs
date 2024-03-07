@@ -17,7 +17,9 @@ namespace GiantSpecimens {
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
         // public Transform turnCompass
-        public Transform attackArea;
+        public Collider AttackArea;
+        [SerializeField] readonly Collider CollisionShockwaveRight;
+        [SerializeField] readonly Collider CollisionShockwaveLeft;
         #pragma warning restore 0649
         float timer = 0;
         bool eatingEnemy = false;
@@ -78,7 +80,7 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (timer > 3) {
+                    if (timer < 3) {
                         StartCoroutine(PauseDuringIdle());
                     }
                     if (FoundForestKeeperInRange(50f)){
@@ -171,12 +173,20 @@ namespace GiantSpecimens {
             }
         }
 
-        public override void OnCollideWithPlayer(Collider other) {
-        PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(other);
-            if (playerControllerB != null)
-            {
-                LogIfDebugBuild("Pink Giant Feet Collision with Player!");
-                playerControllerB.DamagePlayer(100);
+        public override void OnCollideWithPlayer(Collider playerCollider) {
+            //TODO: Fix otherCollider, it's not setting itself to the correct collider when using gameObject.GetComponent<Collider>().
+            PlayerControllerB playerControllerB = MeetsStandardPlayerCollisionConditions(playerCollider);
+            if (playerControllerB != null) {
+                Collider otherCollider = gameObject.GetComponent<Collider>();
+                LogIfDebugBuild("collided with player: " + otherCollider);
+                if (playerControllerB != null && otherCollider != AttackArea && otherCollider != CollisionShockwaveLeft && otherCollider != CollisionShockwaveRight) {
+                    LogIfDebugBuild("Pink Giant Feet Collision with Player! otherCollider: " + otherCollider);
+                    playerControllerB.DamagePlayer(100);
+                }
+                else if (otherCollider == CollisionShockwaveLeft || otherCollider == CollisionShockwaveRight) {
+                    LogIfDebugBuild("Pink Giant Feet Collision Shockwave! otherCollider: " + otherCollider);
+                    playerControllerB.DamagePlayer(20);
+                }
             }
         }
         /* private void OnTriggerStay(Collider other) {
