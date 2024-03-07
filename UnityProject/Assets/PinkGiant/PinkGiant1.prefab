@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6472980503789184990}
   - component: {fileID: 4174893892301244468}
   - component: {fileID: 5023143774595916289}
+  - component: {fileID: 8754010351004365835}
   m_Layer: 19
   m_Name: AttackArea
   m_TagString: Enemy
@@ -97,6 +98,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8754010351004365835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395006285449735638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1388945795027240502
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +122,7 @@ GameObject:
   - component: {fileID: 2856586908979887836}
   - component: {fileID: 509835903605000356}
   - component: {fileID: 1922624642523247994}
+  - component: {fileID: 8702947200948063867}
   m_Layer: 19
   m_Name: CollisionShockwaveL
   m_TagString: Enemy
@@ -194,6 +208,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8702947200948063867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388945795027240502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3050638469441060021
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +263,7 @@ GameObject:
   - component: {fileID: 1823037144262690733}
   - component: {fileID: 3214131152133352157}
   - component: {fileID: 903022362128659358}
+  - component: {fileID: 4016076241075624996}
   m_Layer: 19
   m_Name: Collision
   m_TagString: Enemy
@@ -322,6 +349,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4016076241075624996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099248337299394970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3312344083647851851
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +373,7 @@ GameObject:
   - component: {fileID: 8609878322497232166}
   - component: {fileID: 9153458969431600830}
   - component: {fileID: 1659754297031016407}
+  - component: {fileID: 1400129637338017737}
   m_Layer: 19
   m_Name: Collision
   m_TagString: Enemy
@@ -419,6 +459,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1400129637338017737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3312344083647851851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3614607847751593255
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +930,7 @@ GameObject:
   - component: {fileID: 6966464414673629301}
   - component: {fileID: 8070377696422559839}
   - component: {fileID: 1797216506979070807}
+  - component: {fileID: 7575893859117137562}
   m_Layer: 19
   m_Name: CollisionShockwaveR
   m_TagString: Enemy
@@ -963,6 +1016,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7575893859117137562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9114413798321502174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8036970909462439103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1462,8 +1527,6 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   AttackArea: {fileID: 6472980503789184990}
-  CollisionShockwaveRight: {fileID: 8070377696422559839}
-  CollisionShockwaveLeft: {fileID: 509835903605000356}
   rightBone: {fileID: 8887858775463097622}
   leftBone: {fileID: 1162948417695640257}
   eatingArea: {fileID: 738665752085352985}
