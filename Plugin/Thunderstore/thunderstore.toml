@@ -22,7 +22,7 @@ source = "../bin/Release/netstandard2.1/PinkGiant.dll"
 target = "plugins/PinkGiant/"
 
 [[build.copy]]
-source = "../../UnityProject/AssetBundles/StandaloneWindows/modassets"
+source = "../../UnityProject/AssetBundles/StandaloneWindows/pinkgiantassets"
 target = "plugins/PinkGiant/"
 
 [[build.copy]]
