@@ -207,6 +207,7 @@ namespace GiantSpecimens {
             StopCoroutine(EatForestKeeper());
             eatingEnemy = false;
             syncAudio = false;
+            idleGiant = true;
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
         
