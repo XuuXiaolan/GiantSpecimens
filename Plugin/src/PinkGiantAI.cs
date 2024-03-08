@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.PlayerLoop;
 
 namespace GiantSpecimens {
@@ -17,6 +19,7 @@ namespace GiantSpecimens {
         #pragma warning disable 0649
         // public Transform turnCompass
         public Collider AttackArea;
+        public IEnumerable allAlivePlayers;
         [SerializeField] readonly Collider CollisionShockwaveRight;
         [SerializeField] readonly Collider CollisionShockwaveLeft;
         #pragma warning restore 0649
@@ -72,7 +75,7 @@ namespace GiantSpecimens {
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 //gameObject.GetComponentByName("Bone.005.L_end").transform.position
                 midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
-                targetEnemy.transform.position = midpoint + new Vector3(0,-7,0);
+                targetEnemy.transform.position = midpoint + new Vector3(0,-5,0);
                 targetEnemy.transform.LookAt(eatingArea.transform);
                 targetEnemy.transform.rotation = Quaternion.Euler(new Vector3(0, targetEnemy.transform.rotation.eulerAngles.y + 65f, 0));
             }
@@ -153,8 +156,29 @@ namespace GiantSpecimens {
                     LogIfDebugBuild("This Behavior State doesn't exist!");
                     break;
             }
+        } 
+        void shakePlayerCamera() {
+            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                switch (distance) {
+                    case < 10f:
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
+                        break;
+                    case < 20 and >= 10:
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
+                        break;
+                    case < 50f and >= 20:
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
+                        break;
+                }
+            }
         }
-
         bool FoundForestKeeperInRange(float range) {
             for (int i = 0; i < RoundManager.Instance.SpawnedEnemies.Count; i++) {
                 if (RoundManager.Instance.SpawnedEnemies[i].enemyType.enemyName == "ForestGiant") {
@@ -178,33 +202,39 @@ namespace GiantSpecimens {
             StopCoroutine(MakeSureAudioSyncd());
         }
         IEnumerator PlaySoundSlow(AudioClip[] soundToPlay) {
-            actualSoundToPlay = soundToPlay[Random.Range(0, soundToPlay.Length)];
-            creatureVoice.PlayOneShot(soundToPlay[Random.Range(0, soundToPlay.Length)]);
+            actualSoundToPlay = soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)];
+            creatureVoice.PlayOneShot(soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)]);
             yield return new WaitForSeconds((float)actualSoundToPlay.length + 0.27f);
             LogIfDebugBuild(actualSoundToPlay.name);
             LogIfDebugBuild((actualSoundToPlay.length+0.27f).ToString());
-            creatureVoice.Stop();
             creatureVoiceHasPlayed = false;
+            shakePlayerCamera();
         }
         IEnumerator PlaySoundFast(AudioClip[] soundToPlay) {
-            actualSoundToPlay = soundToPlay[Random.Range(0, soundToPlay.Length)];
-            creatureVoice.PlayOneShot(soundToPlay[Random.Range(0, soundToPlay.Length)]);
+            actualSoundToPlay = soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)];
+            creatureVoice.PlayOneShot(soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)]);
             yield return new WaitForSeconds(((float)actualSoundToPlay.length+0.27f)/4f);
             LogIfDebugBuild(actualSoundToPlay.name);
             LogIfDebugBuild(((actualSoundToPlay.length+0.27f)/4).ToString());
-            creatureVoice.Stop();
             creatureVoiceHasPlayed = false;
+            shakePlayerCamera();
+        }
+        IEnumerator StunGiantRepeatedly(int stunNumber) {
+            for (int i = 0; i < stunNumber; i++) {
+             targetEnemy.SetEnemyStunned(true, 1.9f);
+             yield return new WaitForSeconds(0.25f);   
+            }
         }
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
             targetEnemy.CancelSpecialAnimationWithPlayer();
-            targetEnemy.enabled = false;
-            
+            StartCoroutine(StunGiantRepeatedly(60));
             LogIfDebugBuild($"{targetEnemy}");
             yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(5);
             StopCoroutine(EatForestKeeper());
+            StopCoroutine(StunGiantRepeatedly(60));
             eatingEnemy = false;
             syncAudio = false;
             idleGiant = true;
