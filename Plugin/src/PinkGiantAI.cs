@@ -65,7 +65,7 @@ namespace GiantSpecimens {
             LogIfDebugBuild(this.enemyType.audioClips[0].name);
             rightBone = GameObject.Find("Bone.005.R_end");
             leftBone = GameObject.Find("Bone.005.L_end");
-            eatingArea = GameObject.Find("Bone.002");
+            eatingArea = GameObject.Find("EatingBall");
             StartSearch(transform.position);
         }
 
@@ -75,11 +75,13 @@ namespace GiantSpecimens {
             timer += Time.deltaTime;
 
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
-                //gameObject.GetComponentByName("Bone.005.L_end").transform.position
-                midpoint = (rightBone.transform.position + leftBone.transform.position)/2;
-                targetEnemy.transform.position = midpoint + new Vector3(0,-5,0);
-                targetEnemy.transform.LookAt(eatingArea.transform);
-                targetEnemy.transform.rotation = Quaternion.Euler(new Vector3(0, targetEnemy.transform.rotation.eulerAngles.y + 65f, 0));
+                midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
+                // Vector3 direction = eatingArea.transform.position.normalized;
+                // Quaternion lookRotation = Quaternion.LookRotation(direction);
+                targetEnemy.transform.position = midpoint;
+                targetEnemy.transform.LookAt(eatingArea.transform.position);
+                // targetEnemy.transform.rotation = lookRotation;
+                //targetEnemy.transform.LookAt(eatingArea.transform);
             }
         }
         public override void DoAIInterval()
@@ -95,7 +97,7 @@ namespace GiantSpecimens {
                     if (timer > 14f && idleGiant) {
                         StartCoroutine(PauseDuringIdle());
                     }
-                    else if (FoundForestKeeperInRange(50f)){
+                    else if (FindClosestForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
@@ -118,7 +120,7 @@ namespace GiantSpecimens {
                     else {
                         StartCoroutine(MakeSureAudioSyncd());
                     }
-                    if (FoundForestKeeperInRange(50f)){
+                    if (FindClosestForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
@@ -159,13 +161,15 @@ namespace GiantSpecimens {
                     break;
             }
         } 
-        void shakePlayerCamera() {
+        void ShakePlayerCamera() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
                 switch (distance) {
                     case < 10f:
+                        HUDManager.Instance.ShakeCamera(ScreenShakeType.Long);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
+
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
@@ -181,14 +185,22 @@ namespace GiantSpecimens {
                 }
             }
         }
-        bool FoundForestKeeperInRange(float range) {
-            for (int i = 0; i < RoundManager.Instance.SpawnedEnemies.Count; i++) {
-                if (RoundManager.Instance.SpawnedEnemies[i].enemyType.enemyName == "ForestGiant") {
-                    if (Vector3.Distance(transform.position, RoundManager.Instance.SpawnedEnemies[i].transform.position) < range) {
-                        targetEnemy = RoundManager.Instance.SpawnedEnemies[i];
-                        return true;
+        bool FindClosestForestKeeperInRange(float range) {
+            EnemyAI closestEnemy = null;
+            float minDistance = float.MaxValue;
+
+            foreach (var enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.enemyName == "ForestGiant") {
+                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (distance < range && distance < minDistance) {
+                        minDistance = distance;
+                        closestEnemy = enemy;
                     }
                 }
+            }
+            if (closestEnemy != null) {
+                targetEnemy = closestEnemy;
+                return true;
             }
             return false;
         }
@@ -210,7 +222,7 @@ namespace GiantSpecimens {
             LogIfDebugBuild(actualSoundToPlay.name);
             LogIfDebugBuild((actualSoundToPlay.length+0.27f).ToString());
             creatureVoiceHasPlayed = false;
-            shakePlayerCamera();
+            ShakePlayerCamera();
         }
         IEnumerator PlaySoundFast(AudioClip[] soundToPlay) {
             actualSoundToPlay = soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)];
@@ -219,7 +231,7 @@ namespace GiantSpecimens {
             LogIfDebugBuild(actualSoundToPlay.name);
             LogIfDebugBuild(((actualSoundToPlay.length+0.27f)/4).ToString());
             creatureVoiceHasPlayed = false;
-            shakePlayerCamera();
+            ShakePlayerCamera();
         }
         IEnumerator StunGiantRepeatedly(int stunNumber) {
             for (int i = 0; i < stunNumber; i++) {
