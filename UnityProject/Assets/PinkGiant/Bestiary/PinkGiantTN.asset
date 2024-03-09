@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e80ae96b3eb9177eea5c8f9dadbcda1, type: 3}
   m_Name: PinkGiantTN
   m_EditorClassIdentifier: 
-  displayText: "RedWood ForestKeeper\n\nSigurd's danger level: 20%\n\nScientific
-    name: Satyrid-Proceritas \n\nDon't be afraid of this giant, well maybe still
-    a little, this overgrown Satyrid-proceritas is one of if not the most calmest
-    of its species, mainly minding its own business. It has grown so much that it
-    does not hunt humans. Still, be very careful around them as they don't seem to
-    care much about where they are stepping. - Sigurd"
+  displayText: "RedWood Giant\n\nSigurd's danger level: 20%\n\nScientific name: Satyrid-Proceritas
+    \n\nDon't be afraid of this giant, well maybe still a little, this overgrown
+    Satyrid-proceritas is one of if not the most calmest of its species, mainly minding
+    its own business. It has grown so much that it does not hunt humans. Still, be
+    very careful around them as they don't seem to care much about where they are
+    stepping. - Sigurd"
   terminalEvent: 
   clearPreviousText: 1
   maxCharactersToType: 35

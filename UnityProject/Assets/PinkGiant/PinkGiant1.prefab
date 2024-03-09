@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CreatureSFX: {fileID: 0}
+  squishSound: {fileID: 0}
 --- !u!1 &1388945795027240502
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +222,8 @@ MonoBehaviour:
   m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CreatureSFX: {fileID: 0}
+  squishSound: {fileID: 0}
 --- !u!1 &3050638469441060021
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +269,7 @@ GameObject:
   - component: {fileID: 903022362128659358}
   - component: {fileID: 4016076241075624996}
   m_Layer: 19
-  m_Name: Collision
+  m_Name: CollisionFootL
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CreatureSFX: {fileID: 6416372442378020654}
+  squishSound: {fileID: 8300000, guid: 0f5613cdea4a116468e8211a70b357b9, type: 3}
 --- !u!1 &3312344083647851851
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +381,7 @@ GameObject:
   - component: {fileID: 1659754297031016407}
   - component: {fileID: 1400129637338017737}
   m_Layer: 19
-  m_Name: Collision
+  m_Name: CollisionFootR
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -471,6 +477,8 @@ MonoBehaviour:
   m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CreatureSFX: {fileID: 6416372442378020654}
+  squishSound: {fileID: 8300000, guid: 0f5613cdea4a116468e8211a70b357b9, type: 3}
 --- !u!1 &3614607847751593255
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,12 +759,13 @@ AudioSource:
   m_GameObject: {fileID: 4753347662551971062}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300042, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1047,6 +1056,8 @@ MonoBehaviour:
   m_Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CreatureSFX: {fileID: 0}
+  squishSound: {fileID: 0}
 --- !u!1001 &8036970909462439103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1546,6 +1557,10 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   AttackArea: {fileID: 6472980503789184990}
+  CollisionShockwaveR: {fileID: 8070377696422559839}
+  CollisionShockwaveL: {fileID: 509835903605000356}
+  CollisionFootR: {fileID: 9153458969431600830}
+  CollisionFootL: {fileID: 3214131152133352157}
   stompSounds:
   - {fileID: 8300000, guid: ecb1a0cbaeb35804c82327aa22356d8c, type: 3}
   - {fileID: 8300000, guid: 9c3a8f4e5ca314c4b855a8b08413ae4f, type: 3}

@@ -6,6 +6,8 @@ using UnityEngine.PlayerLoop;
 namespace GiantSpecimens {
     public class ColliderIdentifier : MonoBehaviour 
     {
+        [SerializeField]AudioSource CreatureSFX;
+        [SerializeField]AudioClip squishSound;
         private float lastShockwaveLDamageTime = 0f;
         private float lastShockwaveRDamageTime = 0f;
 
@@ -42,6 +44,7 @@ namespace GiantSpecimens {
 
         void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB)
         {
+            
             // Example: Detect which part of your GameObject caused the collision/trigger
             if (collidedObject.name == "AttackArea")
             {
@@ -50,7 +53,7 @@ namespace GiantSpecimens {
             }
             else if (collidedObject.name == "CollisionShockwaveL")
             {
-                if (Time.time - lastShockwaveLDamageTime >= 3f) // 3 seconds cooldown
+                if (Time.time - lastShockwaveLDamageTime >= 4f) // 4 seconds cooldown
                 {
                     LogIfDebugBuild("Collided with ShockwaveLeft");
                     playerControllerB.DamagePlayer(20);
@@ -59,16 +62,20 @@ namespace GiantSpecimens {
             }
             else if (collidedObject.name == "CollisionShockwaveR")
             {
-                if (Time.time - lastShockwaveRDamageTime >= 3f) // 3 seconds cooldown
+                if (Time.time - lastShockwaveRDamageTime >= 4f) // 4 seconds cooldown
                 {
                     LogIfDebugBuild("Collided with ShockwaveRight");
                     playerControllerB.DamagePlayer(20);
                     lastShockwaveRDamageTime = Time.time; // Update the last damage time
                 }
             }
+            else if (collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") {
+                
+                playerControllerB.DamagePlayer(100);
+                CreatureSFX.PlayOneShot(squishSound);
+            }
             else {
                 LogIfDebugBuild("Collided with unknown object: " + collidedObject.name);
-                playerControllerB.DamagePlayer(100);
             }
         }
     }

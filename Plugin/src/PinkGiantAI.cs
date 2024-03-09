@@ -20,8 +20,10 @@ namespace GiantSpecimens {
         // public Transform turnCompass
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
-        [SerializeField] readonly Collider CollisionShockwaveRight;
-        [SerializeField] readonly Collider CollisionShockwaveLeft;
+        [SerializeField] Collider CollisionShockwaveR;
+        [SerializeField] Collider CollisionShockwaveL;
+        [SerializeField] Collider CollisionFootR;
+        [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
         float timer = 0;
         bool eatingEnemy = false;
@@ -252,26 +254,6 @@ namespace GiantSpecimens {
                 }
             }
         }
-
-        public override void OnCollideWithPlayer(Collider playerCollider) {
-        }
-
-        /* private void OnTriggerStay(Collider other) {
-            LogIfDebugBuild("This is happening." + other);
-
-            LogIfDebugBuild("Components:");
-            foreach(Component component in gameObject.GetComponents<Component>()) {
-                LogIfDebugBuild(component.GetType().Name);
-            }
-            LogIfDebugBuild("Children:");
-            foreach(Transform child in transform) {
-                LogIfDebugBuild(child.name);
-                foreach(Component component in child.GetComponents<Component>()) {
-                    LogIfDebugBuild("\t" + component.GetType().Name);
-                }
-            } 
-
-        } */
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {
