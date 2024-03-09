@@ -78,7 +78,7 @@ namespace GiantSpecimens {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
                 // Vector3 direction = eatingArea.transform.position.normalized;
                 // Quaternion lookRotation = Quaternion.LookRotation(direction);
-                targetEnemy.transform.position = midpoint;
+                targetEnemy.transform.position = midpoint + new Vector3(0, -1, 0);
                 targetEnemy.transform.LookAt(eatingArea.transform.position);
                 // targetEnemy.transform.rotation = lookRotation;
                 //targetEnemy.transform.LookAt(eatingArea.transform);
