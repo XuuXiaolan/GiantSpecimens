@@ -5,6 +5,9 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.PlayerLoop;
+using System.Threading;
+using Mono.Cecil.Cil;
+using UnityEngine.UIElements.Experimental;
 
 namespace GiantSpecimens {
 
@@ -26,8 +29,8 @@ namespace GiantSpecimens {
         [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
         bool sizeUp = false;
+        int count = 0;
         Vector3 newScale;
-        float timer = 0;
         bool eatingEnemy = false;
         bool creatureVoiceHasPlayed = false;
         EnemyAI targetEnemy;
@@ -56,11 +59,13 @@ namespace GiantSpecimens {
         {
             base.Start();
             LogIfDebugBuild("Pink Giant Enemy Spawned");
+            StartCoroutine(ScalingUp());
             // creatureAnimator.SetTrigger("startWalk");
 
             // NOTE: Add your behavior states in your enemy script in Unity, where you can configure fun stuff
             // like a voice clip or an sfx clip to play when changing to that specific behavior state.
             currentBehaviourStateIndex = (int)State.IdleAnimation;
+
             // We make the enemy start searching. This will make it start wandering around.
             stompSounds = this.enemyType.audioClips;
             LogIfDebugBuild(stompSounds[0].name);
@@ -73,8 +78,6 @@ namespace GiantSpecimens {
 
         public override void Update(){
             base.Update();
-
-            timer += Time.deltaTime;
 
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
@@ -112,7 +115,7 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (timer > 14f && idleGiant) {
+                    if (idleGiant) {
                         StartCoroutine(PauseDuringIdle());
                     }
                     else if (FindClosestForestKeeperInRange(50f)){
@@ -223,6 +226,29 @@ namespace GiantSpecimens {
             return false;
         }
 
+        IEnumerator ScalingUp() {
+            newScale = transform.localScale;
+            newScale.x *= 0.1f;
+            newScale.y *= 0.1f;
+            newScale.z *= 0.1f;
+            transform.localScale = newScale;
+            const int AnimationFrameCount = 10;
+            const float AnimationDuration = 1.5f; // measured in seconds
+            float elapsedTime = 0;
+
+            float startScale = 0.1f;
+            float endScale = 10f;
+
+            for (int i = 0; i < AnimationFrameCount; i++)
+            {
+                yield return new WaitForSeconds(AnimationDuration / AnimationFrameCount);
+                elapsedTime += Time.deltaTime;
+                float lerpFactor = Mathf.Clamp01(elapsedTime / AnimationDuration);
+                float currentScale = Mathf.Lerp(startScale, endScale, lerpFactor);
+                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+            }
+            StopCoroutine(ScalingUp());
+        }
         IEnumerator PauseDuringIdle() {
             yield return new WaitForSeconds(14);
             idleGiant = false;
