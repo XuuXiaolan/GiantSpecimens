@@ -25,6 +25,8 @@ namespace GiantSpecimens {
         [SerializeField] Collider CollisionFootR;
         [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
+        bool sizeUp = false;
+        Vector3 newScale;
         float timer = 0;
         bool eatingEnemy = false;
         bool creatureVoiceHasPlayed = false;
@@ -76,13 +78,27 @@ namespace GiantSpecimens {
 
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
-                // Vector3 direction = eatingArea.transform.position.normalized;
-                // Quaternion lookRotation = Quaternion.LookRotation(direction);
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
                 targetEnemy.transform.LookAt(eatingArea.transform.position);
-                targetEnemy.transform.position = midpoint + new Vector3(0, -4f, 0);
-                // targetEnemy.transform.rotation = lookRotation;
-                //targetEnemy.transform.LookAt(eatingArea.transform);
+                targetEnemy.transform.position = midpoint + new Vector3(0, -5.5f, 0);
+                // Scale targetEnemy's transform down by 0.999 everytime Update runs in this if statement
+                if (!sizeUp) {
+                    targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
+                    targetEnemy.transform.LookAt(eatingArea.transform.position);
+                    targetEnemy.transform.position = midpoint + new Vector3(0, -6f, 0);
+                    newScale = targetEnemy.transform.localScale;
+                    newScale.x *= 1.4f;
+                    newScale.y *= 1.3f;
+                    newScale.z *= 1.4f;
+                    targetEnemy.transform.localScale = newScale;
+                    sizeUp = true;
+                }
+                targetEnemy.transform.position += new Vector3(0, 0.015f, 0);
+                newScale = targetEnemy.transform.localScale;
+                newScale.x *= 0.9995f;
+                newScale.y *= 0.9995f;
+                newScale.z *= 0.9995f;
+                targetEnemy.transform.localScale = newScale;
             }
         }
         public override void DoAIInterval()
@@ -253,6 +269,7 @@ namespace GiantSpecimens {
             eatingEnemy = false;
             syncAudio = false;
             idleGiant = true;
+            sizeUp = false;
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
         
