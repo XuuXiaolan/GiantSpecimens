@@ -93,12 +93,13 @@ namespace GiantSpecimens {
                     targetEnemy.transform.localScale = newScale;
                     sizeUp = true;
                 }
-                targetEnemy.transform.position += new Vector3(0, 0.015f, 0);
+                targetEnemy.transform.position += new Vector3(0, 0.02f, 0);
                 newScale = targetEnemy.transform.localScale;
                 newScale.x *= 0.9995f;
                 newScale.y *= 0.9995f;
                 newScale.z *= 0.9995f;
                 targetEnemy.transform.localScale = newScale;
+                targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.1f);
             }
         }
         public override void DoAIInterval()
