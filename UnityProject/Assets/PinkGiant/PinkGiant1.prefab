@@ -1970,6 +1970,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9c3a8f4e5ca314c4b855a8b08413ae4f, type: 3}
   - {fileID: 8300000, guid: fc31f77b31a885641af79b974908280e, type: 3}
   - {fileID: 8300000, guid: 38614a9bd3465754e9079d69249fae51, type: 3}
+  eatenSound: {fileID: 8300000, guid: 8e7d862da249a214b915beddaf216e92, type: 3}
   rightBone: {fileID: 8887858775463097622}
   leftBone: {fileID: 1162948417695640257}
   eatingArea: {fileID: 1100682555217637764}
