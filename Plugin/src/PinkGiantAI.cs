@@ -35,7 +35,6 @@ namespace GiantSpecimens {
         EnemyAI targetEnemy;
         bool idleGiant = true;
         bool syncAudio = false;
-        AudioClip actualSoundToPlay;
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
@@ -133,38 +132,38 @@ namespace GiantSpecimens {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = 1.5f;
-                    if (!creatureVoiceHasPlayed && syncAudio) {
+                    /*if (!creatureVoiceHasPlayed && syncAudio) {
                         StartCoroutine(PlaySoundSlow(stompSounds));
                         creatureVoiceHasPlayed = true;
                     }
                     else {
                         StartCoroutine(MakeSureAudioSyncd());
-                    }
+                    } */
                     if (FindClosestForestKeeperInRange(50f)){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
-                        syncAudio = false;
-                        StopCoroutine(PlaySoundSlow(stompSounds));
+                        //syncAudio = false;
+                        //StopCoroutine(PlaySoundSlow(stompSounds));
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     } // Look for Forest Keeper
                     break;
                 case (int)State.RunningToForestKeeper:
                     agent.speed = 6f;
-                    if (!creatureVoiceHasPlayed && syncAudio) {
+                    /*if (!creatureVoiceHasPlayed && syncAudio) {
                         StartCoroutine(PlaySoundFast(stompSounds));
                         creatureVoiceHasPlayed = true;
                     }
                     else {
                         StartCoroutine(MakeSureAudioSyncd());
-                    }
+                    }*/
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
                     if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 100f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
-                        syncAudio = false;
-                        StopCoroutine(PlaySoundFast(stompSounds));
+                        //syncAudio = false;
+                        //StopCoroutine(PlaySoundFast(stompSounds));
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }
@@ -180,8 +179,24 @@ namespace GiantSpecimens {
                     LogIfDebugBuild("This Behavior State doesn't exist!");
                     break;
             }
-        } 
-        void ShakePlayerCamera() {
+        }
+        public void ShockwaveDamageL() {
+            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
+                float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
+                if (distance <= 10f) {
+                    player.DamagePlayer(15);
+                }
+            }
+        }
+        public void ShockwaveDamageR() {
+            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
+                float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
+                if (distance <= 10f) {
+                    player.DamagePlayer(15);
+                }
+            }
+        }
+        public void ShakePlayerCamera() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
                 switch (distance) {
@@ -252,45 +267,20 @@ namespace GiantSpecimens {
             idleGiant = false;
             StopCoroutine(PauseDuringIdle());
         }
-        IEnumerator MakeSureAudioSyncd() {
-            yield return new WaitForSeconds(1.8f);
-            syncAudio = true;
-            StopCoroutine(MakeSureAudioSyncd());
-        }
-        IEnumerator PlaySoundSlow(AudioClip[] soundToPlay) {
-            actualSoundToPlay = soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)];
-            creatureVoice.PlayOneShot(soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)]);
-            yield return new WaitForSeconds((float)actualSoundToPlay.length + 0.27f);
-            LogIfDebugBuild(actualSoundToPlay.name);
-            LogIfDebugBuild((actualSoundToPlay.length+0.27f).ToString());
-            creatureVoiceHasPlayed = false;
-            ShakePlayerCamera();
-        }
-        IEnumerator PlaySoundFast(AudioClip[] soundToPlay) {
-            actualSoundToPlay = soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)];
-            creatureVoice.PlayOneShot(soundToPlay[UnityEngine.Random.Range(0, soundToPlay.Length)]);
-            yield return new WaitForSeconds(((float)actualSoundToPlay.length+0.27f)/4f);
-            LogIfDebugBuild(actualSoundToPlay.name);
-            LogIfDebugBuild(((actualSoundToPlay.length+0.27f)/4).ToString());
-            creatureVoiceHasPlayed = false;
-            ShakePlayerCamera();
-        }
-        IEnumerator StunGiantRepeatedly(int stunNumber) {
-            for (int i = 0; i < stunNumber; i++) {
-             targetEnemy.SetEnemyStunned(true, 1.9f);
-             yield return new WaitForSeconds(0.25f);   
-            }
+        public void PlayFootstepSound() {
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
             DoAnimationClientRpc("eatForestKeeper");
             targetEnemy.CancelSpecialAnimationWithPlayer();
-            StartCoroutine(StunGiantRepeatedly(60));
+            targetEnemy.SetEnemyStunned(true, 10f);
+            targetEnemy.creatureVoice.Stop();
+            targetEnemy.creatureSFX.Stop();
             LogIfDebugBuild($"{targetEnemy}");
             yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(5);
             StopCoroutine(EatForestKeeper());
-            StopCoroutine(StunGiantRepeatedly(60));
             eatingEnemy = false;
             syncAudio = false;
             idleGiant = true;

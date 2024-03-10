@@ -44,30 +44,11 @@ namespace GiantSpecimens {
 
         void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB)
         {
-            
             // Example: Detect which part of your GameObject caused the collision/trigger
             if (collidedObject.name == "AttackArea")
             {
                 LogIfDebugBuild("Collided with AttackArea");
                 // Handle AttackArea collision logic here
-            }
-            else if (collidedObject.name == "CollisionShockwaveL")
-            {
-                if (Time.time - lastShockwaveLDamageTime >= 4f) // 4 seconds cooldown
-                {
-                    LogIfDebugBuild("Collided with ShockwaveLeft");
-                    playerControllerB.DamagePlayer(20);
-                    lastShockwaveLDamageTime = Time.time; // Update the last damage time
-                }
-            }
-            else if (collidedObject.name == "CollisionShockwaveR")
-            {
-                if (Time.time - lastShockwaveRDamageTime >= 4f) // 4 seconds cooldown
-                {
-                    LogIfDebugBuild("Collided with ShockwaveRight");
-                    playerControllerB.DamagePlayer(20);
-                    lastShockwaveRDamageTime = Time.time; // Update the last damage time
-                }
             }
             else if (collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") {
                 
