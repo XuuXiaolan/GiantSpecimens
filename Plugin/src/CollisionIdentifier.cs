@@ -13,7 +13,7 @@ namespace GiantSpecimens {
             #if DEBUG
             Plugin.Logger.LogInfo(text);
             #endif
-        }
+        } 
         private void OnTriggerEnter(Collider other)
         {
             // Check if the collider is a player or another entity you're interested in

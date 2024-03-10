@@ -54,6 +54,8 @@ namespace GiantSpecimens {
         public override void Start()
         {
             base.Start();
+            var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
+            giantEnemyType.rarity *= 2;
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             StartCoroutine(ScalingUp());
             // creatureAnimator.SetTrigger("startWalk");
