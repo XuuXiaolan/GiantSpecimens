@@ -156,7 +156,7 @@ namespace GiantSpecimens {
         public void ShockwaveDamageL() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
-                if (distance <= 10f) {
+                if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15);
                 }
             }
@@ -164,7 +164,7 @@ namespace GiantSpecimens {
         public void ShockwaveDamageR() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
-                if (distance <= 10f) {
+                if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15);
                 }
             }
