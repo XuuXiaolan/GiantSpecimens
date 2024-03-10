@@ -8,8 +8,6 @@ namespace GiantSpecimens {
     {
         [SerializeField]AudioSource CreatureSFX;
         [SerializeField]AudioClip squishSound;
-        private float lastShockwaveLDamageTime = 0f;
-        private float lastShockwaveRDamageTime = 0f;
 
         void LogIfDebugBuild(string text) {
             #if DEBUG
