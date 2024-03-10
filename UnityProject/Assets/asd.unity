@@ -445,30 +445,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1744710549
       objectReference: {fileID: 0}
-    - target: {fileID: 2625861080647780816, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.00501
-      objectReference: {fileID: 0}
-    - target: {fileID: 2625861080647780816, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.0064
-      objectReference: {fileID: 0}
-    - target: {fileID: 2625861080647780816, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.01356
-      objectReference: {fileID: 0}
     - target: {fileID: 7154081962228259310, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
       propertyPath: m_Name
       value: PinkGiant1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7158979810387320263, guid: 1da6ee042d4e3f042a751110489287e1,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7495035452514452308, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}

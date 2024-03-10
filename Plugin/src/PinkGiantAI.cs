@@ -29,7 +29,6 @@ namespace GiantSpecimens {
         [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
         bool sizeUp = false;
-        int count = 0;
         Vector3 newScale;
         bool eatingEnemy = false;
         bool creatureVoiceHasPlayed = false;
@@ -232,16 +231,15 @@ namespace GiantSpecimens {
             newScale.y *= 0.1f;
             newScale.z *= 0.1f;
             transform.localScale = newScale;
-            const int AnimationFrameCount = 10;
-            const float AnimationDuration = 1.5f; // measured in seconds
+            const float AnimationDuration = 10f; // measured in seconds
             float elapsedTime = 0;
 
             float startScale = 0.1f;
-            float endScale = 10f;
+            float endScale = 1f;
 
-            for (int i = 0; i < AnimationFrameCount; i++)
+            while (elapsedTime < AnimationDuration)
             {
-                yield return new WaitForSeconds(AnimationDuration / AnimationFrameCount);
+                yield return null;
                 elapsedTime += Time.deltaTime;
                 float lerpFactor = Mathf.Clamp01(elapsedTime / AnimationDuration);
                 float currentScale = Mathf.Lerp(startScale, endScale, lerpFactor);

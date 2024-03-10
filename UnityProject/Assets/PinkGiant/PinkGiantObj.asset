@@ -67,7 +67,7 @@ MonoBehaviour:
     type: 3}
   PowerLevel: 1
   MaxCount: 1
-  numberSpawned: 1
+  numberSpawned: 0
   isOutsideEnemy: 1
   isDaytimeEnemy: 0
   normalizedTimeInDayToLeave: 0
