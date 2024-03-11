@@ -3,24 +3,24 @@ using BepInEx;
 using BepInEx.Configuration;
 
 namespace GiantSpecimens {
-    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    public class GiantSpecimensConfig : BaseUnityPlugin
+    public class GiantSpecimensConfig
     {
-        public ConfigEntry<int> configSpawnrateForest;
-        public ConfigEntry<int> configSpawnrateRedWood;
+        public ConfigEntry<int> configSpawnrateForest { get; private set; }
+        public ConfigEntry<int> configSpawnrateRedWood { get; private set; }
 
-        void Awake()
+        // Here we make a new object, passing in the config file from Plugin.cs
+        public GiantSpecimensConfig(ConfigFile configFile) 
         {
-            configSpawnrateForest = Config.Bind("Spawnrates",   // The section under which the option is shown
+            configSpawnrateForest = configFile.Bind("Spawnrates",   // The section under which the option is shown
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
                                                 1, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
 
-            configSpawnrateRedWood = Config.Bind("Spawnrates", 
+            configSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 200,
                                                 "Spawn Weight of the RedWood Giant");
-            Logger.LogInfo("Setting up config for Giant Specimen plugin...");
+            Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }
     }
 }
