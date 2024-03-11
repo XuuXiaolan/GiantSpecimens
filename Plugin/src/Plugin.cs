@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿﻿using System.Reflection;
 using UnityEngine;
 using BepInEx;
 using HarmonyLib;
@@ -14,13 +14,13 @@ namespace GiantSpecimens {
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
-        public static GiantSpecimensConfig config;
+        public static GiantSpecimensConfig config { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
 
         private void Awake() {
             Logger = base.Logger;
             Assets.PopulateAssets();
-            config = new GiantSpecimensConfig();
+            config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             var tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
@@ -33,7 +33,7 @@ namespace GiantSpecimens {
             
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
-            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher maybe?
+            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
             {

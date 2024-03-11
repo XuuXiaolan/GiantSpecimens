@@ -35,7 +35,7 @@ namespace GiantSpecimens {
         [SerializeField]AudioClip eatenSound;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
-        [SerializeField]GameObject eatingArea;
+        [SerializeField] GameObject eatingArea;
         Vector3 midpoint;
         enum State {
             IdleAnimation, // Idling
@@ -57,6 +57,7 @@ namespace GiantSpecimens {
             giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
             var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
+            LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
             //LogIfDebugBuild(transform.rarity.ToString());
