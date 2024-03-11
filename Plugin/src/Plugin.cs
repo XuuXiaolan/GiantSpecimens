@@ -20,7 +20,7 @@ namespace GiantSpecimens {
         private void Awake() {
             Logger = base.Logger;
             Assets.PopulateAssets();
-            config = new GiantSpecimensConfig();
+            config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             var tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
@@ -33,7 +33,8 @@ namespace GiantSpecimens {
             
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
-            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher maybe?
+            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
+            // Anytime you use "[ServerRPC]" or "[ClientRPC]" you will need this.
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
             {
