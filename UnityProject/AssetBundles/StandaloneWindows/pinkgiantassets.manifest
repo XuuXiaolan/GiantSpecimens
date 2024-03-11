@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1707365159
+CRC: 2314412830
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 777e90661aed9238a2ca39a189783a99
+    Hash: 09c09c4e58b43e6213a60ae17ae2c587
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 91913946a108ae863058ff117290ab12
+    Hash: 937d3705cb08add86d6c18a445eef792
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 777e90661aed9238a2ca39a189783a99
+    Hash: 09c09c4e58b43e6213a60ae17ae2c587
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -42,8 +42,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 65d3fcb39dd67306e9bb17a603308070, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
 - Class: 114
@@ -81,6 +85,10 @@ SerializeReferenceClassIdentifiers:
   ClassName: AISearchRoutine
 - AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
+- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
+  ClassName: UnityEngine.Rendering.HighDefinition.BoolScalableSettingValue
+- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
+  ClassName: UnityEngine.Rendering.HighDefinition.IntScalableSettingValue
 Assets:
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
