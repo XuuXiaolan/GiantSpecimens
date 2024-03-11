@@ -14,19 +14,22 @@ namespace GiantSpecimens {
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
+        public static GiantSpecimensConfig config;
         internal static new ManualLogSource Logger;
 
         private void Awake() {
             Logger = base.Logger;
             Assets.PopulateAssets();
-
+            config = new GiantSpecimensConfig();
+            
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             var tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
             var tlTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-			RegisterEnemy(PinkGiant, 200, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
+            int spawnRate = config.configSpawnrateRedWood.Value;
+			RegisterEnemy(PinkGiant, spawnRate, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
             
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 

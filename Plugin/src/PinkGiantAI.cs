@@ -31,7 +31,6 @@ namespace GiantSpecimens {
         bool eatingEnemy = false;
         EnemyAI targetEnemy;
         bool idleGiant = true;
-
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]AudioClip eatenSound;
         [SerializeField]GameObject rightBone;
@@ -55,8 +54,9 @@ namespace GiantSpecimens {
         {
             base.Start();
             var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
-            giantEnemyType.rarity *= 4;
-
+            giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
+            var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
+            LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
             //LogIfDebugBuild(transform.rarity.ToString());
@@ -64,7 +64,6 @@ namespace GiantSpecimens {
             // creatureAnimator.SetTrigger("startWalk");
 
             currentBehaviourStateIndex = (int)State.IdleAnimation;
-
             StartSearch(transform.position);
         }
 
