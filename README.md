@@ -15,4 +15,5 @@ Mod that adds a variety of giant enemies, part of the forest keeper family.
 
 -Mod-Release thread in the Lethal Company Modding Server for a lot of the ideas!
 
--New RedWood Giant model textures and material are created by meatballdemon on discord and https://twitter.com/_MeatBallDemon_ on twitter, fantastic work done (V1.4.0)!
+-New RedWood Giant model textures and material are created by [@MeatBallDemon](https://twitter.com/_MeatBallDemon_) on twitter, fantastic work done (V1.4.0)!
+
