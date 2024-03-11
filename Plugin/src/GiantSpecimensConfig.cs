@@ -5,8 +5,8 @@ using BepInEx.Configuration;
 namespace GiantSpecimens {
     public class GiantSpecimensConfig
     {
-        public ConfigEntry<int> configSpawnrateForest;
-        public ConfigEntry<int> configSpawnrateRedWood;
+        public ConfigEntry<int> configSpawnrateForest { get; private set; }
+        public ConfigEntry<int> configSpawnrateRedWood { get; private set; }
 
         // Here we make a new object, passing in the config file from Plugin.cs
         public GiantSpecimensConfig(ConfigFile configFile) 

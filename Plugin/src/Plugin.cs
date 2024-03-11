@@ -14,7 +14,7 @@ namespace GiantSpecimens {
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
-        public static GiantSpecimensConfig config;
+        public static GiantSpecimensConfig config { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
 
         private void Awake() {
@@ -34,7 +34,6 @@ namespace GiantSpecimens {
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
-            // Anytime you use "[ServerRPC]" or "[ClientRPC]" you will need this.
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
             {
