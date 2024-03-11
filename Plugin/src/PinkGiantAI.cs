@@ -33,6 +33,7 @@ namespace GiantSpecimens {
         bool idleGiant = true;
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]AudioClip eatenSound;
+        [SerializeField]AudioClip spawnSound;
         [SerializeField]GameObject rightBone;
         [SerializeField]GameObject leftBone;
         [SerializeField] GameObject eatingArea;
@@ -61,6 +62,7 @@ namespace GiantSpecimens {
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
             //LogIfDebugBuild(transform.rarity.ToString());
+            creatureVoice.PlayOneShot(spawnSound);
             StartCoroutine(ScalingUp());
             // creatureAnimator.SetTrigger("startWalk");
 
