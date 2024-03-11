@@ -55,8 +55,11 @@ namespace GiantSpecimens {
         {
             base.Start();
             var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
-            giantEnemyType.rarity *= 2;
+            giantEnemyType.rarity *= 4;
+
             LogIfDebugBuild("Pink Giant Enemy Spawned");
+            
+            //LogIfDebugBuild(transform.rarity.ToString());
             StartCoroutine(ScalingUp());
             // creatureAnimator.SetTrigger("startWalk");
 
@@ -250,7 +253,6 @@ namespace GiantSpecimens {
             targetEnemy.creatureVoice.Stop();
             targetEnemy.creatureSFX.Stop();
             targetEnemy.creatureVoice.PlayOneShot(eatenSound);
-            LogIfDebugBuild($"{targetEnemy}");
             yield return new WaitForSeconds(11);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(4);
@@ -264,7 +266,6 @@ namespace GiantSpecimens {
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             if (collidedEnemy == targetEnemy && eatingEnemy == false) {
-                LogIfDebugBuild("Pink Giant hitting this guy:" + targetEnemy);
                 SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
                 eatingEnemy = true;
                 if (eatingEnemy) {
@@ -275,7 +276,7 @@ namespace GiantSpecimens {
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {
-            LogIfDebugBuild($"Animation: {animationName}");
+            // LogIfDebugBuild($"Animation: {animationName}");
             creatureAnimator.SetTrigger(animationName);
         }
     }
