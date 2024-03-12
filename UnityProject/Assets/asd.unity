@@ -445,10 +445,20 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1744710549
       objectReference: {fileID: 0}
+    - target: {fileID: 5779230535233592844, guid: 1da6ee042d4e3f042a751110489287e1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7154081962228259310, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
       propertyPath: m_Name
       value: PinkGiant1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7446954112490619095, guid: 1da6ee042d4e3f042a751110489287e1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7495035452514452308, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
