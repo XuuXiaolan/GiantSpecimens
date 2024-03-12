@@ -48,9 +48,9 @@ namespace GiantSpecimens {
                 LogIfDebugBuild("Collided with AttackArea");
                 // Handle AttackArea collision logic here
             }
-            else if (collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") {
+            else if ((collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") && !playerControllerB.isInHangarShipRoom) {
                 
-                playerControllerB.DamagePlayer(100);
+                playerControllerB.DamagePlayer(200);
                 CreatureSFX.PlayOneShot(squishSound);
             }
             else {
