@@ -265,16 +265,16 @@ namespace GiantSpecimens {
             yield return new WaitForSeconds(11);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(4);
-            StopCoroutine(EatForestKeeper());
             eatingEnemy = false;
             idleGiant = true;
             sizeUp = false;
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
+            StopCoroutine(EatForestKeeper());
         }
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            if (collidedEnemy == targetEnemy && eatingEnemy == false) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy) {
                 eatingEnemy = true;
                 if (eatingEnemy) {
                     StartCoroutine(EatForestKeeper());
