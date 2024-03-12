@@ -1029,7 +1029,7 @@ GameObject:
   - component: {fileID: 4104291071270097695}
   m_Layer: 19
   m_Name: PoofParticle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1057,7 +1057,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6640962866890723961}
   serializedVersion: 8
-  lengthInSec: 10
+  lengthInSec: 6
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -1072,7 +1072,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 10
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -1113,7 +1113,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1131,7 +1131,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.29803923, g: 0.19215687, b: 0.07058824, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1195,8 +1195,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.3
-      minScalar: 0.1
+      scalar: 10
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve: []
@@ -3296,7 +3296,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76ae08d96e1afae48984a89b63561c83, type: 2}
+  - {fileID: 2100000, guid: 6d57970f02b2c714bb4beb1dc105fab3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3320,12 +3320,12 @@ ParticleSystemRenderer:
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
-  m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MinParticleSize: 0.01
+  m_MaxParticleSize: 0.02
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
-  m_SortingFudge: 0
+  m_SortingFudge: 0.1
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 0
@@ -3535,8 +3535,8 @@ Transform:
   m_GameObject: {fileID: 8924741970986629076}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000056153326, y: -0.987062, z: -0.00003457097, w: -0.16033976}
-  m_LocalPosition: {x: -0.00123, y: -0.03594, z: 0.00076}
-  m_LocalScale: {x: 0.0023217131, y: 0.0010095285, z: 0.0023921214}
+  m_LocalPosition: {x: -0.00123, y: -0.01235, z: 0.00076}
+  m_LocalScale: {x: 0.0052883984, y: 0.0010095285, z: 0.0045335484}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2077698002361445203}
@@ -3569,7 +3569,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1eee7520d0ecd4f46bab175d25fbc5d0, type: 2}
+  - {fileID: 2100000, guid: 1ef7aede8db30474fa0293910dd95f1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

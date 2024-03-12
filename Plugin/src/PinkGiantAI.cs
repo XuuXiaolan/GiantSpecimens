@@ -16,7 +16,7 @@ namespace GiantSpecimens {
     // Asset bundles cannot contain scripts, so our script lives here. It is important to get the
     // reference right, or else it will not find this file. See the guide for more information.
     class PinkGiantAI : EnemyAI {
-
+        
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
@@ -249,6 +249,13 @@ namespace GiantSpecimens {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
+            Collider[] colliders = targetEnemy.GetComponents<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
+            targetEnemy.agent.enabled = false;
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             DoAnimationClientRpc("eatForestKeeper");
             targetEnemy.CancelSpecialAnimationWithPlayer();
             targetEnemy.SetEnemyStunned(true, 10f);
@@ -268,7 +275,6 @@ namespace GiantSpecimens {
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             if (collidedEnemy == targetEnemy && eatingEnemy == false) {
-                SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
                 eatingEnemy = true;
                 if (eatingEnemy) {
                     StartCoroutine(EatForestKeeper());
