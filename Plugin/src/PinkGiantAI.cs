@@ -31,6 +31,7 @@ namespace GiantSpecimens {
         bool eatingEnemy = false;
         EnemyAI targetEnemy;
         bool idleGiant = true;
+        bool waitAfterChase = false;
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]AudioClip eatenSound;
         [SerializeField]AudioClip spawnSound;
@@ -111,6 +112,7 @@ namespace GiantSpecimens {
                     agent.speed = 0f;
                     if (FindClosestForestKeeperInRange(50f) && !idleGiant){
                         DoAnimationClientRpc("startChase");
+                        StartCoroutine(chaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
@@ -124,8 +126,9 @@ namespace GiantSpecimens {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = 1.5f;
-                    if (FindClosestForestKeeperInRange(50f)){
+                    if (FindClosestForestKeeperInRange(50f) && !idleGiant){
                         DoAnimationClientRpc("startChase");
+                        StartCoroutine(chaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
@@ -236,9 +239,15 @@ namespace GiantSpecimens {
             }
             StopCoroutine(ScalingUp());
         }
+        IEnumerator chaseCoolDown() {
+            yield return new WaitForSeconds(2);
+            waitAfterChase = true;
+            StopCoroutine(chaseCoolDown());
+        }
         IEnumerator PauseDuringIdle() {
             yield return new WaitForSeconds(15);
             idleGiant = false;
+            StopCoroutine(PauseDuringIdle());
         }
         public void PlayFootstepSound() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
@@ -254,10 +263,11 @@ namespace GiantSpecimens {
             targetEnemy.creatureVoice.PlayOneShot(eatenSound);
             yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
-            yield return new WaitForSeconds(5);
             eatingEnemy = false;
             sizeUp = false;
             idleGiant = true;
+            waitAfterChase = false;
+            yield return new WaitForSeconds(2);
             StartCoroutine(PauseDuringIdle());
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
             StopCoroutine(EatForestKeeper());
@@ -265,7 +275,7 @@ namespace GiantSpecimens {
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.EatingForestKeeper)) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation) && waitAfterChase == true) {
                 eatingEnemy = true;
                 Collider[] colliders = targetEnemy.GetComponents<Collider>();
                 foreach (Collider collider in colliders)
