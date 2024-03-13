@@ -249,36 +249,34 @@ namespace GiantSpecimens {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
-            Collider[] colliders = targetEnemy.GetComponents<Collider>();
-            foreach (Collider collider in colliders)
-            {
-                collider.enabled = false;
-            }
             targetEnemy.agent.enabled = false;
-            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             DoAnimationClientRpc("eatForestKeeper");
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             targetEnemy.CancelSpecialAnimationWithPlayer();
             targetEnemy.SetEnemyStunned(true, 10f);
             targetEnemy.creatureVoice.Stop();
             targetEnemy.creatureSFX.Stop();
             targetEnemy.creatureVoice.PlayOneShot(eatenSound);
-            yield return new WaitForSeconds(11);
+            yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(5);
             eatingEnemy = false;
             idleGiant = true;
             sizeUp = false;
-            SwitchToBehaviourClientRpc((int)State.IdleAnimation);
             StopCoroutine(EatForestKeeper());
+            SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
             if (collidedEnemy == targetEnemy && !eatingEnemy && !idleGiant) {
                 eatingEnemy = true;
-                if (eatingEnemy) {
-                    StartCoroutine(EatForestKeeper());
+                Collider[] colliders = targetEnemy.GetComponents<Collider>();
+                foreach (Collider collider in colliders)
+                {
+                    collider.enabled = false;
                 }
+                StartCoroutine(EatForestKeeper());
             }
         }
         [ClientRpc]
