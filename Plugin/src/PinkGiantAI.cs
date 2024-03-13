@@ -56,14 +56,15 @@ namespace GiantSpecimens {
             base.Start();
             var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
-            var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
-            LogIfDebugBuild(RedWoodGiant.rarity.ToString());
-            LogIfDebugBuild(giantEnemyType.rarity.ToString());
+            // var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
+            // LogIfDebugBuild(RedWoodGiant.rarity.ToString());
+            // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
             //LogIfDebugBuild(transform.rarity.ToString());
             creatureVoice.PlayOneShot(spawnSound);
             StartCoroutine(ScalingUp());
+            StartCoroutine(PauseDuringIdle());
             // creatureAnimator.SetTrigger("startWalk");
 
             currentBehaviourStateIndex = (int)State.IdleAnimation;
@@ -72,7 +73,6 @@ namespace GiantSpecimens {
 
         public override void Update(){
             base.Update();
-
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
@@ -109,22 +109,18 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (idleGiant) {
-                        StartCoroutine(PauseDuringIdle());
-                    }
-                    else if (FindClosestForestKeeperInRange(50f)){
+                    if (FindClosestForestKeeperInRange(50f) && !idleGiant){
                         DoAnimationClientRpc("startChase");
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     } // Look for Forest Keeper
-                    else {
+                    else if (!idleGiant) {
                         DoAnimationClientRpc("startWalk");
                         LogIfDebugBuild("Start Walking Around");
                         StartSearch(transform.position);
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                     }
-                    
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = 1.5f;
@@ -241,17 +237,16 @@ namespace GiantSpecimens {
             StopCoroutine(ScalingUp());
         }
         IEnumerator PauseDuringIdle() {
-            yield return new WaitForSeconds(14);
+            yield return new WaitForSeconds(15);
             idleGiant = false;
-            StopCoroutine(PauseDuringIdle());
         }
         public void PlayFootstepSound() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
             targetEnemy.agent.enabled = false;
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);            
             DoAnimationClientRpc("eatForestKeeper");
-            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             targetEnemy.CancelSpecialAnimationWithPlayer();
             targetEnemy.SetEnemyStunned(true, 10f);
             targetEnemy.creatureVoice.Stop();
@@ -261,15 +256,16 @@ namespace GiantSpecimens {
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             yield return new WaitForSeconds(5);
             eatingEnemy = false;
-            idleGiant = true;
             sizeUp = false;
-            StopCoroutine(EatForestKeeper());
+            idleGiant = true;
+            StartCoroutine(PauseDuringIdle());
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
+            StopCoroutine(EatForestKeeper());
         }
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            if (collidedEnemy == targetEnemy && !eatingEnemy && !idleGiant) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.EatingForestKeeper)) {
                 eatingEnemy = true;
                 Collider[] colliders = targetEnemy.GetComponents<Collider>();
                 foreach (Collider collider in colliders)
@@ -282,7 +278,7 @@ namespace GiantSpecimens {
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {
-            // LogIfDebugBuild($"Animation: {animationName}");
+            LogIfDebugBuild($"Animation: {animationName}");
             creatureAnimator.SetTrigger(animationName);
         }
     }

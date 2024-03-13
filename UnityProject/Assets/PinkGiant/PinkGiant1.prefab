@@ -3411,7 +3411,7 @@ GameObject:
   - component: {fileID: 4508730783745232295}
   - component: {fileID: 4097869508521995821}
   - component: {fileID: 7543749478418369898}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: RightHipCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3732,7 +3732,7 @@ GameObject:
   - component: {fileID: 4729335663642710940}
   - component: {fileID: 6079508767865982002}
   - component: {fileID: 5414480216035818906}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: LeftHipCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
