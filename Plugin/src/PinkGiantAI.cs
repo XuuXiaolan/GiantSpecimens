@@ -274,7 +274,7 @@ namespace GiantSpecimens {
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            if (collidedEnemy == targetEnemy && !eatingEnemy) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy && !idleGiant) {
                 eatingEnemy = true;
                 if (eatingEnemy) {
                     StartCoroutine(EatForestKeeper());
