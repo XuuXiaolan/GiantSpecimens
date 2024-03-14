@@ -23,6 +23,8 @@ namespace GiantSpecimens {
         // public Transform turnCompass
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
+        public RaycastHit hit;
+        [SerializeField] ParticleSystem DustParticles;
         [SerializeField] Collider CollisionFootR;
         [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
@@ -97,11 +99,12 @@ namespace GiantSpecimens {
                 newScale.y *= 0.9995f;
                 newScale.z *= 0.9995f;
                 targetEnemy.transform.localScale = newScale;
-                targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.1f);
+                // targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.5f);
             }
         }
         public override void DoAIInterval()
         {
+            
             base.DoAIInterval();
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
@@ -171,6 +174,16 @@ namespace GiantSpecimens {
                     player.DamagePlayer(15);
                 }
             }
+        }
+
+        public void dustFromFootstep() {
+            /*if (Physics.Raycast(CollisionFootL.transform.position, Vector3.down, out hit, 5f)) {
+                var color = hit.transform.GetComponent<Renderer>().material.color;
+                var main = DustParticles.main;
+                main.startColor = new ParticleSystem.MinMaxGradient(color);
+                DustParticles.Play();
+            }*/
+            DustParticles.Play();
         }
         public void ShakePlayerCamera() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
