@@ -7,6 +7,7 @@ using static LethalLib.Modules.Levels;
 using static LethalLib.Modules.Enemies;
 using BepInEx.Logging;
 using System.IO;
+using System.Collections.Generic;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -30,7 +31,6 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
             int spawnRate = config.configSpawnrateRedWood.Value;
 			RegisterEnemy(PinkGiant, spawnRate, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
-            
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher

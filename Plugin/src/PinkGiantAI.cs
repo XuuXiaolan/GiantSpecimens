@@ -57,8 +57,8 @@ namespace GiantSpecimens {
             base.Start();
             var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
-            // var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
-            // LogIfDebugBuild(RedWoodGiant.rarity.ToString());
+            var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
+            LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
@@ -106,7 +106,6 @@ namespace GiantSpecimens {
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
-
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
