@@ -199,7 +199,7 @@ namespace GiantSpecimens {
             }
         }
         public void ParticlesFromEatingForestKeeper() {
-            ForestKeeperParticles.Play();
+            ForestKeeperParticles.Play(); // Make the player unable to interact with these particles, same with footstep ones, also make em be affected by the world for proper fog stuff?
         }
         
         public void ShakePlayerCamera() {

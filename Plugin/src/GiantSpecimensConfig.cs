@@ -8,15 +8,6 @@ namespace GiantSpecimens {
     public class GiantSpecimensConfig
     {
         public ConfigEntry<int> configSpawnrateForest { get; private set; }
-        public ConfigEntry<int> configExperimentationSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configAssuranceSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configVowSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configOffenseSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configMarchSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configRendSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configDineSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configTitanSpawnrateRedWood { get; private set; }
-        public ConfigEntry<int> configModdedSpawnrateRedWood { get; private set; }
         public ConfigEntry<string> configSpawnRateEntries { get; private set; }
 
 
