@@ -196,6 +196,10 @@ namespace GiantSpecimens {
                 DustParticlesRight.Play();
             }
         }
+        public void ParticlesFromEatingForestKeeper() {
+            ForestKeeperParticles.Play();
+        }
+        
         public void ShakePlayerCamera() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);

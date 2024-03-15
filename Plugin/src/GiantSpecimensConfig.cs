@@ -28,39 +28,39 @@ namespace GiantSpecimens {
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
 
             configExperimentationSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Experimentation",
                                                 50,
                                                 "Spawn Weight of the RedWood Giant in Experimentation");
             configAssuranceSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Assurance",
                                                 100,
                                                 "Spawn Weight of the RedWood Giant in Assurance");
             configVowSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Vow",
                                                 200,
                                                 "Spawn Weight of the RedWood Giant in Vow");
             configOffenseSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Offense",
                                                 100,
                                                 "Spawn Weight of the RedWood Giant in Offense");
             configMarchSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant March",
                                                 200,
                                                 "Spawn Weight of the RedWood Giant in March");
             configRendSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Rend",
                                                 150,
                                                 "Spawn Weight of the RedWood Giant in Rend");
             configDineSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Dine",
                                                 150,
                                                 "Spawn Weight of the RedWood Giant in Dine");
             configTitanSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Titan",
                                                 200,
                                                 "Spawn Weight of the RedWood Giant in Titan");
             configModdedSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Spawn Weight",
+                                                "RedWood Giant Modded",
                                                 200,
                                                 "Spawn Weight of the RedWood Giant in all modded moons.");
             ClearUnusedEntries(configFile);

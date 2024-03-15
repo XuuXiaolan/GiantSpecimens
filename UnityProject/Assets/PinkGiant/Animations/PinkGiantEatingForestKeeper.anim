@@ -16950,7 +16950,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 9.541667
-    functionName: dustFromFootstep
+    functionName: ParticlesFromEatingForestKeeper
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
