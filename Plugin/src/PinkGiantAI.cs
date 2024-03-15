@@ -24,7 +24,9 @@ namespace GiantSpecimens {
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
         public RaycastHit hit;
-        [SerializeField] ParticleSystem DustParticles;
+        [SerializeField] ParticleSystem DustParticlesLeft;
+        [SerializeField] ParticleSystem DustParticlesRight;
+        [SerializeField] ParticleSystem ForestKeeperParticles;
         [SerializeField] Collider CollisionFootR;
         [SerializeField] Collider CollisionFootL;
         #pragma warning restore 0649
@@ -176,14 +178,23 @@ namespace GiantSpecimens {
             }
         }
 
-        public void dustFromFootstep() {
-            /*if (Physics.Raycast(CollisionFootL.transform.position, Vector3.down, out hit, 5f)) {
-                var color = hit.transform.GetComponent<Renderer>().material.color;
-                var main = DustParticles.main;
+        public void DustFromLeftFootstep() {
+            RaycastHit hit;  
+            if (Physics.Raycast(CollisionFootL.transform.position, Vector3.down, out hit, 5f)) {
+                Color color = hit.transform.GetComponent<Renderer>().material.color;
+                var main = DustParticlesLeft.main;
                 main.startColor = new ParticleSystem.MinMaxGradient(color);
-                DustParticles.Play();
-            }*/
-            DustParticles.Play();
+                DustParticlesLeft.Play();
+            }
+        }
+        public void DustFromRightFootstep() {
+            RaycastHit hit;
+            if (Physics.Raycast(CollisionFootR.transform.position, Vector3.down, out hit, 5f)) {
+                Color color = hit.transform.GetComponent<Renderer>().material.color;
+                var main = DustParticlesRight.main;
+                main.startColor = new ParticleSystem.MinMaxGradient(color);
+                DustParticlesRight.Play();
+            }
         }
         public void ShakePlayerCamera() {
             foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {

@@ -29,8 +29,32 @@ namespace GiantSpecimens {
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-            int spawnRate = config.configSpawnrateRedWood.Value;
-			RegisterEnemy(PinkGiant, spawnRate, LevelTypes.All, SpawnType.Outside, tlTerminalNode, tlTerminalKeyword);
+            int ExperimentationSpawnrate = config.configExperimentationSpawnrateRedWood.Value;
+            int AssuranceSpawnrate = config.configAssuranceSpawnrateRedWood.Value;
+            int VowSpawnrate = config.configVowSpawnrateRedWood.Value;
+            int OffenseSpawnrate = config.configOffenseSpawnrateRedWood.Value;
+            int MarchSpawnrate = config.configMarchSpawnrateRedWood.Value;
+            int RendSpawnrate = config.configRendSpawnrateRedWood.Value;
+            int DineSpawnrate = config.configDineSpawnrateRedWood.Value;
+            int TitanSpawnrate = config.configTitanSpawnrateRedWood.Value;
+            int ModdedSpawnrate = config.configModdedSpawnrateRedWood.Value;
+
+            Dictionary<LevelTypes, int> spawnRateByLevelType = new() {
+                { LevelTypes.ExperimentationLevel, ExperimentationSpawnrate},
+                { LevelTypes.AssuranceLevel, AssuranceSpawnrate},
+                { LevelTypes.VowLevel, VowSpawnrate},
+                { LevelTypes.OffenseLevel, OffenseSpawnrate},
+                { LevelTypes.MarchLevel, MarchSpawnrate},
+                { LevelTypes.RendLevel, RendSpawnrate},
+                { LevelTypes.DineLevel, DineSpawnrate},
+                { LevelTypes.TitanLevel, TitanSpawnrate},
+                { LevelTypes.Modded, ModdedSpawnrate}
+            };
+            Dictionary<string, int> spawnRateByCustomLevelType = new () {
+                {"EGyptLevel", 30},
+            };
+            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, tlTerminalNode, tlTerminalKeyword);
+
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
