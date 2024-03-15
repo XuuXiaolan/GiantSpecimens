@@ -446,6 +446,11 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1744710549
       objectReference: {fileID: 0}
+    - target: {fileID: 4401394998509801082, guid: 1da6ee042d4e3f042a751110489287e1,
+        type: 3}
+      propertyPath: DustParticlesLeft
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7154081962228259310, guid: 1da6ee042d4e3f042a751110489287e1,
         type: 3}
       propertyPath: m_Name

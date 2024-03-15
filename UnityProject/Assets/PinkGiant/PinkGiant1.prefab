@@ -17077,7 +17077,7 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   AttackArea: {fileID: 6472980503789184990}
-  DustParticlesLeft: {fileID: 0}
+  DustParticlesLeft: {fileID: 1582183357228534429}
   DustParticlesRight: {fileID: 1909222826963152175}
   ForestKeeperParticles: {fileID: 4772664513194173780}
   CollisionFootR: {fileID: 9153458969431600830}
