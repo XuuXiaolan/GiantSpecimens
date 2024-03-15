@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 
@@ -28,40 +30,49 @@ namespace GiantSpecimens {
             configExperimentationSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 50,
-                                                "Spawn Weight of the RedWood Giant");
+                                                "Spawn Weight of the RedWood Giant in Experimentation");
             configAssuranceSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                100,
+                                                "Spawn Weight of the RedWood Giant in Assurance");
             configVowSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                "Spawn Weight of the RedWood Giant in Vow");
             configOffenseSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                100,
+                                                "Spawn Weight of the RedWood Giant in Offense");
             configMarchSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                "Spawn Weight of the RedWood Giant in March");
             configRendSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                150,
+                                                "Spawn Weight of the RedWood Giant in Rend");
             configDineSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                150,
+                                                "Spawn Weight of the RedWood Giant in Dine");
             configTitanSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                "Spawn Weight of the RedWood Giant in Titan");
             configModdedSpawnrateRedWood = configFile.Bind("Spawnrates", 
                                                 "RedWood Giant Spawn Weight",
                                                 200,
-                                                "Spawn Weight of the RedWood Giant");
+                                                "Spawn Weight of the RedWood Giant in all modded moons.");
+            ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
+        }
+
+        private void ClearUnusedEntries(ConfigFile configFile) {
+            // Normally, old unused config entries don't get removed, so we do it with this piece of code. Credit to Kittenji.
+            PropertyInfo orphanedEntriesProp = configFile.GetType().GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
+            var orphanedEntries = (Dictionary<ConfigDefinition, string>)orphanedEntriesProp.GetValue(configFile, null);
+            orphanedEntries.Clear(); // Clear orphaned entries (Unbinded/Abandoned entries)
+            configFile.Save(); // Save the config file to save these changes
         }
     }
 }
