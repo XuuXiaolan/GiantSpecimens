@@ -8,6 +8,8 @@ using static LethalLib.Modules.Enemies;
 using BepInEx.Logging;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -29,30 +31,36 @@ namespace GiantSpecimens {
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-            int ExperimentationSpawnrate = config.configExperimentationSpawnrateRedWood.Value;
-            int AssuranceSpawnrate = config.configAssuranceSpawnrateRedWood.Value;
-            int VowSpawnrate = config.configVowSpawnrateRedWood.Value;
-            int OffenseSpawnrate = config.configOffenseSpawnrateRedWood.Value;
-            int MarchSpawnrate = config.configMarchSpawnrateRedWood.Value;
-            int RendSpawnrate = config.configRendSpawnrateRedWood.Value;
-            int DineSpawnrate = config.configDineSpawnrateRedWood.Value;
-            int TitanSpawnrate = config.configTitanSpawnrateRedWood.Value;
-            int ModdedSpawnrate = config.configModdedSpawnrateRedWood.Value;
+            string spawnratesConfig = config.configSpawnRateEntries.Value;
+            Dictionary<LevelTypes, int> spawnRateByLevelType = new Dictionary<LevelTypes, int>();
+            Dictionary<string, int> spawnRateByCustomLevelType = new Dictionary<string, int>();
 
-            Dictionary<LevelTypes, int> spawnRateByLevelType = new() {
-                { LevelTypes.ExperimentationLevel, ExperimentationSpawnrate},
-                { LevelTypes.AssuranceLevel, AssuranceSpawnrate},
-                { LevelTypes.VowLevel, VowSpawnrate},
-                { LevelTypes.OffenseLevel, OffenseSpawnrate},
-                { LevelTypes.MarchLevel, MarchSpawnrate},
-                { LevelTypes.RendLevel, RendSpawnrate},
-                { LevelTypes.DineLevel, DineSpawnrate},
-                { LevelTypes.TitanLevel, TitanSpawnrate},
-                { LevelTypes.Modded, ModdedSpawnrate}
-            };
-            Dictionary<string, int> spawnRateByCustomLevelType = new () {
-                {"EGyptLevel", 30},
-            };
+            foreach (string entry in spawnratesConfig.Split(',').Select(s => s.Trim()))
+            {
+                string[] entryParts = entry.Split('@');
+
+                if (entryParts.Length != 2)
+                {
+                    continue;
+                }
+
+                string name = entryParts[0];
+                int spawnrate;
+
+                if (!int.TryParse(entryParts[1], out spawnrate))
+                {
+                    continue;
+                }
+
+                if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
+                {
+                    spawnRateByLevelType[levelType] = spawnrate;
+                }
+                else
+                {
+                    spawnRateByCustomLevelType[name] = spawnrate;
+                }
+            }
             RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, tlTerminalNode, tlTerminalKeyword);
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

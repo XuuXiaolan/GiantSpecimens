@@ -59,6 +59,7 @@ namespace GiantSpecimens {
         public override void Start()
         {
             base.Start();
+            transform.position += new Vector3(0f, 50f, 0f);
             var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
             var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
@@ -78,6 +79,7 @@ namespace GiantSpecimens {
 
         public override void Update(){
             base.Update();
+            
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);

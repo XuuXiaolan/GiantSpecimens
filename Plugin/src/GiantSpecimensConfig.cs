@@ -17,52 +17,22 @@ namespace GiantSpecimens {
         public ConfigEntry<int> configDineSpawnrateRedWood { get; private set; }
         public ConfigEntry<int> configTitanSpawnrateRedWood { get; private set; }
         public ConfigEntry<int> configModdedSpawnrateRedWood { get; private set; }
+        public ConfigEntry<string> configSpawnRateEntries { get; private set; }
 
 
         // Here we make a new object, passing in the config file from Plugin.cs
         public GiantSpecimensConfig(ConfigFile configFile) 
         {
-            configSpawnrateForest = configFile.Bind("Spawnrates",   // The section under which the option is shown
+            configSpawnrateForest = configFile.Bind("Vanilla Spawnrates",   // The section under which the option is shown
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
                                                 4, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
 
-            configExperimentationSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Experimentation",
-                                                50,
-                                                "Spawn Weight of the RedWood Giant in Experimentation");
-            configAssuranceSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Assurance",
-                                                100,
-                                                "Spawn Weight of the RedWood Giant in Assurance");
-            configVowSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Vow",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant in Vow");
-            configOffenseSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Offense",
-                                                100,
-                                                "Spawn Weight of the RedWood Giant in Offense");
-            configMarchSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant March",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant in March");
-            configRendSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Rend",
-                                                150,
-                                                "Spawn Weight of the RedWood Giant in Rend");
-            configDineSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Dine",
-                                                150,
-                                                "Spawn Weight of the RedWood Giant in Dine");
-            configTitanSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Titan",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant in Titan");
-            configModdedSpawnrateRedWood = configFile.Bind("Spawnrates", 
-                                                "RedWood Giant Modded",
-                                                200,
-                                                "Spawn Weight of the RedWood Giant in all modded moons.");
+            configSpawnRateEntries = configFile.Bind("Vanilla Spawnrates", 
+                                                "RedWood Giant Spawn Weight.",
+                                                "ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,Modded@100",
+                                                "Spawn Weight of the RedWood Giant in all vanilla moons + a universal modded option (doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format");
+
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }
