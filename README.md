@@ -1,6 +1,10 @@
 Mod that adds a variety of giant enemies, part of the forest keeper family.
 ## Credits
 
+The Giant Specimens, created by Xu Xiaolan.
+
+(currently adds one enemy, the RedWood Giant, License is private on the github, but all rights are reserved)
+
 -Giant 3D models are inspired by fanart from flameburnt, with help from EveSculpts 2d to 3d tutorials.
 
 -Based off of ExampleEnemy from Hamunii - https://github.com/Hamunii/LC-ExampleEnemy.
@@ -15,5 +19,6 @@ Mod that adds a variety of giant enemies, part of the forest keeper family.
 
 -Mod-Release thread in the Lethal Company Modding Server for a lot of the ideas!
 
--New RedWood Giant model textures and material are created by [@MeatBallDemon](https://twitter.com/_MeatBallDemon_) on twitter, fantastic work done (V1.4.0)!
+-New RedWood Giant model textures and material are created by [@MeatBallDemon](https://twitter.com/_MeatBallDemon_) on twitter, fantastic work done (V1.4.0+)!
 
+-Texture help provided by [@Sconey](https://thunderstore.io/c/lethal-company/p/Sconeys/abandonedcompanyassets/) with her lovely mod.
