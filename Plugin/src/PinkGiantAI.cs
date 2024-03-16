@@ -163,7 +163,7 @@ namespace GiantSpecimens {
                 case (int)State.RunningToForestKeeper:
                     agent.speed = walkingSpeed * 4;
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 50f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 50f && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null){
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
