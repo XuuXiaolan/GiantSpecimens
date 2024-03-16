@@ -9,13 +9,9 @@ using System.Threading;
 using Mono.Cecil.Cil;
 using UnityEngine.UIElements.Experimental;
 using System.Collections.Generic;
+using static UnityEngine.ParticleSystem;
 
 namespace GiantSpecimens {
-
-    // You may be wondering, how does the Example Enemy know it is from class PinkGiantAI?
-    // Well, we give it a reference to to this class in the Unity project where we make the asset bundle.
-    // Asset bundles cannot contain scripts, so our script lives here. It is important to get the
-    // reference right, or else it will not find this file. See the guide for more information.
     class PinkGiantAI : EnemyAI {
         
         // We set these in our Asset Bundle, so we can disable warning CS0649:
@@ -24,7 +20,6 @@ namespace GiantSpecimens {
         public static LevelColorMapper levelColorMapper = new LevelColorMapper();
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
-        public RaycastHit hit;
         [SerializeField] ParticleSystem DustParticlesLeft;
         [SerializeField] ParticleSystem DustParticlesRight;
         [SerializeField] ParticleSystem ForestKeeperParticles;
@@ -73,18 +68,20 @@ namespace GiantSpecimens {
                 dustColor = HexToColor(colorsForCurrentLevel[0]);
             }
             
-            var mainLeft = DustParticlesLeft.main;
-            var mainRight = DustParticlesRight.main;
-            mainLeft.startColor = new ParticleSystem.MinMaxGradient(dustColor);
-            mainRight.startColor = new ParticleSystem.MinMaxGradient(dustColor);
+            MainModule mainLeft = DustParticlesLeft.main;
+            MainModule mainRight = DustParticlesRight.main;
+            mainLeft.startColor = new MinMaxGradient(dustColor);
+            mainRight.startColor = new MinMaxGradient(dustColor);
 
             LogIfDebugBuild(dustColor.ToString());
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             if (giantEnemyType != null) {
                 giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;                
             }
-            var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
+            SpawnableEnemyWithRarity RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
+            if (RedWoodGiant != null) {
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
+            }
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
 
