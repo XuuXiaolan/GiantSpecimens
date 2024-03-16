@@ -19858,7 +19858,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2.2916667
+  - time: 2.4166667
     functionName: DustFromLeftFootstep
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -19886,7 +19886,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 7.0833335
+  - time: 7.2083335
     functionName: DustFromRightFootstep
     data: 
     objectReferenceParameter: {fileID: 0}

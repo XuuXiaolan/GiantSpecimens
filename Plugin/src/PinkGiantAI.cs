@@ -8,6 +8,7 @@ using UnityEngine.PlayerLoop;
 using System.Threading;
 using Mono.Cecil.Cil;
 using UnityEngine.UIElements.Experimental;
+using System.Collections.Generic;
 
 namespace GiantSpecimens {
 
@@ -20,7 +21,7 @@ namespace GiantSpecimens {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
-        // public Transform turnCompass
+        public static LevelColorMapper levelColorMapper = new LevelColorMapper();
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
         public RaycastHit hit;
@@ -32,6 +33,7 @@ namespace GiantSpecimens {
         #pragma warning restore 0649
         bool sizeUp = false;
         Vector3 newScale;
+        string levelName;
         bool eatingEnemy = false;
         EnemyAI targetEnemy;
         bool idleGiant = true;
@@ -59,16 +61,35 @@ namespace GiantSpecimens {
         public override void Start()
         {
             base.Start();
-            transform.position += new Vector3(0f, 50f, 0f);
-            var giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
-            giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;
+            
+            levelName = RoundManager.Instance.currentLevel.name;
+            LogIfDebugBuild(levelName);
+
+            List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
+        
+            Color dustColor = Color.white; // Default to white if no color found
+            
+            if (colorsForCurrentLevel.Count > 0) {
+                dustColor = HexToColor(colorsForCurrentLevel[0]);
+            }
+            
+            var mainLeft = DustParticlesLeft.main;
+            var mainRight = DustParticlesRight.main;
+            mainLeft.startColor = new ParticleSystem.MinMaxGradient(dustColor);
+            mainRight.startColor = new ParticleSystem.MinMaxGradient(dustColor);
+
+            LogIfDebugBuild(dustColor.ToString());
+            SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
+            if (giantEnemyType != null) {
+                giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;                
+            }
             var RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
-            
-            //LogIfDebugBuild(transform.rarity.ToString());
+
             creatureVoice.PlayOneShot(spawnSound);
+            transform.position += new Vector3(0f, 50f, 0f);
             StartCoroutine(ScalingUp());
             StartCoroutine(PauseDuringIdle());
             // creatureAnimator.SetTrigger("startWalk");
@@ -181,21 +202,23 @@ namespace GiantSpecimens {
         }
 
         public void DustFromLeftFootstep() {
-            RaycastHit hit;  
-            if (Physics.Raycast(CollisionFootL.transform.position, Vector3.down, out hit, 5f)) {
-                Color color = hit.transform.GetComponent<Renderer>().material.color;
-                var main = DustParticlesLeft.main;
-                main.startColor = new ParticleSystem.MinMaxGradient(color);
-                DustParticlesLeft.Play();
-            }
+            DustParticlesLeft.Play(); // Play the particle system with the updated color
         }
+
         public void DustFromRightFootstep() {
-            RaycastHit hit;
-            if (Physics.Raycast(CollisionFootR.transform.position, Vector3.down, out hit, 5f)) {
-                Color color = hit.transform.GetComponent<Renderer>().material.color;
-                var main = DustParticlesRight.main;
-                main.startColor = new ParticleSystem.MinMaxGradient(color);
-                DustParticlesRight.Play();
+            DustParticlesRight.Play(); // Play the particle system with the updated color
+        }
+
+        private Color HexToColor(string hexCode) {
+            Color color;
+
+            if (ColorUtility.TryParseHtmlString(hexCode, out color))
+            {
+                return color;
+            }
+            else
+            {
+                return Color.white; // Default color if parsing fails
             }
         }
         public void ParticlesFromEatingForestKeeper() {

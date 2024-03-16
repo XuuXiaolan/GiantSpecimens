@@ -14,14 +14,14 @@ namespace GiantSpecimens {
         // Here we make a new object, passing in the config file from Plugin.cs
         public GiantSpecimensConfig(ConfigFile configFile) 
         {
-            configSpawnrateForest = configFile.Bind("Vanilla Spawnrates",   // The section under which the option is shown
+            configSpawnrateForest = configFile.Bind("ForestKeeper Spawnrates",   // The section under which the option is shown
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
                                                 4, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
 
-            configSpawnRateEntries = configFile.Bind("Vanilla Spawnrates", 
+            configSpawnRateEntries = configFile.Bind("Moon Spawnrates", 
                                                 "RedWood Giant Spawn Weight.",
-                                                "ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,Modded@100",
+                                                "ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,Modded@100,InfernisLevel@100,PorcerinLevel@200,EternLevel@150,Asteroid13Level@200,GratarLevel@100,PolarusLevel@150,AtlanticaLevel@25,CosmocosLevel@200,JunicLevel@150,GloomLevel@200,DesolationLevel@150,OldredLevel@100",
                                                 "Spawn Weight of the RedWood Giant in all vanilla moons + a universal modded option (doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format");
 
             ClearUnusedEntries(configFile);
