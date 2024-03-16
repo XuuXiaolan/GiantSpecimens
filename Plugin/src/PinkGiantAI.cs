@@ -33,6 +33,7 @@ namespace GiantSpecimens {
         EnemyAI targetEnemy;
         bool idleGiant = true;
         bool waitAfterChase = false;
+        float walkingSpeed;
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]AudioClip eatenSound;
         [SerializeField]AudioClip spawnSound;
@@ -82,6 +83,7 @@ namespace GiantSpecimens {
             if (RedWoodGiant != null) {
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             }
+            walkingSpeed = Plugin.config.configSpeedRedWood.Value;
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
 
@@ -149,7 +151,7 @@ namespace GiantSpecimens {
                     }
                     break;
                 case (int)State.SearchingForForestKeeper:
-                    agent.speed = 1.5f;
+                    agent.speed = walkingSpeed;
                     if (FindClosestForestKeeperInRange(50f) && !idleGiant){
                         DoAnimationClientRpc("startChase");
                         StartCoroutine(chaseCoolDown());
@@ -159,9 +161,9 @@ namespace GiantSpecimens {
                     } // Look for Forest Keeper
                     break;
                 case (int)State.RunningToForestKeeper:
-                    agent.speed = 6f;
+                    agent.speed = walkingSpeed * 4;
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 100f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 50f && !HasLineOfSightToPosition(targetEnemy.transform.position)){
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);

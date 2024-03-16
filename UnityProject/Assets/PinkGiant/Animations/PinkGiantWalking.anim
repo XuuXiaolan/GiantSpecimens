@@ -19838,6 +19838,13 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 2.2916667
+    functionName: DustFromLeftFootstep
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.2916667
     functionName: ShakePlayerCamera
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -19853,13 +19860,6 @@ AnimationClip:
     messageOptions: 0
   - time: 2.2916667
     functionName: ShockwaveDamageL
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 2.4166667
-    functionName: DustFromLeftFootstep
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -19886,7 +19886,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 7.2083335
+  - time: 7.0833335
     functionName: DustFromRightFootstep
     data: 
     objectReferenceParameter: {fileID: 0}
