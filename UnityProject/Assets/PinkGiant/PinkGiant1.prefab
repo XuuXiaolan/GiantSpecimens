@@ -11928,10 +11928,10 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.4245283, g: 0.27101582, b: 0, a: 1}
-        key1: {r: 0.022249905, g: 0.34901962, b: 0.022249905, a: 1}
-        key2: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 1}
-        key3: {r: 0, g: 0, b: 0, a: 1}
+        key0: {r: 0.2830189, g: 0.18081762, b: 0, a: 0.78431374}
+        key1: {r: 0, g: 0.18867922, b: 0, a: 0.78431374}
+        key2: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0.78431374}
+        key3: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0.78431374}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
@@ -11939,7 +11939,7 @@ ParticleSystem:
         ctime0: 12143
         ctime1: 30455
         ctime2: 46838
-        ctime3: 0
+        ctime3: 46838
         ctime4: 0
         ctime5: 0
         ctime6: 0
@@ -11952,16 +11952,16 @@ ParticleSystem:
         atime5: 65535
         atime6: 0
         atime7: 0
-        m_Mode: 0
+        m_Mode: 2
         m_ColorSpace: 0
         m_NumColorKeys: 3
         m_NumAlphaKeys: 5
       minGradient:
         serializedVersion: 2
-        key0: {r: 0.022249905, g: 0.34901962, b: 0.022249905, a: 1}
-        key1: {r: 0.3962264, g: 0.24573913, b: 0, a: 1}
-        key2: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 1}
-        key3: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 1}
+        key0: {r: 0, g: 0.16981131, b: 0, a: 0.78431374}
+        key1: {r: 0.20754719, g: 0.12946013, b: 0, a: 0.78431374}
+        key2: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0.78431374}
+        key3: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0.78431374}
         key4: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0}
         key5: {r: 0.33333334, g: 0.08757464, b: 0.0745098, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
@@ -11979,10 +11979,10 @@ ParticleSystem:
         atime2: 30069
         atime3: 48188
         atime4: 65535
-        atime5: 0
+        atime5: 65535
         atime6: 0
         atime7: 0
-        m_Mode: 0
+        m_Mode: 2
         m_ColorSpace: 0
         m_NumColorKeys: 3
         m_NumAlphaKeys: 5
@@ -15420,7 +15420,7 @@ ParticleSystemRenderer:
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
-  m_SortMode: 0
+  m_SortMode: 2
   m_MinParticleSize: 0
   m_MaxParticleSize: 1
   m_CameraVelocityScale: 0
@@ -15432,7 +15432,7 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
