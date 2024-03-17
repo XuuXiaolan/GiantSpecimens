@@ -10,6 +10,7 @@ using Mono.Cecil.Cil;
 using UnityEngine.UIElements.Experimental;
 using System.Collections.Generic;
 using static UnityEngine.ParticleSystem;
+using UnityEngine.Animations.Rigging;
 
 namespace GiantSpecimens {
     class PinkGiantAI : EnemyAI {
@@ -25,6 +26,8 @@ namespace GiantSpecimens {
         [SerializeField] ParticleSystem ForestKeeperParticles;
         [SerializeField] Collider CollisionFootR;
         [SerializeField] Collider CollisionFootL;
+        [SerializeField] ChainIKConstraint LeftFoot;
+        [SerializeField] ChainIKConstraint RightFoot;
         #pragma warning restore 0649
         bool sizeUp = false;
         Vector3 newScale;
@@ -34,6 +37,9 @@ namespace GiantSpecimens {
         bool idleGiant = true;
         bool waitAfterChase = false;
         float walkingSpeed;
+        float seeableDistance;
+        public float distanceFromShip;
+        public Vector3 ship;
         [SerializeField]AudioClip[] stompSounds;
         [SerializeField]AudioClip eatenSound;
         [SerializeField]AudioClip spawnSound;
@@ -60,21 +66,19 @@ namespace GiantSpecimens {
             
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
+            ship = StartOfRound.Instance.elevatorTransform.position;
 
             List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
-        
             Color dustColor = Color.white; // Default to white if no color found
-            
             if (colorsForCurrentLevel.Count > 0) {
                 dustColor = HexToColor(colorsForCurrentLevel[0]);
             }
-            
             MainModule mainLeft = DustParticlesLeft.main;
             MainModule mainRight = DustParticlesRight.main;
             mainLeft.startColor = new MinMaxGradient(dustColor);
             mainRight.startColor = new MinMaxGradient(dustColor);
-
             LogIfDebugBuild(dustColor.ToString());
+
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             if (giantEnemyType != null) {
                 giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;                
@@ -84,22 +88,23 @@ namespace GiantSpecimens {
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             }
             walkingSpeed = Plugin.config.configSpeedRedWood.Value;
+            distanceFromShip = Plugin.config.configShipDistanceRedWood.Value;
+            seeableDistance = Plugin.config.configForestDistanceRedWood.Value;
+
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
 
             creatureVoice.PlayOneShot(spawnSound);
-            transform.position += new Vector3(0f, 50f, 0f);
+            transform.position += new Vector3(0f, 10f, 0f);
             StartCoroutine(ScalingUp());
             StartCoroutine(PauseDuringIdle());
-            // creatureAnimator.SetTrigger("startWalk");
 
             currentBehaviourStateIndex = (int)State.IdleAnimation;
-            StartSearch(transform.position);
         }
 
         public override void Update(){
             base.Update();
-            
+
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
                 midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
@@ -136,7 +141,7 @@ namespace GiantSpecimens {
             switch(currentBehaviourStateIndex) {
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (FindClosestForestKeeperInRange(50f) && !idleGiant){
+                    if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
                         DoAnimationClientRpc("startChase");
                         StartCoroutine(chaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
@@ -152,18 +157,38 @@ namespace GiantSpecimens {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = walkingSpeed;
-                    if (FindClosestForestKeeperInRange(50f) && !idleGiant){
+                    if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
                         DoAnimationClientRpc("startChase");
                         StartCoroutine(chaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     } // Look for Forest Keeper
+                    var closestPlayer = StartOfRound.Instance.allPlayerScripts
+                        .Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)
+                        .Select(player => new {
+                            Player = player,
+                            Distance = Vector3.Distance(player.transform.position, transform.position)
+                        })
+                        .OrderBy(x => x.Distance)
+                        .FirstOrDefault(x => HasLineOfSightToPosition(x.Player.transform.position));
+                    if (closestPlayer != null) {
+                        ChainIKConstraint closestFoot = GetClosestCollisionFoot(transform.position);
+                        if (closestFoot != null && closestFoot.data.target == null) {
+                            closestFoot.data.target = closestPlayer.Player.transform;
+                        }
+                    }
+                    else {
+                        ChainIKConstraint closestFoot = GetClosestCollisionFoot(transform.position);
+                        if (closestFoot != null) {
+                            closestFoot.data.target = null;
+                        }
+                    }
                     break;
                 case (int)State.RunningToForestKeeper:
                     agent.speed = walkingSpeed * 4;
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > 50f && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null){
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, ship) <= distanceFromShip) {
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
@@ -183,8 +208,17 @@ namespace GiantSpecimens {
                     break;
             }
         }
+        public ChainIKConstraint GetClosestCollisionFoot(Vector3 position) {
+            if (Vector3.Distance(position, transform.position) <= 30) {
+                if (Vector3.Distance(CollisionFootL.transform.position, position) < Vector3.Distance(CollisionFootR.transform.position, position)) {
+                    return LeftFoot;
+                }
+                return RightFoot;
+            }
+            return null;
+        }
         public void ShockwaveDamageL() {
-            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15);
@@ -192,7 +226,7 @@ namespace GiantSpecimens {
             }
         }
         public void ShockwaveDamageR() {
-            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15);
@@ -221,7 +255,7 @@ namespace GiantSpecimens {
             }
         }
         public void ParticlesFromEatingForestKeeper() {
-            ForestKeeperParticles.Play(); // Make the player unable to interact with these particles, same with footstep ones, also make em be affected by the world for proper fog stuff?
+            ForestKeeperParticles.Play(); // Make the player unable to interact with these particles, same with footstep ones, also make them be affected by the world for proper fog stuff?
         }
         
         public void ShakePlayerCamera() {
@@ -261,7 +295,7 @@ namespace GiantSpecimens {
                     }
                 }
             }
-            if (closestEnemy != null) {
+            if (closestEnemy != null && Vector3.Distance(closestEnemy.transform.position, ship) > distanceFromShip) {
                 targetEnemy = closestEnemy;
                 return true;
             }

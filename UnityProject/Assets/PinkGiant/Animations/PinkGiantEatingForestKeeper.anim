@@ -16949,7 +16949,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 9.541667
+  - time: 10
     functionName: ParticlesFromEatingForestKeeper
     data: 
     objectReferenceParameter: {fileID: 0}

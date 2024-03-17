@@ -22,7 +22,7 @@ namespace GiantSpecimens {
                 PlayerControllerB playerControllerB = other.GetComponent<PlayerControllerB>();
                 if (playerControllerB != null) {
                     // Determine which part of your GameObject caused the trigger
-                    DetectCollider(this.gameObject, playerControllerB);
+                    DetectCollider(this.gameObject, playerControllerB, null);
                 }
             }
         }
@@ -35,12 +35,12 @@ namespace GiantSpecimens {
                 PlayerControllerB playerControllerB = collision.collider.GetComponent<PlayerControllerB>();
                 if (playerControllerB != null) {
                     // Determine which part of your GameObject caused the collision
-                    DetectCollider(collision.gameObject, playerControllerB);
+                    DetectCollider(collision.gameObject, playerControllerB, null);
                 }
             }
         }
 
-        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB)
+        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB, EnemyAI monster)
         {
             // Example: Detect which part of your GameObject caused the collision/trigger
             if (collidedObject.name == "AttackArea")

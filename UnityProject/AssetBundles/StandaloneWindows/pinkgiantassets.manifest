@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1148210434
+CRC: 3650851924
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cfba9c4dc3f2c5f1778d17bab9934576
+    Hash: f364c5a6578542d25400bed1d0014374
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3c159d19a80d17e0e31520d338cd3dd3
+    Hash: 063343b4a78f92f354b43146a500e6d0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: cfba9c4dc3f2c5f1778d17bab9934576
+    Hash: f364c5a6578542d25400bed1d0014374
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -57,6 +57,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: d3cecf05b78b173605122a700874719c, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
+- Class: 114
   Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
 - Class: 114
   Script: {fileID: -1861003077, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
@@ -85,6 +87,8 @@ SerializeReferenceClassIdentifiers:
   ClassName: AISearchRoutine
 - AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
+- AssemblyName: Unity.Animation.Rigging
+  ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
