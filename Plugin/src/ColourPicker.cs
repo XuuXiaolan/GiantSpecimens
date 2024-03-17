@@ -47,7 +47,7 @@ namespace GiantSpecimens {
             { "OffenseLevel", new List<LevelTag> { LevelTag.Volcanic, LevelTag.Desolate } },
             { "MarchLevel", new List<LevelTag> { LevelTag.Plains, LevelTag.Savannah } },
             { "RendLevel", new List<LevelTag> { LevelTag.Ruins, LevelTag.Urban } },
-            { "DineLevel", new List<LevelTag> { LevelTag.Forest, LevelTag.Mountain } },
+            { "DineLevel", new List<LevelTag> { LevelTag.Ice, LevelTag.Mountain } },
             { "TitanLevel", new List<LevelTag> { LevelTag.Snow, LevelTag.Ruins } },
             { "InfernisLevel", new List<LevelTag> { LevelTag.Lava, LevelTag.Volcanic } },
             { "PorcerinLevel", new List<LevelTag> { LevelTag.Swamp, LevelTag.Rainforest } },
