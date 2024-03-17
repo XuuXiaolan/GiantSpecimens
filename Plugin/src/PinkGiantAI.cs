@@ -289,7 +289,7 @@ namespace GiantSpecimens {
             foreach (var enemy in RoundManager.Instance.SpawnedEnemies) {
                 if (enemy.enemyType.enemyName == "ForestGiant") {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                    if (distance < range && distance < minDistance && Vector3.Distance(closestEnemy.transform.position, ship) > distanceFromShip) {
+                    if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, ship) > distanceFromShip) {
                         minDistance = distance;
                         closestEnemy = enemy;
                     }

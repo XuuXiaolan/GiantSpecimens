@@ -6,8 +6,10 @@ using UnityEngine.PlayerLoop;
 namespace GiantSpecimens {
     public class ColliderIdentifier : MonoBehaviour 
     {
-        [SerializeField]AudioSource CreatureSFX;
-        [SerializeField]AudioClip squishSound;
+        [SerializeField] AudioSource CreatureSFX;
+        [SerializeField] AudioClip squishSound;
+        [SerializeField] ParticleSystem BloodSplatterLeft;
+        [SerializeField] ParticleSystem BloodSplatterRight;
 
         void LogIfDebugBuild(string text) {
             #if DEBUG
@@ -22,7 +24,7 @@ namespace GiantSpecimens {
                 PlayerControllerB playerControllerB = other.GetComponent<PlayerControllerB>();
                 if (playerControllerB != null) {
                     // Determine which part of your GameObject caused the trigger
-                    DetectCollider(this.gameObject, playerControllerB, null);
+                    DetectCollider(this.gameObject, playerControllerB);
                 }
             }
         }
@@ -35,12 +37,12 @@ namespace GiantSpecimens {
                 PlayerControllerB playerControllerB = collision.collider.GetComponent<PlayerControllerB>();
                 if (playerControllerB != null) {
                     // Determine which part of your GameObject caused the collision
-                    DetectCollider(collision.gameObject, playerControllerB, null);
+                    DetectCollider(collision.gameObject, playerControllerB);
                 }
             }
         }
 
-        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB, EnemyAI monster)
+        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB)
         {
             // Example: Detect which part of your GameObject caused the collision/trigger
             if (collidedObject.name == "AttackArea")
@@ -52,6 +54,11 @@ namespace GiantSpecimens {
                 
                 playerControllerB.DamagePlayer(200);
                 CreatureSFX.PlayOneShot(squishSound);
+                if (collidedObject.name == "CollisionFootL") {
+                    BloodSplatterLeft.Play();
+                } else {
+                    BloodSplatterRight.Play();
+                }
             }
             else {
                 LogIfDebugBuild("Collided with unknown object: " + collidedObject.name);
