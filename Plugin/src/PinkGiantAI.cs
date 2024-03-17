@@ -224,12 +224,32 @@ namespace GiantSpecimens {
                     player.DamagePlayer(15);
                 }
             }
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.enemyName == "MouthDog" && enemy.enemyHP > 4) {
+                    float distance = Vector3.Distance(CollisionFootL.transform.position, enemy.transform.position);
+                    if (distance <= 3f) {
+                        enemy.HitEnemy(2);
+                    } else if (distance <= 10f) {
+                        enemy.HitEnemy(1);
+                    }
+                }
+            }
         }
         public void ShockwaveDamageR() {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15);
+                }
+            }
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.enemyName == "MouthDog" && enemy.enemyHP > 4) {
+                    float distance = Vector3.Distance(CollisionFootR.transform.position, enemy.transform.position);
+                    if (distance <= 3f) {
+                        enemy.HitEnemy(2);
+                    } else if (distance <= 10f) {
+                        enemy.HitEnemy(1);
+                    }
                 }
             }
         }
@@ -286,7 +306,7 @@ namespace GiantSpecimens {
             EnemyAI closestEnemy = null;
             float minDistance = float.MaxValue;
 
-            foreach (var enemy in RoundManager.Instance.SpawnedEnemies) {
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
                 if (enemy.enemyType.enemyName == "ForestGiant") {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, ship) > distanceFromShip) {
