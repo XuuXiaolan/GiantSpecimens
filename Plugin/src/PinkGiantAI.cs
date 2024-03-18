@@ -232,6 +232,7 @@ namespace GiantSpecimens {
                     } else if (distance <= 10f) {
                         enemy.HitEnemy(1);
                     }
+                    LogIfDebugBuild($"Distance: {distance} HP: {enemy.enemyHP}");
                 }
             }
         }
@@ -250,6 +251,7 @@ namespace GiantSpecimens {
                     } else if (distance <= 10f) {
                         enemy.HitEnemy(1);
                     }
+                    LogIfDebugBuild($"Distance: {distance} HP: {enemy.enemyHP}");
                 }
             }
         }

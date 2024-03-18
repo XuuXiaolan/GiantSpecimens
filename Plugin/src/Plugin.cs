@@ -32,6 +32,7 @@ namespace GiantSpecimens {
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
             string spawnratesConfig = config.configSpawnRateEntries.Value;
+            // Initialize dictionaries to hold spawn rates for predefined and custom levels.
             Dictionary<LevelTypes, int> spawnRateByLevelType = new Dictionary<LevelTypes, int>();
             Dictionary<string, int> spawnRateByCustomLevelType = new Dictionary<string, int>();
 
@@ -55,14 +56,17 @@ namespace GiantSpecimens {
                 if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
                 {
                     spawnRateByLevelType[levelType] = spawnrate;
+                    Plugin.Logger.LogInfo($"Registered spawn rate for level type {levelType} to {spawnrate}");
                 }
                 else
                 {
                     spawnRateByCustomLevelType[name] = spawnrate;
+                    Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
                 }
             }
-            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, tlTerminalNode, tlTerminalKeyword);
 
+            // Assuming RegisterEnemy is a method that takes the parsed configurations.
+            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, tlTerminalNode, tlTerminalKeyword);
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher

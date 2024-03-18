@@ -61,6 +61,18 @@ namespace GiantSpecimens {
             { "GloomLevel", new List<LevelTag> { LevelTag.Swamp, LevelTag.Dark } }, // Assuming 'Dark' is a tag for gloomy, poorly lit environments
             { "DesolationLevel", new List<LevelTag> { LevelTag.Desolate, LevelTag.Wasteland } },
             { "OldredLevel", new List<LevelTag> { LevelTag.Ruins, LevelTag.Desolate } },
+            { "46 Infernis", new List<LevelTag> { LevelTag.Lava, LevelTag.Volcanic } },
+            { "76 Porcerin", new List<LevelTag> { LevelTag.Swamp, LevelTag.Rainforest } },
+            { "154 Etern", new List<LevelTag> { LevelTag.Magical, LevelTag.Forest } },
+            { "57 Asteroid13", new List<LevelTag> { LevelTag.Dark, LevelTag.Desolate } },
+            { "147 Gratar", new List<LevelTag> { LevelTag.Desert, LevelTag.Arid } },
+            { "94 Polarus", new List<LevelTag> { LevelTag.Snow, LevelTag.Ice, LevelTag.Arctic } },
+            { "44 Atlantica", new List<LevelTag> { LevelTag.Underwater, LevelTag.Coastal } },
+            { "42 Cosmocos", new List<LevelTag> { LevelTag.Space, LevelTag.Cybernetic } },
+            { "84 Junic", new List<LevelTag> { LevelTag.Plains, LevelTag.Savannah } },
+            { "36 Gloom", new List<LevelTag> { LevelTag.Swamp, LevelTag.Dark } }, // Assuming 'Dark' is a tag for gloomy, poorly lit environments
+            { "48 Desolation", new List<LevelTag> { LevelTag.Desolate, LevelTag.Wasteland } },
+            { "134 Oldred", new List<LevelTag> { LevelTag.Ruins, LevelTag.Desolate } },
             { "AuralisLevel", new List<LevelTag> { LevelTag.Ice, LevelTag.Cybernetic } },
         };
 
@@ -102,7 +114,8 @@ namespace GiantSpecimens {
         {
             if (!LevelNamesAndTheirTags.ContainsKey(levelName))
             {
-                throw new WarningException("Level name not found.", nameof(levelName));
+                Plugin.Logger.LogInfo("Level name not found." + levelName);
+                return [];
             }
 
             var colors = new List<string>();

@@ -23,8 +23,8 @@ namespace GiantSpecimens {
 
             configSpawnRateEntries = configFile.Bind("Moon Spawnrates", 
                                                 "RedWood Giant Spawn Weight.",
-                                                "ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,Modded@100,InfernisLevel@100,PorcerinLevel@200,EternLevel@150,Asteroid13Level@200,GratarLevel@100,PolarusLevel@150,AtlanticaLevel@25,CosmocosLevel@200,JunicLevel@150,GloomLevel@200,DesolationLevel@150,OldredLevel@100",
-                                                "Spawn Weight of the RedWood Giant in all vanilla moons + Wesley's moons modded option (Adding Generic's moons next, also doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format.");
+                                                "Modded@0,ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,46 Infernis@100,76 Porcerin@200,154 Etern@150,57 Asteroid13@200,147 Gratar@100,94 Polarus@150,44 Atlantica@25,42 Cosmocos@200,84 Junic@150,36 Gloom@200,48 Desolation@150,134 Oldred@100",
+                                                "Spawn Weight of the RedWood Giant in all vanilla moons + Wesley's moons modded option (Doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format.");
 
             configSpeedRedWood = configFile.Bind("Misc Options",   
                                                 "RedWood Giant Speed",  
