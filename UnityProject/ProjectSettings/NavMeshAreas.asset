@@ -2,74 +2,74 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!126 &1
 NavMeshProjectSettings:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
+  serializedVersion: 2
   areas:
   - name: Walkable
     cost: 1
   - name: Not Walkable
     cost: 1
   - name: Jump
-    cost: 1
+    cost: 2
   - name: PlayerLineOfSight
     cost: 1
   - name: PlayerShip
-    cost: 1
+    cost: 5
   - name: SmallSpace
-    cost: 1
+    cost: 2
   - name: MediumSpace
     cost: 1
   - name: Climb
+    cost: 3
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
+  - name: 
     cost: 1
-  - name:
-    cost: 1
-  m_LastAgentTypeID: -887442657
+  m_LastAgentTypeID: -1372625422
   m_Settings:
   - serializedVersion: 3
     agentTypeID: 0
