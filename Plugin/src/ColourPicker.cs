@@ -63,7 +63,7 @@ namespace GiantSpecimens {
             { "OldredLevel", new List<LevelTag> { LevelTag.Ruins, LevelTag.Desolate } },
             { "46 Infernis", new List<LevelTag> { LevelTag.Lava, LevelTag.Volcanic } },
             { "76 Porcerin", new List<LevelTag> { LevelTag.Swamp, LevelTag.Rainforest } },
-            { "154 Etern", new List<LevelTag> { LevelTag.Magical, LevelTag.Forest } },
+            { "154 Etern", new List<LevelTag> { LevelTag.Arid, LevelTag.Desert } },
             { "57 Asteroid13", new List<LevelTag> { LevelTag.Dark, LevelTag.Desolate } },
             { "147 Gratar", new List<LevelTag> { LevelTag.Desert, LevelTag.Arid } },
             { "94 Polarus", new List<LevelTag> { LevelTag.Snow, LevelTag.Ice, LevelTag.Arctic } },
