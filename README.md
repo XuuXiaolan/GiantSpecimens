@@ -3,19 +3,19 @@ Mod that adds a variety of giant enemies, part of the forest keeper family.
 
 The Giant Specimens, created by Xu Xiaolan.
 
-(currently adds one enemy, the RedWood Giant, License is private on the github, but all rights are reserved)
+(currently adds one enemy, the RedWood Giant, License is public on the github, all rights are reserved)
 
--Giant 3D models are inspired by fanart from flameburnt, with help from EveSculpts 2d to 3d tutorials.
+-Giant 3D models are inspired by fanart from flameburnt, with help from [EveSculpts](https://www.youtube.com/watch?v=AlPPYkZg9D4&ab_channel=EveSculpts) 2d to 3d tutorials.
 
--Based off of ExampleEnemy from Hamunii - https://github.com/Hamunii/LC-ExampleEnemy.
+-Based off of ExampleEnemy from [@Hamunii](https://github.com/Hamunii/LC-ExampleEnemy).
 
 -Lots of initial setup help and coding advice also from Hamunii (Actual marriage material).
 
--Model Creation help from TiltedHat
+-Model Creation help from TiltedHat.
 
--All custom sounds created by Moroxide and Pixel (Lethal Resonance creators), much love to them, check out their mod, it's small but it'll grow one day.
+-All custom sounds created by [@Moroxide and @Pixel](https://thunderstore.io/c/lethal-company/p/LethalResonance/LETHALRESONANCE/), much love to them, check out their mod, it's small but it'll grow one day.
 
--AnimationEvent stuff taught briefly by IntegrityChaos (helped a lot with sync'ing audio etc).
+-AnimationEvent stuff taught briefly by [@IntegrityChaos](https://thunderstore.io/c/lethal-company/p/IntegrityChaos/Diversity/) (helped a lot with sync'ing audio etc).
 
 -Mod-Release thread in the Lethal Company Modding Server for a lot of the ideas!
 
