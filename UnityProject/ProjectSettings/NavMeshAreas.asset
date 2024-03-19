@@ -14,13 +14,13 @@ NavMeshProjectSettings:
   - name: PlayerLineOfSight
     cost: 1
   - name: PlayerShip
-    cost: 5
+    cost: 20
   - name: SmallSpace
-    cost: 2
+    cost: 4
   - name: MediumSpace
     cost: 1
   - name: Climb
-    cost: 3
+    cost: 5
   - name: 
     cost: 1
   - name: 
@@ -69,14 +69,14 @@ NavMeshProjectSettings:
     cost: 1
   - name: 
     cost: 1
-  m_LastAgentTypeID: -1372625422
+  m_LastAgentTypeID: -334000983
   m_Settings:
   - serializedVersion: 3
     agentTypeID: 0
-    agentRadius: 0.5
-    agentHeight: 2
+    agentRadius: 1
+    agentHeight: 4
     agentSlope: 45
-    agentClimb: 0.75
+    agentClimb: 1.5
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2

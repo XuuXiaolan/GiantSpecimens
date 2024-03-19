@@ -33,6 +33,7 @@ namespace GiantSpecimens {
         Vector3 newScale;
         string levelName;
         bool eatingEnemy = false;
+        bool defaultColour;
         EnemyAI targetEnemy;
         bool idleGiant = true;
         bool waitAfterChase = false;
@@ -67,16 +68,20 @@ namespace GiantSpecimens {
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
             ship = StartOfRound.Instance.elevatorTransform.position;
-
-            List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
+            
+            
             Color dustColor = Color.white; // Default to white if no color found
-            if (colorsForCurrentLevel.Count > 0) {
+            defaultColour = Plugin.config.configFootstepDust.Value;
+            if (defaultColour) {
+                List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
+                if (colorsForCurrentLevel.Count > 0) {
                 dustColor = HexToColor(colorsForCurrentLevel[0]);
+                }
+                MainModule mainLeft = DustParticlesLeft.main;
+                MainModule mainRight = DustParticlesRight.main;
+                mainLeft.startColor = new MinMaxGradient(dustColor);
+                mainRight.startColor = new MinMaxGradient(dustColor);
             }
-            MainModule mainLeft = DustParticlesLeft.main;
-            MainModule mainRight = DustParticlesRight.main;
-            mainLeft.startColor = new MinMaxGradient(dustColor);
-            mainRight.startColor = new MinMaxGradient(dustColor);
             LogIfDebugBuild(dustColor.ToString());
 
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
@@ -129,7 +134,7 @@ namespace GiantSpecimens {
                 newScale.z *= 0.9995f;
                 targetEnemy.transform.localScale = newScale;
                 // targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.5f);
-            }
+            } //Should I have this whole thing be in AIInterval instead?
         }
         public override void DoAIInterval()
         {
