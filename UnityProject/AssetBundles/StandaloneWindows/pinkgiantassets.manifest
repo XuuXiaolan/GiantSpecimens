@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3742871796
+CRC: 2307084309
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 2545471c3679efb8ff855f65f57de12c
+    Hash: 28e323d40d068c845f91b6383fce379f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2c6cdcdbf5a49f633dd2c9c6ab6b739a
+    Hash: 02eb5478b92ed46cfcbf4f182d17e256
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 2545471c3679efb8ff855f65f57de12c
+    Hash: 28e323d40d068c845f91b6383fce379f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -47,7 +47,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: c30496d6ae6d6f907456e10a94e01ec6, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3d0cf24d2ccc3b7eab72048d0f57c437, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
 - Class: 114
@@ -74,6 +78,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 199
   Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
 - Class: 241
   Script: {instanceID: 0}
 - Class: 243
@@ -86,11 +92,14 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: AISearchRoutine
 - AssemblyName: Assembly-CSharp
+  ClassName: Battery
+- AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/PinkGiant/RedWoodGiantPlushieObj.asset
 - Assets/PinkGiant/PinkGiantObj.asset
 Dependencies: []

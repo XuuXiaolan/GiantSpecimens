@@ -17,6 +17,7 @@ namespace GiantSpecimens {
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
+        public static Item RedWoodPlushie;
         public static GiantSpecimensConfig config { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
 
@@ -27,10 +28,10 @@ namespace GiantSpecimens {
 
             //Scrap stuff
             int iRarity = 3000;
-            Item RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("directory/to/itemdataasset.asset");
+            RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodGiantPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
-            Items.RegisterScrap(RedWoodPlushie, iRarity, LevelTypes.All);
+            Items.RegisterScrap(RedWoodPlushie, iRarity, (LevelTypes)(-1));
 
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
