@@ -53,6 +53,7 @@ namespace GiantSpecimens {
             SearchingForForestKeeper, // Wandering
             RunningToForestKeeper, // Chasing
             EatingForestKeeper, // Eating
+            BoredAnimation, // Custom Animation with birds flying around, it'll be cool
         }
 
         void LogIfDebugBuild(string text) {
