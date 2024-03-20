@@ -12,7 +12,8 @@ namespace GiantSpecimens {
         public ConfigEntry<float> configSpeedRedWood { get; private set; }
         public ConfigEntry<float> configShipDistanceRedWood { get; private set; }
         public ConfigEntry<float> configForestDistanceRedWood { get; private set; }
-        public ConfigEntry<bool> configFootstepDust { get; private set; }
+        public ConfigEntry<string> configColourHexcode { get; private set; }
+
 
         // Here we make a new object, passing in the config file from Plugin.cs
         public GiantSpecimensConfig(ConfigFile configFile) 
@@ -40,10 +41,10 @@ namespace GiantSpecimens {
                                                 "RedWood Giant Targetting Range | Forest Keeper",  
                                                 50f, 
                                                 "Distance from which the RedWood Giant is able to see the Forest Keeper, I recommend 30f or more.");
-            configFootstepDust = configFile.Bind("Misc Options",   
+            configColourHexcode = configFile.Bind("Misc Options",   
                                                 "RedWood Giant | Footstep Colour",  
-                                                true, 
-                                                "Decides whether the default colour of the footsteps is plainly white or not (true to keep custom colours, false for white)."); 
+                                                "#808080", 
+                                                "Decides what the default colour of the footsteps is using a hexcode, default is grey (Invalid hexcodes will default to Grey), keep blank to use custom set colours set by me for different moons."); 
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }

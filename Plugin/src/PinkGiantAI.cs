@@ -11,6 +11,8 @@ using UnityEngine.UIElements.Experimental;
 using System.Collections.Generic;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Animations.Rigging;
+using System.Text.RegularExpressions;
+using UnityEngine.AI;
 
 namespace GiantSpecimens {
     class PinkGiantAI : EnemyAI {
@@ -33,7 +35,7 @@ namespace GiantSpecimens {
         Vector3 newScale;
         string levelName;
         bool eatingEnemy = false;
-        bool defaultColour;
+        string footstepColour;
         EnemyAI targetEnemy;
         bool idleGiant = true;
         bool waitAfterChase = false;
@@ -48,12 +50,14 @@ namespace GiantSpecimens {
         [SerializeField]GameObject leftBone;
         [SerializeField] GameObject eatingArea;
         Vector3 midpoint;
+        LineRenderer line;
         enum State {
             IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
             RunningToForestKeeper, // Chasing
             EatingForestKeeper, // Eating
             BoredAnimation, // Custom Animation with birds flying around, it'll be cool
+            FollowWhistle, // Pink giant would follow a scrap whistle
         }
 
         void LogIfDebugBuild(string text) {
@@ -71,18 +75,27 @@ namespace GiantSpecimens {
             ship = StartOfRound.Instance.elevatorTransform.position;
             
             
-            Color dustColor = Color.white; // Default to white if no color found
-            defaultColour = Plugin.config.configFootstepDust.Value;
-            if (defaultColour) {
-                List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
-                if (colorsForCurrentLevel.Count > 0) {
-                dustColor = HexToColor(colorsForCurrentLevel[0]);
-                }
-                MainModule mainLeft = DustParticlesLeft.main;
-                MainModule mainRight = DustParticlesRight.main;
-                mainLeft.startColor = new MinMaxGradient(dustColor);
-                mainRight.startColor = new MinMaxGradient(dustColor);
+            Color dustColor = Color.grey; // Default to grey if no color found
+            string footstepColourValue = Plugin.config.configColourHexcode.Value;
+            if (string.IsNullOrEmpty(footstepColourValue)) {
+                footstepColour = null;
+            } else if (Regex.IsMatch(footstepColourValue, "^#?[0-9a-fA-F]{6}$")) {
+                footstepColour = footstepColourValue;
+            } else {
+                Plugin.Logger.LogWarning("Invalid hexcode: " + footstepColourValue + ". Using default colour.");
+                footstepColour = null;
             }
+            List<string> colorsForCurrentLevel = levelColorMapper.GetColorsForLevel(levelName);
+            if (footstepColour == null && colorsForCurrentLevel.Count > 0) {
+                footstepColour = colorsForCurrentLevel[0];
+            }
+            if (footstepColour != null) {
+                dustColor = HexToColor(footstepColour);
+            }
+            MainModule mainLeft = DustParticlesLeft.main;
+            MainModule mainRight = DustParticlesRight.main;
+            mainLeft.startColor = new MinMaxGradient(dustColor);
+            mainRight.startColor = new MinMaxGradient(dustColor);
             LogIfDebugBuild(dustColor.ToString());
 
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
@@ -93,12 +106,27 @@ namespace GiantSpecimens {
             if (RedWoodGiant != null) {
             LogIfDebugBuild(RedWoodGiant.rarity.ToString());
             }
+            /* foreach(SpawnableEnemyWithRarity enemy in RoundManager.Instance.currentLevel.OutsideEnemies) {
+                if(enemy != null) {
+                    LogIfDebugBuild("Enemy: " + enemy.enemyType.enemyName);
+                }
+            }
+            foreach(SpawnableEnemyWithRarity enemy in RoundManager.Instance.currentLevel.Enemies) {
+                if(enemy != null) {
+                    LogIfDebugBuild("Enemy: " + enemy.enemyType.enemyName);
+                }
+            } */
             walkingSpeed = Plugin.config.configSpeedRedWood.Value;
             distanceFromShip = Plugin.config.configShipDistanceRedWood.Value;
             seeableDistance = Plugin.config.configForestDistanceRedWood.Value;
 
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
+            
+            #if DEBUG
+			line = gameObject.AddComponent<LineRenderer>();
+			line.widthMultiplier = 0.2f; // reduce width of the line
+			#endif
 
             creatureVoice.PlayOneShot(spawnSound);
             transform.position += new Vector3(0f, 10f, 0f);
@@ -141,6 +169,7 @@ namespace GiantSpecimens {
         {
             
             base.DoAIInterval();
+            StartCoroutine(DrawPath(line, agent));
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
@@ -201,7 +230,7 @@ namespace GiantSpecimens {
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }
-                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: false);
+                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                     break;
 
                 case (int)State.EatingForestKeeper:
@@ -223,6 +252,17 @@ namespace GiantSpecimens {
             }
             return null;
         }
+        public static IEnumerator DrawPath(LineRenderer line, NavMeshAgent agent) {
+			if (!agent.enabled) yield break;
+			yield return new WaitForEndOfFrame();
+			line.SetPosition(0, agent.transform.position); //set the line's origin
+
+			line.positionCount = agent.path.corners.Length; //set the array of positions to the amount of corners
+			for (var i = 1; i < agent.path.corners.Length; i++)
+			{
+				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
+			}
+		}
         public void ShockwaveDamageL() {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
