@@ -24,10 +24,18 @@ namespace GiantSpecimens {
             Logger = base.Logger;
             Assets.PopulateAssets();
             config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
+
+            //Scrap stuff
+            int iRarity = 3000;
+            Item RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("directory/to/itemdataasset.asset");
+            Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
+            NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
+            Items.RegisterScrap(RedWoodPlushie, iRarity, LevelTypes.All);
+
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
-            var tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
-            var tlTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
+            TerminalNode tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
+            TerminalKeyword tlTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);

@@ -22,3 +22,9 @@ The Giant Specimens, created by Xu Xiaolan.
 -New RedWood Giant model textures and material are created by [@MeatBallDemon](https://twitter.com/_MeatBallDemon_) on twitter, fantastic work done (V1.4.0+)!
 
 -Texture help provided by [@Sconey](https://thunderstore.io/c/lethal-company/p/Sconeys/abandonedcompanyassets/) with her lovely mod.
+
+
+
+
+## Sound Credits.
+Squeaky Dog Toy by DANMITCH3LL -- https://freesound.org/s/232017/ -- License: Attribution 3.0
