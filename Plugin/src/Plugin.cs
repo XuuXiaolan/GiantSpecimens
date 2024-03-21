@@ -27,11 +27,47 @@ namespace GiantSpecimens {
             config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
             //Scrap stuff
-            int iRarity = 3000;
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodGiantPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
-            Items.RegisterScrap(RedWoodPlushie, iRarity, (LevelTypes)(-1));
+            bool scrapEnabledConfig = config.configScrapEnabled.Value;
+            if (scrapEnabledConfig) {
+                string scrapSpawnRatesConfig = config.configSpawnRateEntries.Value;
+                // Initialize dictionaries to hold spawn rates for predefined and custom levels.
+                Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
+                Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
+                foreach (string entry in scrapSpawnRatesConfig.Split(',').Select(s => s.Trim()))
+                {
+                    string[] entryParts = entry.Split('@');
+
+                    if (entryParts.Length != 2)
+                    {
+                        continue;
+                    }
+
+                    string name = entryParts[0];
+                    int spawnrate;
+
+                    if (!int.TryParse(entryParts[1], out spawnrate))
+                    {
+                        continue;
+                    }
+
+                    if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
+                    {
+                        spawnRateByLevelTypeScrap[levelType] = spawnrate;
+                        Plugin.Logger.LogInfo($"Registered spawn rate for level type {levelType} to {spawnrate}");
+                    }
+                    else
+                    {
+                        spawnRateByCustomLevelTypeScrap[name] = spawnrate;
+                        Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
+                    }
+                }
+                Items.RegisterScrap(RedWoodPlushie, spawnRateByLevelTypeScrap, spawnRateByCustomLevelTypeScrap);
+            } else {
+                Items.RegisterScrap(RedWoodPlushie, 0, LevelTypes.All);
+            }
 
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");

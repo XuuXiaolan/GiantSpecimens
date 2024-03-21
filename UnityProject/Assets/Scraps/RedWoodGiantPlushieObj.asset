@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: RedWoodGiantPlushieObj
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: RedWood Plushie
+  itemName: Redwood Plushie
   spawnPositionTypes: []
   twoHanded: 1
   twoHandedAnimation: 1
   canBeGrabbedBeforeGameStart: 1
-  weight: 1.6
+  weight: 1.54
   itemIsTrigger: 0
   holdButtonUse: 0
   itemSpawnsOnGround: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
   batteryUsage: 0
   automaticallySetUsingPower: 0
   itemIcon: {fileID: 21300000, guid: e7bd102170471bd4eaac2059355c5db0, type: 3}
-  grabAnim: 
+  grabAnim: HoldLung
   useAnim: 
   pocketAnim: 
   throwAnim: 
@@ -51,12 +51,12 @@ MonoBehaviour:
   saveItemVariable: 0
   isDefensiveWeapon: 0
   toolTips: []
-  verticalOffset: 0
+  verticalOffset: 1
   floorYOffset: 0
   allowDroppingAheadOfPlayer: 1
   restingRotation: {x: 0, y: 0, z: 0}
-  rotationOffset: {x: 0, y: 0, z: 0}
-  positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: -40, y: 70, z: -50}
+  positionOffset: {x: 0, y: 0.2, z: -0.2}
   meshOffset: 0
   meshVariants: []
   materialVariants: []
