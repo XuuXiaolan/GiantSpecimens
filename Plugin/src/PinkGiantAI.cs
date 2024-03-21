@@ -326,9 +326,8 @@ namespace GiantSpecimens {
             ForestKeeperParticles.Play(); // Make the player unable to interact with these particles, same with footstep ones, also make them be affected by the world for proper fog stuff?
         }
         
-        public void ShakePlayerCamera() {
-            foreach (var player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
+        public void ShakePlayerCamera() { //TODO: Implement this function in a way that only affects the player that is in range.
+                float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
                     case < 10f:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Long);
@@ -348,7 +347,6 @@ namespace GiantSpecimens {
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
                 }
-            }
         }
         bool FindClosestForestKeeperInRange(float range) {
             EnemyAI closestEnemy = null;
