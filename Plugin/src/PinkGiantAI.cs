@@ -51,7 +51,6 @@ namespace GiantSpecimens {
         [SerializeField] GameObject leftBone;
         [SerializeField] GameObject eatingArea;
         Vector3 midpoint;
-		public UnityEvent whistleEvent;
         LineRenderer line;
         enum State {
             IdleAnimation, // Idling
@@ -271,10 +270,7 @@ namespace GiantSpecimens {
 			{
 				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
 			}
-		}
-		public void whistleSound() {
-			
-		}
+		}*/
         public void ShockwaveDamageL() {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
