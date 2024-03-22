@@ -27,12 +27,12 @@ namespace GiantSpecimens {
             config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
             //Scrap stuff
-            RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodGiantPlushieObj");
+            RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
             bool scrapEnabledConfig = config.configScrapEnabled.Value;
             if (scrapEnabledConfig) {
-                string scrapSpawnRatesConfig = config.configSpawnRateEntries.Value;
+                string scrapSpawnRatesConfig = config.configScrapRarity.Value;
                 // Initialize dictionaries to hold spawn rates for predefined and custom levels.
                 Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
                 Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();

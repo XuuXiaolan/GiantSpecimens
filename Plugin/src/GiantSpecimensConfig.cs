@@ -25,17 +25,14 @@ namespace GiantSpecimens {
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
                                                 4, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
-
             configSpawnRateEntries = configFile.Bind("Moon Spawnrates", 
                                                 "RedWood Giant Spawn Weight.",
                                                 "Modded@100,ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,46 Infernis@100,76 Porcerin@200,154 Etern@150,57 Asteroid13@200,147 Gratar@100,94 Polarus@150,44 Atlantica@25,42 Cosmocos@200,84 Junic@150,36 Gloom@200,48 Desolation@150,134 Oldred@100",
                                                 "Spawn Weight of the RedWood Giant in all vanilla moons + Wesley's moons modded option (Doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format.");
-
             configSpeedRedWood = configFile.Bind("Misc Options",   
                                                 "RedWood Giant Speed",  
                                                 2f, 
                                                 "Default walking speed of the RedWood Giant, (Chase speed is 4*Walking Speed) I recommend 1.5 to 3."); 
-
             configShipDistanceRedWood = configFile.Bind("Misc Options",   
                                                 "RedWood Giant Targetting Range | Ship",  
                                                 10f, 
@@ -54,7 +51,7 @@ namespace GiantSpecimens {
                                                 "Enables/Disables the spawning of the scrap");
             configScrapRarity = configFile.Bind("Scrap Options",   
                                                 "RedWood Giant Scrap | Rarity",  
-                                                "Modded@50,ExperimentationLevel@50,AssuranceLevel@50,VowLevel@50,OffenseLevel@50,MarchLevel@50,RendLevel@50000,DineLevel@50,TitanLevel@50", 
+                                                "Modded@5,ExperimentationLevel@5,AssuranceLevel@5,VowLevel@5,OffenseLevel@5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5", 
                                                 "Rarity of scrap appearing on every moon");
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");

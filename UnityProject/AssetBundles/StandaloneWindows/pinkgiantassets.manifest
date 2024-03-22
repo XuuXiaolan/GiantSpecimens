@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2092805061
+CRC: 262896907
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: da7d743a6785b4a8d4f4606f0ee35079
+    Hash: 9bb792815311f0bef62f6ffd40bf54d5
   TypeTreeHash:
     serializedVersion: 2
     Hash: 02eb5478b92ed46cfcbf4f182d17e256
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: da7d743a6785b4a8d4f4606f0ee35079
+    Hash: 9bb792815311f0bef62f6ffd40bf54d5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -98,8 +98,10 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
+- Assets/Scraps/RedWoodPlushieObj.asset
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
+- Assets/Scraps/RedwoodPlush.prefab
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
-- Assets/Scraps/RedWoodGiantPlushieObj.asset
 - Assets/PinkGiant/PinkGiantObj.asset
+- Assets/PinkGiant/Models/RedwoodPlush.fbx
 Dependencies: []
