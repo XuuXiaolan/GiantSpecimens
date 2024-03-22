@@ -43,13 +43,15 @@ namespace GiantSpecimens {
         float seeableDistance;
         public float distanceFromShip;
         public Vector3 ship;
-        [SerializeField]AudioClip[] stompSounds;
-        [SerializeField]AudioClip eatenSound;
-        [SerializeField]AudioClip spawnSound;
-        [SerializeField]GameObject rightBone;
-        [SerializeField]GameObject leftBone;
+        [SerializeField] AudioClip[] stompSounds;
+        [SerializeField] AudioClip eatenSound;
+        [SerializeField] AudioClip spawnSound;
+		[SerializeField] AudioClip whistleSound;
+        [SerializeField] GameObject rightBone;
+        [SerializeField] GameObject leftBone;
         [SerializeField] GameObject eatingArea;
         Vector3 midpoint;
+		public UnityEvent whistleEvent;
         LineRenderer line;
         enum State {
             IdleAnimation, // Idling
@@ -238,7 +240,13 @@ namespace GiantSpecimens {
                     agent.speed = 0f;
                     // Does nothing so far.
                     break;
-                    
+				case (int)State.BoredAnimation:
+					// Add a bird particle system and make it run as a coroutine adjacent/alternative to the idle animation
+					break;
+				case (int)State.FollowWhistle:
+					// Add an event listener that listens for a specific method call
+					// Set the destination to the player who whistled's position, not here though, make a method that plays the sound, and add a listener for that method here, then use SetDestinationToPosition(player.transform.position, checkForPath: true); in said method, don't forget to check for range as well.
+					break;
                 default:
                     LogIfDebugBuild("This Behavior State doesn't exist!");
                     break;
@@ -263,7 +271,10 @@ namespace GiantSpecimens {
 			{
 				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
 			}
-		}*/
+		}
+		public void whistleSound() {
+			
+		}
         public void ShockwaveDamageL() {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
