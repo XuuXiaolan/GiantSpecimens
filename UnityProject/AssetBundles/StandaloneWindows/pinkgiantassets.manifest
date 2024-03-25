@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 262896907
+CRC: 1183785062
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9bb792815311f0bef62f6ffd40bf54d5
+    Hash: d6b4377a8a83c0fa0e2a838b045fbfed
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 02eb5478b92ed46cfcbf4f182d17e256
+    Hash: 76dfdf096b6168c8f1250542923cdf3b
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9bb792815311f0bef62f6ffd40bf54d5
+    Hash: d6b4377a8a83c0fa0e2a838b045fbfed
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -66,6 +66,8 @@ ClassTypes:
   Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
 - Class: 114
   Script: {fileID: -1861003077, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+- Class: 114
+  Script: {fileID: 1189126927, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 136
@@ -99,9 +101,12 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
 - Assets/Scraps/RedWoodPlushieObj.asset
+- Assets/Scraps/whistleAnimator.controller
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/Scraps/RedwoodPlush.prefab
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/Scraps/whistle.prefab
+- Assets/Scraps/WhistleObj.asset
 - Assets/PinkGiant/PinkGiantObj.asset
 - Assets/PinkGiant/Models/RedwoodPlush.fbx
 Dependencies: []

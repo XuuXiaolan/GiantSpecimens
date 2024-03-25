@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 7085632964952027068}
   - component: {fileID: 8602347556672301707}
   - component: {fileID: 5333464382503380393}
-  m_Layer: 0
+  - component: {fileID: 4713258080578919892}
+  - component: {fileID: 302686027300086565}
+  m_Layer: 6
   m_Name: whistle
-  m_TagString: Untagged
+  m_TagString: PhysicsProp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,8 +160,11 @@ MonoBehaviour:
   radarIcon: {fileID: 0}
   reachedFloorTarget: 0
   grabbableToEnemies: 1
-  noiseAudio: {fileID: 0}
-  noiseSFX: []
+  noiseAudio: {fileID: 5333464382503380393}
+  noiseSFX:
+  - {fileID: 8300000, guid: ecb1a0cbaeb35804c82327aa22356d8c, type: 3}
+  - {fileID: 8300000, guid: 8dcbe155074f1c44abe2518014ae9d52, type: 3}
+  - {fileID: 8300000, guid: 0f5613cdea4a116468e8211a70b357b9, type: 3}
   maxLoudness: 1
   minLoudness: 0.5
   minPitch: 0.5
@@ -184,8 +189,8 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
+  DontDestroyWithOwner: 1
+  AutoObjectParentSync: 0
 --- !u!82 &5333464382503380393
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,6 +288,43 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &4713258080578919892
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3285402779952331225}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 109287578b0cee2459215f279bbb66d1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &302686027300086565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3285402779952331225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useReverb: 0
+  overridingLowPass: 0
+  lowPassOverride: 20000
+  debugLog: 0
 --- !u!1 &5133401356823579929
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +338,7 @@ GameObject:
   - component: {fileID: 8707098786715672449}
   - component: {fileID: 3680602342070965335}
   - component: {fileID: 5059023102407371584}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: ScanNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -125,10 +125,10 @@ namespace GiantSpecimens {
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
             
-            /*#if DEBUG
+            #if DEBUG
 			line = gameObject.AddComponent<LineRenderer>();
 			line.widthMultiplier = 0.2f; // reduce width of the line
-			#endif*/
+			#endif
 
             creatureVoice.PlayOneShot(spawnSound);
             transform.position += new Vector3(0f, 10f, 0f);
@@ -171,7 +171,7 @@ namespace GiantSpecimens {
         {
             
             base.DoAIInterval();
-            //StartCoroutine(DrawPath(line, agent));
+            StartCoroutine(DrawPath(line, agent));
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
@@ -260,7 +260,7 @@ namespace GiantSpecimens {
             }
             return null;
         }
-        /*public static IEnumerator DrawPath(LineRenderer line, NavMeshAgent agent) {
+        public static IEnumerator DrawPath(LineRenderer line, NavMeshAgent agent) {
 			if (!agent.enabled) yield break;
 			yield return new WaitForEndOfFrame();
 			line.SetPosition(0, agent.transform.position); //set the line's origin
@@ -270,7 +270,7 @@ namespace GiantSpecimens {
 			{
 				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
 			}
-		}*/
+		}
         public void ShockwaveDamageL() {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);

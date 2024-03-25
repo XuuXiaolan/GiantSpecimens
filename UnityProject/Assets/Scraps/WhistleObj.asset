@@ -24,35 +24,37 @@ MonoBehaviour:
   itemSpawnsOnGround: 0
   isConductiveMetal: 1
   isScrap: 0
-  creditsWorth: 0
+  creditsWorth: 100
   lockedInDemo: 0
-  highestSalePercentage: 0
+  highestSalePercentage: 50
   maxValue: 0
   minValue: 0
-  spawnPrefab: {fileID: 0}
+  spawnPrefab: {fileID: 3285402779952331225, guid: a47e1408d82e9af438b1ce0cd39afdc5,
+    type: 3}
   requiresBattery: 0
   batteryUsage: 0
   automaticallySetUsingPower: 0
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   grabAnim: 
   useAnim: 
   pocketAnim: 
   throwAnim: 
   grabAnimationTime: 0
-  grabSFX: {fileID: 0}
-  dropSFX: {fileID: 0}
-  pocketSFX: {fileID: 0}
+  grabSFX: {fileID: 8300000, guid: f12526fcddf72754da084faf142bcd2f, type: 3}
+  dropSFX: {fileID: 8300000, guid: 8dcbe155074f1c44abe2518014ae9d52, type: 3}
+  pocketSFX: {fileID: 8300000, guid: f86615708e856cc4588ba96842dd27c3, type: 3}
   throwSFX: {fileID: 0}
   syncGrabFunction: 0
-  syncUseFunction: 0
-  syncDiscardFunction: 0
-  syncInteractLRFunction: 0
+  syncUseFunction: 1
+  syncDiscardFunction: 1
+  syncInteractLRFunction: 1
   saveItemVariable: 0
   isDefensiveWeapon: 0
-  toolTips: []
+  toolTips:
+  - 'Use Whistle : [LMB]'
   verticalOffset: 0
   floorYOffset: 0
-  allowDroppingAheadOfPlayer: 0
+  allowDroppingAheadOfPlayer: 1
   restingRotation: {x: 0, y: 0, z: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   positionOffset: {x: 0, y: 0, z: 0}

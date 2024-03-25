@@ -18,6 +18,7 @@ namespace GiantSpecimens {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
         public static Item RedWoodPlushie;
+        public static Item Whistle;
         public static GiantSpecimensConfig config { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
 
@@ -27,6 +28,11 @@ namespace GiantSpecimens {
             config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
             //Scrap stuff
+            Whistle = Assets.MainAssetBundle.LoadAsset<Item>("WhistleObj");
+            Utilities.FixMixerGroups(Whistle.spawnPrefab);
+            NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
+            Items.RegisterScrap(Whistle, 100, LevelTypes.All);
+
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
