@@ -275,7 +275,7 @@ namespace GiantSpecimens {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(15);
+                    player.DamagePlayer(15, causeOfDeath: CauseOfDeath.Blast);
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
@@ -294,7 +294,7 @@ namespace GiantSpecimens {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts.Where(x => x.IsSpawned && x.isPlayerControlled && !x.isPlayerDead)) {
                 float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(15);
+                    player.DamagePlayer(15, causeOfDeath: CauseOfDeath.Blast);
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {

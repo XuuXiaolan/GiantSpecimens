@@ -52,7 +52,7 @@ namespace GiantSpecimens {
             }
             else if ((collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") && !playerControllerB.isInHangarShipRoom) {
                 
-                playerControllerB.DamagePlayer(200);
+                playerControllerB.DamagePlayer(200, causeOfDeath: CauseOfDeath.Crushing);
                 CreatureSFX.PlayOneShot(squishSound);
                 if (collidedObject.name == "CollisionFootL") {
                     BloodSplatterLeft.Play();
