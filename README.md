@@ -23,8 +23,7 @@ The Giant Specimens, created by Xu Xiaolan.
 
 -Texture help provided by [@Sconey](https://thunderstore.io/c/lethal-company/p/Sconeys/abandonedcompanyassets/) with her lovely mod.
 
-
-
+-Plushie Model and animations by [@Sintego](https://thunderstore.io/c/lethal-company/p/Scintesto/Monster_Plushies/).
 
 ## Sound Credits.
 Squeaky Dog Toy by DANMITCH3LL -- https://freesound.org/s/232017/ -- License: Attribution 3.0
