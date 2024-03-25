@@ -412,14 +412,15 @@ namespace GiantSpecimens {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
-            targetEnemy.agent.enabled = false;
-            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);            
-            DoAnimationClientRpc("eatForestKeeper");
-            targetEnemy.CancelSpecialAnimationWithPlayer();
-            targetEnemy.SetEnemyStunned(true, 10f);
+            targetEnemy.currentBehaviourStateIndex = 0;
             targetEnemy.creatureVoice.Stop();
             targetEnemy.creatureSFX.Stop();
-            targetEnemy.creatureVoice.PlayOneShot(eatenSound);
+            targetEnemy.CancelSpecialAnimationWithPlayer();
+            targetEnemy.StopAllCoroutines();
+            targetEnemy.SetEnemyStunned(true, 10f);
+            targetEnemy.creatureVoice.PlayOneShot(eatenSound, 1);
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);            
+            DoAnimationClientRpc("eatForestKeeper");
             yield return new WaitForSeconds(10);
             targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
             eatingEnemy = false;
@@ -434,13 +435,12 @@ namespace GiantSpecimens {
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
         {
-            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation) && waitAfterChase == true) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation) && waitAfterChase) {
                 eatingEnemy = true;
-                Collider[] colliders = targetEnemy.GetComponents<Collider>();
-                foreach (Collider collider in colliders)
-                {
-                    collider.enabled = false;
-                }
+                targetEnemy.GetComponent<BoxCollider>().enabled = false;
+                targetEnemy.transform.Find("FGiantModelContainer").Find("AnimContainer").Find("metarig").Find("spine").Find("spine.003").Find("shoulder.R").Find("upper_arm.R").Find("forearm.R").Find("hand.R").GetComponent<BoxCollider>().enabled = false;
+                targetEnemy.transform.Find("FGiantModelContainer").GetComponent<CapsuleCollider>().enabled = false;
+                targetEnemy.agent.enabled = false;
                 StartCoroutine(EatForestKeeper());
             }
         }
