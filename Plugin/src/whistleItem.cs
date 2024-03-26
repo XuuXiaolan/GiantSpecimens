@@ -3,8 +3,8 @@ using UnityEngine;
 namespace GiantSpecimens {
   public class WhistleItem : GrabbableObject
   {
-    [SerializeField] AudioSource noiseAudio;
-    [SerializeField] AudioClip[] noiseSFX;
+    [SerializeField] AudioSource whistlePlayer;
+    [SerializeField] AudioClip[] whistleSounds;
     [SerializeField] float maxLoudness;
     [SerializeField] float minLoudness;
     [SerializeField] float minPitch;
@@ -22,19 +22,18 @@ namespace GiantSpecimens {
         count = 0;
         noisemakerRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
     }
-    public override void ItemActivate(bool used, bool buttonDown = true)
-    {
-      int num = noisemakerRandom.Next(0, noiseSFX.Length);
-      // float num2 = (float)noisemakerRandom.Next((int)(minLoudness * 100f), (int)(maxLoudness * 100f)) / 100f;
+    public override void ItemActivate(bool used, bool buttonDown = true) {
+      int clipToPlay = noisemakerRandom.Next(0, whistleSounds.Length);
+      float loudness = (float)noisemakerRandom.Next((int)(minLoudness * 100f), (int)(maxLoudness * 100f)) / 100f;
       float pitch = (float)noisemakerRandom.Next((int)(minPitch * 100f), (int)(maxPitch * 100f)) / 100f;
-      // noiseAudio.pitch = pitch;
-      noiseAudio.PlayOneShot(noiseSFX[num], 1);
+      whistlePlayer.pitch = pitch;
+      whistlePlayer.PlayOneShot(whistleSounds[clipToPlay], loudness);
 
       if (triggerAnimator != null) {
           triggerAnimator.SetTrigger("playAnim");
       }
       if (playerHeldBy != null) {
-        if (FlagClosestRedWoodGiantInRange(50f)) {
+        if (FlagClosestRedWoodGiantInRange(75f)) {
           LogIfDebugBuild("Run.");
         }
       }
@@ -43,7 +42,7 @@ namespace GiantSpecimens {
       foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
           if (enemy.enemyType.enemyName == "RedWoodGiant") {
               float distance = Vector3.Distance(playerHeldBy.transform.position, enemy.transform.position);
-              if (distance < range) {
+              if (distance < range && !playerHeldBy.isInsideFactory) {
                   enemy.SetDestinationToPosition(playerHeldBy.transform.position);
                   count++;
               }

@@ -31,7 +31,9 @@ namespace GiantSpecimens {
             Whistle = Assets.MainAssetBundle.LoadAsset<Item>("WhistleObj");
             Utilities.FixMixerGroups(Whistle.spawnPrefab);
             NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
-            Items.RegisterScrap(Whistle, 100, LevelTypes.All);
+            TerminalNode wlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
+            Items.RegisterScrap(Whistle, 5, LevelTypes.All);
+            Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, 100);
 
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
@@ -77,8 +79,8 @@ namespace GiantSpecimens {
 
             
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
-            TerminalNode tlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
-            TerminalKeyword tlTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
+            TerminalNode pgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
+            TerminalKeyword pgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
@@ -117,7 +119,7 @@ namespace GiantSpecimens {
             }
 
             // Assuming RegisterEnemy is a method that takes the parsed configurations.
-            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, tlTerminalNode, tlTerminalKeyword);
+            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, pgTerminalNode, pgTerminalKeyword);
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher

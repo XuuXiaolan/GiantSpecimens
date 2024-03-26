@@ -57,8 +57,6 @@ namespace GiantSpecimens {
             SearchingForForestKeeper, // Wandering
             RunningToForestKeeper, // Chasing
             EatingForestKeeper, // Eating
-            BoredAnimation, // Custom Animation with birds flying around, it'll be cool
-            FollowWhistle, // Pink giant would follow a scrap whistle
         }
 
         void LogIfDebugBuild(string text) {
@@ -238,13 +236,6 @@ namespace GiantSpecimens {
                 case (int)State.EatingForestKeeper:
                     agent.speed = 0f;
                     // Does nothing so far.
-                    break;
-				case (int)State.BoredAnimation:
-					// Add a bird particle system and make it run as a coroutine adjacent/alternative to the idle animation
-					break;
-				case (int)State.FollowWhistle:
-					// Add an event listener that listens for a specific method call
-					// Set the destination to the player who whistled's position, not here though, make a method that plays the sound, and add a listener for that method here, then use SetDestinationToPosition(player.transform.position, checkForPath: true); in said method, don't forget to check for range as well.
 					break;
                 default:
                     LogIfDebugBuild("This Behavior State doesn't exist!");

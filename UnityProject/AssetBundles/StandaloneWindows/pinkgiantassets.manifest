@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1183785062
+CRC: 1908172339
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d6b4377a8a83c0fa0e2a838b045fbfed
+    Hash: a2e3360bfc009dbd46ef32e849024727
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 76dfdf096b6168c8f1250542923cdf3b
+    Hash: 1ffba9f6a9b4f80332dfa2a7e652fd3f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: d6b4377a8a83c0fa0e2a838b045fbfed
+    Hash: a2e3360bfc009dbd46ef32e849024727
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -96,6 +96,8 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: Battery
 - AssemblyName: Assembly-CSharp
+  ClassName: CompatibleNoun
+- AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
@@ -105,6 +107,7 @@ Assets:
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/Scraps/RedwoodPlush.prefab
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/Scraps/ScrapTerminalNodes/wlTerminalNode.asset
 - Assets/Scraps/whistle.prefab
 - Assets/Scraps/WhistleObj.asset
 - Assets/PinkGiant/PinkGiantObj.asset
