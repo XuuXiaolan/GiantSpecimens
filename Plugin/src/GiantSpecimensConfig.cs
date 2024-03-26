@@ -15,7 +15,9 @@ namespace GiantSpecimens {
         public ConfigEntry<string> configColourHexcode { get; private set; }
         public ConfigEntry<string> configScrapRarity { get; private set; }
         public ConfigEntry<bool> configScrapEnabled { get; private set; }
-
+        public ConfigEntry<int> configWhistleCost { get; private set; }
+        public ConfigEntry<string> configWhistleRarity { get; private set; }
+        public ConfigEntry<bool> configWhistleScrapEnabled { get; private set; }
 
 
         // Here we make a new object, passing in the config file from Plugin.cs
@@ -45,10 +47,22 @@ namespace GiantSpecimens {
                                                 "RedWood Giant | Footstep Colour",  
                                                 "#808080", 
                                                 "Decides what the default colour of the footsteps is using a hexcode, default is grey (Invalid hexcodes will default to Grey), keep blank to use custom set colours set by me for different moons."); 
+            configWhistleScrapEnabled = configFile.Bind("Scrap Options",
+                                                "Whistle Scrap | Enabled",
+                                                true,
+                                                "Enables/Disables the spawning of the scrap");
+            configWhistleRarity = configFile.Bind("Scrap Options",   
+                                                "Whistle Item | Rarity",  
+                                                "Modded@5,ExperimentationLevel@5,AssuranceLevel@5,VowLevel@5,OffenseLevel@5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5", 
+                                                "Rarity of Whistle scrap appearing on every moon");
             configScrapEnabled = configFile.Bind("Scrap Options",
                                                 "RedWood Giant Scrap | Enabled",
                                                 true,
                                                 "Enables/Disables the spawning of the scrap");
+            configWhistleCost = configFile.Bind("Misc Options",   
+                                                "Whistle Item | Rarity",  
+                                                100, 
+                                                "Rarity of Whistle scrap appearing on every moon");
             configScrapRarity = configFile.Bind("Scrap Options",   
                                                 "RedWood Giant Scrap | Rarity",  
                                                 "Modded@5,ExperimentationLevel@5,AssuranceLevel@5,VowLevel@5,OffenseLevel@5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5", 

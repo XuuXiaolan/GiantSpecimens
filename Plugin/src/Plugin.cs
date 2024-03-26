@@ -32,8 +32,47 @@ namespace GiantSpecimens {
             Utilities.FixMixerGroups(Whistle.spawnPrefab);
             NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
             TerminalNode wlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
-            Items.RegisterScrap(Whistle, 5, LevelTypes.All);
-            Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, 100);
+            bool whistleEnabled = config.configWhistleScrapEnabled.Value;
+            if (whistleEnabled) {
+                string whistleRarity = config.configWhistleRarity.Value;
+                // Initialize dictionaries to hold spawn rates for predefined and custom levels.
+                Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
+                Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
+                foreach (string entry in whistleRarity.Split(',').Select(s => s.Trim()))
+                {
+                    string[] entryParts = entry.Split('@');
+
+                    if (entryParts.Length != 2)
+                    {
+                        continue;
+                    }
+
+                    string name = entryParts[0];
+                    int spawnrate;
+
+                    if (!int.TryParse(entryParts[1], out spawnrate))
+                    {
+                        continue;
+                    }
+
+                    if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
+                    {
+                        spawnRateByLevelTypeScrap[levelType] = spawnrate;
+                        Plugin.Logger.LogInfo($"Registered spawn rate for level type {levelType} to {spawnrate}");
+                    }
+                    else
+                    {
+                        spawnRateByCustomLevelTypeScrap[name] = spawnrate;
+                        Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
+                    }
+                }
+                Items.RegisterScrap(Whistle, spawnRateByLevelTypeScrap, spawnRateByCustomLevelTypeScrap);
+            } else {
+                Items.RegisterScrap(Whistle, 0, LevelTypes.All);
+            }
+            
+            int whistleCostConfig = config.configWhistleCost.Value;
+            Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, whistleCostConfig);
 
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
