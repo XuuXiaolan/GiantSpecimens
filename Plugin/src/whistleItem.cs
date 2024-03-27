@@ -3,12 +3,12 @@ using UnityEngine;
 namespace GiantSpecimens {
   public class WhistleItem : GrabbableObject
   {
-    [SerializeField] AudioSource whistlePlayer;
-    [SerializeField] AudioClip[] whistleSounds;
-    [SerializeField] float maxLoudness;
-    [SerializeField] float minLoudness;
-    [SerializeField] float minPitch;
-    [SerializeField] float maxPitch;
+    [SerializeField] public AudioSource whistlePlayer;
+    [SerializeField] public AudioClip[] whistleSounds;
+    [SerializeField] public float maxLoudness;
+    [SerializeField] public float minLoudness;
+    [SerializeField] public float minPitch;
+    [SerializeField] public float maxPitch;
     private System.Random noisemakerRandom;
     public Animator triggerAnimator;
     public int count;

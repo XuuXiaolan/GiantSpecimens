@@ -400,7 +400,7 @@ MonoBehaviour:
   minRange: 1
   requiresLineOfSight: 1
   headerText: Whistle
-  subText: 
+  subText: 'Value: '
   scrapValue: 0
   creatureScanID: -1
   nodeType: 0

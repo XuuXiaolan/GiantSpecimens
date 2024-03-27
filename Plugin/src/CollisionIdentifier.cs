@@ -6,10 +6,10 @@ using UnityEngine.PlayerLoop;
 namespace GiantSpecimens {
     public class ColliderIdentifier : MonoBehaviour 
     {
-        [SerializeField] AudioSource CreatureSFX;
-        [SerializeField] AudioClip squishSound;
-        [SerializeField] ParticleSystem BloodSplatterLeft;
-        [SerializeField] ParticleSystem BloodSplatterRight;
+        [SerializeField] public AudioSource CreatureSFX;
+        [SerializeField] public AudioClip squishSound;
+        [SerializeField] public ParticleSystem BloodSplatterLeft;
+        [SerializeField] public ParticleSystem BloodSplatterRight;
 
         void LogIfDebugBuild(string text) {
             #if DEBUG

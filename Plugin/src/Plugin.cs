@@ -32,9 +32,9 @@ namespace GiantSpecimens {
             Utilities.FixMixerGroups(Whistle.spawnPrefab);
             NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
             TerminalNode wlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
-            bool whistleEnabled = config.configWhistleScrapEnabled.Value;
-            if (whistleEnabled) {
-                string whistleRarity = config.configWhistleRarity.Value;
+            bool whistleScrapEnabled = config.ConfigWhistleScrapEnabled.Value;
+            if (whistleScrapEnabled) {
+                string whistleRarity = config.ConfigWhistleRarity.Value;
                 // Initialize dictionaries to hold spawn rates for predefined and custom levels.
                 Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
                 Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
@@ -71,15 +71,18 @@ namespace GiantSpecimens {
                 Items.RegisterScrap(Whistle, 0, LevelTypes.All);
             }
             
-            int whistleCostConfig = config.configWhistleCost.Value;
-            Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, whistleCostConfig);
+            bool whistleItemEnabled = config.ConfigWhistleEnabled.Value;
+            if (whistleItemEnabled) {
+                int whistleCostConfig = config.ConfigWhistleCost.Value;
+                Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, whistleCostConfig);
+            }
 
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
-            bool scrapEnabledConfig = config.configScrapEnabled.Value;
+            bool scrapEnabledConfig = config.ConfigScrapEnabled.Value;
             if (scrapEnabledConfig) {
-                string scrapSpawnRatesConfig = config.configScrapRarity.Value;
+                string scrapSpawnRatesConfig = config.ConfigScrapRarity.Value;
                 // Initialize dictionaries to hold spawn rates for predefined and custom levels.
                 Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
                 Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
@@ -123,7 +126,7 @@ namespace GiantSpecimens {
             
             // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-            string spawnratesConfig = config.configSpawnRateEntries.Value;
+            string spawnratesConfig = config.ConfigSpawnRateEntries.Value;
             // Initialize dictionaries to hold spawn rates for predefined and custom levels.
             Dictionary<LevelTypes, int> spawnRateByLevelType = new Dictionary<LevelTypes, int>();
             Dictionary<string, int> spawnRateByCustomLevelType = new Dictionary<string, int>();

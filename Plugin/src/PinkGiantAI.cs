@@ -20,38 +20,38 @@ namespace GiantSpecimens {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
-        public static LevelColorMapper levelColorMapper = new LevelColorMapper();
+        public static LevelColorMapper levelColorMapper = new();
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
-        [SerializeField] ParticleSystem DustParticlesLeft;
-        [SerializeField] ParticleSystem DustParticlesRight;
-        [SerializeField] ParticleSystem ForestKeeperParticles;
-        [SerializeField] Collider CollisionFootR;
-        [SerializeField] Collider CollisionFootL;
-        [SerializeField] ChainIKConstraint LeftFoot;
-        [SerializeField] ChainIKConstraint RightFoot;
+        [SerializeField] public ParticleSystem DustParticlesLeft;
+        [SerializeField] public ParticleSystem DustParticlesRight;
+        [SerializeField] public ParticleSystem ForestKeeperParticles;
+        [SerializeField] public Collider CollisionFootR;
+        [SerializeField] public Collider CollisionFootL;
+        [SerializeField] public ChainIKConstraint LeftFoot;
+        [SerializeField] public ChainIKConstraint RightFoot;
         #pragma warning restore 0649
-        bool sizeUp = false;
-        Vector3 newScale;
-        string levelName;
-        bool eatingEnemy = false;
-        string footstepColour;
-        EnemyAI targetEnemy;
-        bool idleGiant = true;
-        bool waitAfterChase = false;
-        float walkingSpeed;
-        float seeableDistance;
+        public bool sizeUp = false;
+        public Vector3 newScale;
+        public string levelName;
+        public bool eatingEnemy = false;
+        public string footstepColour;
+        public EnemyAI targetEnemy;
+        public bool idleGiant = true;
+        public bool waitAfterChase = false;
+        public float walkingSpeed;
+        public float seeableDistance;
         public float distanceFromShip;
         public Vector3 ship;
-        [SerializeField] AudioClip[] stompSounds;
-        [SerializeField] AudioClip eatenSound;
-        [SerializeField] AudioClip spawnSound;
-		[SerializeField] AudioClip whistleSound;
-        [SerializeField] GameObject rightBone;
-        [SerializeField] GameObject leftBone;
-        [SerializeField] GameObject eatingArea;
-        Vector3 midpoint;
-        LineRenderer line;
+        [SerializeField] public AudioClip[] stompSounds;
+        [SerializeField] public AudioClip eatenSound;
+        [SerializeField] public AudioClip spawnSound;
+        [SerializeField] public GameObject rightBone;
+        [SerializeField] public GameObject leftBone;
+        [SerializeField] public GameObject eatingArea;
+        public Vector3 midpoint;
+        public bool testBuild = false; 
+        public LineRenderer line;
         enum State {
             IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
@@ -75,7 +75,7 @@ namespace GiantSpecimens {
             
             
             Color dustColor = Color.grey; // Default to grey if no color found
-            string footstepColourValue = Plugin.config.configColourHexcode.Value;
+            string footstepColourValue = Plugin.config.ConfigColourHexcode.Value;
             if (string.IsNullOrEmpty(footstepColourValue)) {
                 footstepColour = null;
             } else if (Regex.IsMatch(footstepColourValue, "^#?[0-9a-fA-F]{6}$")) {
@@ -99,7 +99,7 @@ namespace GiantSpecimens {
 
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             if (giantEnemyType != null) {
-                giantEnemyType.rarity *= Plugin.config.configSpawnrateForest.Value;                
+                giantEnemyType.rarity *= Plugin.config.ConfigSpawnrateForest.Value;                
             }
             SpawnableEnemyWithRarity RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
             if (RedWoodGiant != null) {
@@ -116,17 +116,18 @@ namespace GiantSpecimens {
                     LogIfDebugBuild("Enemy: " + enemy.enemyType.enemyName);
                 }
             } */
-            walkingSpeed = Plugin.config.configSpeedRedWood.Value;
-            distanceFromShip = Plugin.config.configShipDistanceRedWood.Value;
-            seeableDistance = Plugin.config.configForestDistanceRedWood.Value;
+            walkingSpeed = Plugin.config.ConfigSpeedRedWood.Value;
+            distanceFromShip = Plugin.config.ConfigShipDistanceRedWood.Value;
+            seeableDistance = Plugin.config.ConfigForestDistanceRedWood.Value;
 
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");
-            
-            #if DEBUG
-			line = gameObject.AddComponent<LineRenderer>();
-			line.widthMultiplier = 0.2f; // reduce width of the line
-			#endif
+            if (testBuild) {
+                #if DEBUG
+                line = gameObject.AddComponent<LineRenderer>();
+                line.widthMultiplier = 0.2f; // reduce width of the line
+                #endif
+            }
 
             creatureVoice.PlayOneShot(spawnSound);
             transform.position += new Vector3(0f, 10f, 0f);
@@ -169,7 +170,9 @@ namespace GiantSpecimens {
         {
             
             base.DoAIInterval();
-            StartCoroutine(DrawPath(line, agent));
+            if (testBuild) { 
+                StartCoroutine(DrawPath(line, agent));
+            }
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
