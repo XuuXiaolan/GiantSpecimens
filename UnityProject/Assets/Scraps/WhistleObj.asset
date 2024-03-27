@@ -21,7 +21,7 @@ MonoBehaviour:
   weight: 1.05
   itemIsTrigger: 1
   holdButtonUse: 0
-  itemSpawnsOnGround: 0
+  itemSpawnsOnGround: 1
   isConductiveMetal: 1
   isScrap: 1
   creditsWorth: 100

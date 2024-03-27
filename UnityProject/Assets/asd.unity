@@ -649,6 +649,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: whistle
       objectReference: {fileID: 0}
+    - target: {fileID: 5425584111168084080, guid: a47e1408d82e9af438b1ce0cd39afdc5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8602347556672301707, guid: a47e1408d82e9af438b1ce0cd39afdc5,
         type: 3}
       propertyPath: GlobalObjectIdHash
