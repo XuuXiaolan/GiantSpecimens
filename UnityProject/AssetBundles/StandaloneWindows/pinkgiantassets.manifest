@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 746503091
+CRC: 2202955453
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: face74e6f5a8c979728a06f7828ec070
+    Hash: e4db0f11f4964a7838a44a19ce4d1eba
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1ffba9f6a9b4f80332dfa2a7e652fd3f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: face74e6f5a8c979728a06f7828ec070
+    Hash: e4db0f11f4964a7838a44a19ce4d1eba
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -111,5 +111,5 @@ Assets:
 - Assets/Scraps/whistle.prefab
 - Assets/Scraps/WhistleObj.asset
 - Assets/PinkGiant/PinkGiantObj.asset
-- Assets/PinkGiant/Models/RedwoodPlush.fbx
+- Assets/Models/RedwoodPlush.fbx
 Dependencies: []
