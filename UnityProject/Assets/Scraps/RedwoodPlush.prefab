@@ -168,9 +168,10 @@ AudioSource:
   m_GameObject: {fileID: 2603107477630936132}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300008, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -602,7 +603,7 @@ MonoBehaviour:
   grabbableToEnemies: 1
   plushiePlayer: {fileID: 4430609900579003157}
   plushieSounds:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: f0e872b2af302b34cbcde6b73cdfc801, type: 3}
   maxLoudness: 1.01
   minLoudness: 0.54
   minPitch: 0.47
