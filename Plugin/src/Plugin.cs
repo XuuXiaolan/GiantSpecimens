@@ -46,7 +46,7 @@ namespace GiantSpecimens {
             TerminalNode pgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
             TerminalKeyword pgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-            RegisterEnemyWithConfig(true, ModConfig.ConfigSpawnRateEntries.Value, PinkGiant, pgTerminalNode, pgTerminalKeyword);
+            RegisterEnemyWithConfig(ModConfig.ConfigRedWoodEnabled.Value, ModConfig.ConfigSpawnRateEntries.Value, PinkGiant, pgTerminalNode, pgTerminalKeyword);
 
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

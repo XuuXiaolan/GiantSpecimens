@@ -5,8 +5,7 @@ using BepInEx;
 using BepInEx.Configuration;
 
 namespace GiantSpecimens {
-    public class GiantSpecimensConfig
-    {
+    public class GiantSpecimensConfig {
         public ConfigEntry<int> ConfigSpawnrateForest { get; private set; }
         public ConfigEntry<string> ConfigSpawnRateEntries { get; private set; }
         public ConfigEntry<float> ConfigSpeedRedWood { get; private set; }
@@ -17,15 +16,18 @@ namespace GiantSpecimens {
         public ConfigEntry<bool> ConfigScrapEnabled { get; private set; }
         public ConfigEntry<int> ConfigWhistleCost { get; private set; }
         public ConfigEntry<bool> ConfigWhistleEnabled { get; private set; }
+        public ConfigEntry<bool> ConfigRedWoodEnabled { get; private set; }
         public ConfigEntry<string> ConfigWhistleRarity { get; private set; }
         public ConfigEntry<bool> ConfigWhistleScrapEnabled { get; private set; }
-        // Here we make a new object, passing in the config file from Plugin.cs
-        public GiantSpecimensConfig(ConfigFile configFile) 
-        {
+        public GiantSpecimensConfig(ConfigFile configFile) {
             ConfigSpawnrateForest = configFile.Bind("Enemy Options",   // The section under which the option is shown
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
                                                 4, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
+            ConfigRedWoodEnabled = configFile.Bind("Enemy Options",
+                                                "RedWood Giant | Enabled",
+                                                true,
+                                                "Enables/Disables the spawning of the RedWood Giant (sets rarity to 0 if false on all moons)"); // Description of the option to show in the config file
             ConfigSpawnRateEntries = configFile.Bind("Enemy Options", 
                                                 "RedWood Giant | Spawn Weight.",
                                                 "Modded@100,ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,46 Infernis@100,76 Porcerin@200,154 Etern@150,57 Asteroid13@200,147 Gratar@100,94 Polarus@150,44 Atlantica@25,42 Cosmocos@200,84 Junic@150,36 Gloom@200,48 Desolation@150,134 Oldred@100",
@@ -73,7 +75,6 @@ namespace GiantSpecimens {
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }
-
         private void ClearUnusedEntries(ConfigFile configFile) {
             // Normally, old unused config entries don't get removed, so we do it with this piece of code. Credit to Kittenji.
             PropertyInfo orphanedEntriesProp = configFile.GetType().GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
