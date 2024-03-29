@@ -19,12 +19,12 @@ readme = "./README.md"
 outdir = "./Packages"
 
 [[build.copy]]
-source = "../bin/Release/netstandard2.1/PinkGiant.dll"
-target = "plugins/PinkGiant/"
+source = "../bin/Release/netstandard2.1/GiantSpecimens.dll"
+target = "plugins/GiantSpecimens/"
 
 [[build.copy]]
-source = "../../UnityProject/AssetBundles/StandaloneWindows/pinkgiantassets"
-target = "plugins/PinkGiant/"
+source = "../../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassets"
+target = "plugins/GiantSpecimens/"
 
 [[build.copy]]
 source = "./CHANGELOG.md"

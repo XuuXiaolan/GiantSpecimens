@@ -143,7 +143,7 @@ namespace GiantSpecimens {
         public static void PopulateAssets() {
             string sAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            MainAssetBundle = AssetBundle.LoadFromFile(Path.Combine(sAssemblyLocation, "pinkgiantassets"));
+            MainAssetBundle = AssetBundle.LoadFromFile(Path.Combine(sAssemblyLocation, "giantspecimenassets"));
             if (MainAssetBundle == null) {
                 Plugin.Logger.LogError("Failed to load custom assets.");
                 return;

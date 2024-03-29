@@ -1,3 +1,6 @@
+## v 1.7.3
+- Added BMX-Lobby-Compatibility for public lobbies.
+
 ## v 1.7.2 *QoL update*
 - Updated dependency to latest LethalLib, meaning you can now specify to have the items and enemy spawn in.
 - Cleaned up my code majorly
