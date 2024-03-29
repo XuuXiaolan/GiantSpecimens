@@ -388,6 +388,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2951250612824590369}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c140252091e9df244ade2071fa4f7efd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3510641282578404750}
   m_SourcePrefab: {fileID: 100100000, guid: c140252091e9df244ade2071fa4f7efd, type: 3}
 --- !u!23 &4931836232292739887 stripped
 MeshRenderer:
@@ -604,8 +608,29 @@ MonoBehaviour:
   plushiePlayer: {fileID: 4430609900579003157}
   plushieSounds:
   - {fileID: 8300000, guid: f0e872b2af302b34cbcde6b73cdfc801, type: 3}
-  maxLoudness: 1.01
-  minLoudness: 0.54
-  minPitch: 0.47
-  maxPitch: 0.99
-  triggerAnimator: {fileID: 0}
+  maxLoudness: 1
+  minLoudness: 0.5
+  minPitch: 0.5
+  maxPitch: 1
+  triggerAnimator: {fileID: 3510641282578404750}
+--- !u!95 &3510641282578404750
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6877448102565513978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cd581452c8b5bdf44aa7d4695747b46f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
