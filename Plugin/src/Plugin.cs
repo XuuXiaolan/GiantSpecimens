@@ -33,6 +33,7 @@ namespace GiantSpecimens {
         private void Awake() {
             Logger = base.Logger;
             Assets.PopulateAssets();
+            CauseOfDeath bludgeoning = EnumUtils.Parse<CauseOfDeath>("Bludgeoning");
             ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
             // Whistle Item/Scrap

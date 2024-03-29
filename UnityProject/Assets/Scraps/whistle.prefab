@@ -144,10 +144,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9f1161a754195414d803b6453946cb46, type: 3}
   - {fileID: 8300000, guid: e3e5ea602b17db94da78d937c426109f, type: 3}
   - {fileID: 8300000, guid: 4a8a4b7c735dc6148b322d24aa642fb0, type: 3}
-  maxLoudness: 1
+  maxLoudness: 3
   minLoudness: 0.5
   minPitch: 0.5
-  maxPitch: 1
+  maxPitch: 3
   triggerAnimator: {fileID: 0}
   count: 0
 --- !u!114 &8602347556672301707

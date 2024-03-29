@@ -20,6 +20,7 @@ namespace GiantSpecimens {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
+        private static readonly CauseOfDeath Shook = EnumUtils.Create<CauseOfDeath>("Shook");
         public static LevelColorMapper levelColorMapper = new();
         public Collider AttackArea;
         public IEnumerable allAlivePlayers;
@@ -274,7 +275,7 @@ namespace GiantSpecimens {
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(15, causeOfDeath: CauseOfDeath.Blast);
+                    player.DamagePlayer(15, causeOfDeath: Shook);
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
@@ -294,7 +295,7 @@ namespace GiantSpecimens {
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(15, causeOfDeath: CauseOfDeath.Blast);
+                    player.DamagePlayer(15, causeOfDeath: Shook);
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {

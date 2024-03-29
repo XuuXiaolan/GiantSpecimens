@@ -45,6 +45,7 @@
     <Reference Include="Unity.Netcode.Runtime"><HintPath>../dlls/Unity.Netcode.Runtime.dll</HintPath></Reference>
 	  <Reference Include="LethalLib"><HintPath>../dlls/LethalLib.dll</HintPath></Reference>
     <Reference Include="Unity.Animation.Rigging"><HintPath>../dlls/Unity.Animation.Rigging.dll</HintPath></Reference>
+    <Reference Include="LCEnumUtils"><HintPath>../dlls/LCEnumUtils.dll</HintPath></Reference>
   </ItemGroup>  
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
