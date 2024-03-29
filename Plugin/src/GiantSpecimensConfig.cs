@@ -6,32 +6,41 @@ using BepInEx.Configuration;
 
 namespace GiantSpecimens {
     public class GiantSpecimensConfig {
-        public ConfigEntry<int> ConfigSpawnrateForest { get; private set; }
-        public ConfigEntry<string> ConfigSpawnRateEntries { get; private set; }
+        public ConfigEntry<int> ConfigMultiplierForestkeeper { get; private set; }
         public ConfigEntry<float> ConfigSpeedRedWood { get; private set; }
         public ConfigEntry<float> ConfigShipDistanceRedWood { get; private set; }
         public ConfigEntry<float> ConfigForestDistanceRedWood { get; private set; }
         public ConfigEntry<string> ConfigColourHexcode { get; private set; }
-        public ConfigEntry<string> ConfigScrapRarity { get; private set; }
-        public ConfigEntry<bool> ConfigScrapEnabled { get; private set; }
+        public ConfigEntry<bool> ConfigRedWoodEnabled { get; private set; }
+        public ConfigEntry<string> ConfigRedWoodRarity { get; private set; }
+        public ConfigEntry<bool> ConfigRedwoodPlushieEnabled { get; private set; }
+        public ConfigEntry<string> ConfigRedwoodPlushieRarity { get; private set; }
         public ConfigEntry<int> ConfigWhistleCost { get; private set; }
         public ConfigEntry<bool> ConfigWhistleEnabled { get; private set; }
-        public ConfigEntry<bool> ConfigRedWoodEnabled { get; private set; }
         public ConfigEntry<string> ConfigWhistleRarity { get; private set; }
         public ConfigEntry<bool> ConfigWhistleScrapEnabled { get; private set; }
+        public ConfigEntry<bool> ConfigDriftWoodEnabled { get; private set; }
+        public ConfigEntry<string> ConfigDriftWoodRarity { get; private set; }
+        public ConfigEntry<bool> ConfigDriftWoodPlushieEnabled { get; private set; }
+        public ConfigEntry<string> ConfigDriftWoodPlushieRarity { get; private set; }
+        public ConfigEntry<int> ConfigMultiplierDriftwood { get; private set; }
         public GiantSpecimensConfig(ConfigFile configFile) {
-            ConfigSpawnrateForest = configFile.Bind("Enemy Options",   // The section under which the option is shown
+            ConfigMultiplierForestkeeper = configFile.Bind("Enemy Options",   // The section under which the option is shown
                                                 "ForestKeeper Multiplier",  // The key of the configuration option in the configuration file
-                                                4, // The default value
+                                                2, // The default value
                                                 "Multiplier in Forest Keeper spawnrate after the RedWood Giant spawns."); // Description of the option to show in the config file
+            ConfigMultiplierDriftwood = configFile.Bind("Enemy Options",
+                                                        "Driftwood Multiplier",
+                                                        2,
+                                                        "Multiplier in Driftwood spawnrate after the RedWood Giant spawns");
             ConfigRedWoodEnabled = configFile.Bind("Enemy Options",
                                                 "RedWood Giant | Enabled",
                                                 true,
                                                 "Enables/Disables the spawning of the RedWood Giant (sets rarity to 0 if false on all moons)"); // Description of the option to show in the config file
-            ConfigSpawnRateEntries = configFile.Bind("Enemy Options", 
+            ConfigRedWoodRarity = configFile.Bind("Enemy Options", 
                                                 "RedWood Giant | Spawn Weight.",
-                                                "Modded@100,ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,46 Infernis@100,76 Porcerin@200,154 Etern@150,57 Asteroid13@200,147 Gratar@100,94 Polarus@150,44 Atlantica@25,42 Cosmocos@200,84 Junic@150,36 Gloom@200,48 Desolation@150,134 Oldred@100",
-                                                "Spawn Weight of the RedWood Giant in all vanilla moons + Wesley's moons modded option (Doesn't work for LLL moons yet), just replace the number below with a custom spawnrate if you're changing it, do not change the format.");
+                                                "Modded@100,ExperimentationLevel@50,AssuranceLevel@100,VowLevel@200,OffenseLevel@100,MarchLevel@200,RendLevel@200,DineLevel@100,TitanLevel@200,InfernisLevel@100,PorcerinLevel@200,EternLevel@150,Asteroid13Level@200,GratarLevel@100,PolarusLevel@150,AtlanticaLevel@25,CosmocosLevel@200,JunicLevel@150,GloomLevel@200,DesolationLevel@150,OldredLevel@100,Auralis@250",
+                                                "Spawn Weight of the RedWood Giant in all moons, Feel free to add to it any moon, just follow the format (also needs LLL installed for LE moons to work with this config).");
             ConfigSpeedRedWood = configFile.Bind("Enemy Options",   
                                                 "RedWood Giant Speed",  
                                                 2f, 
@@ -56,11 +65,11 @@ namespace GiantSpecimens {
                                                 "Whistle Scrap | Rarity",  
                                                 "Modded@5,ExperimentationLevel@5,AssuranceLevel@5,VowLevel@5,OffenseLevel@5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5", 
                                                 "Rarity of Whistle scrap appearing on every moon");
-            ConfigScrapEnabled = configFile.Bind("Scrap Options",
+            ConfigRedwoodPlushieEnabled = configFile.Bind("Scrap Options",
                                                 "RedWood Giant Scrap | Enabled",
                                                 true,
                                                 "Enables/Disables the spawning of the scrap (sets rarity to 0 if false on all moons)");
-            ConfigScrapRarity = configFile.Bind("Scrap Options",   
+            ConfigRedwoodPlushieRarity = configFile.Bind("Scrap Options",   
                                                 "RedWood Giant Scrap | Rarity",  
                                                 "Modded@5,ExperimentationLevel@5,AssuranceLevel@5,VowLevel@5,OffenseLevel@5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5", 
                                                 "Rarity of redwood plushie appearing on every moon");
@@ -72,6 +81,22 @@ namespace GiantSpecimens {
                                                 "Whistle Item | Cost",  
                                                 100, 
                                                 "Cost of Whistle");
+            ConfigDriftWoodEnabled = configFile.Bind("Enemy Options",
+                                                    "Driftwood | Enabled",
+                                                    true,
+                                                    "Enables/Disables the spawning of the driftwood (sets rarity to 0 if false on all moons)");
+            ConfigDriftWoodPlushieEnabled = configFile.Bind("Scrap Options",
+                                                            "Driftwood Scrap | Enabled",
+                                                            true,
+                                                            "Enables/Disables the spawning of the scrap (sets rarity to 0 if false on all moons)");
+            ConfigDriftWoodRarity = configFile.Bind("Enemy Options",
+                                                    "Driftwood | Rarity",
+                                                    "Modded@100,ExperimentationLevel@75,AssuranceLevel@50,VowLevel@150,OffenseLevel@50,MarchLevel@175,RendLevel@125,DineLevel@125,TitanLevel@150",
+                                                    "Rarity of driftwood appearing on every moon");
+            ConfigDriftWoodPlushieRarity = configFile.Bind("Scrap Options",
+                                                        "Driftwood Scrap | Rarity",
+                                                        "Modded@5,ExperimentationLevel5,AssuranceLevel5,VowLevel@5,OffenseLevel5,MarchLevel@5,RendLevel@5,DineLevel@5,TitanLevel@5",
+                                                        "Rarity of driftwood plushie appearing on every moon.");
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }

@@ -99,7 +99,7 @@ namespace GiantSpecimens {
 
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             if (giantEnemyType != null) {
-                giantEnemyType.rarity *= Plugin.ModConfig.ConfigSpawnrateForest.Value;                
+                giantEnemyType.rarity *= Plugin.ModConfig.ConfigMultiplierForestkeeper.Value;                
             }
             SpawnableEnemyWithRarity RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
             if (RedWoodGiant != null) {
