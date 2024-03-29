@@ -75,7 +75,7 @@ namespace GiantSpecimens {
             
             
             Color dustColor = Color.grey; // Default to grey if no color found
-            string footstepColourValue = Plugin.config.ConfigColourHexcode.Value;
+            string footstepColourValue = Plugin.ModConfig.ConfigColourHexcode.Value;
             if (string.IsNullOrEmpty(footstepColourValue)) {
                 footstepColour = null;
             } else if (Regex.IsMatch(footstepColourValue, "^#?[0-9a-fA-F]{6}$")) {
@@ -99,7 +99,7 @@ namespace GiantSpecimens {
 
             SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
             if (giantEnemyType != null) {
-                giantEnemyType.rarity *= Plugin.config.ConfigSpawnrateForest.Value;                
+                giantEnemyType.rarity *= Plugin.ModConfig.ConfigSpawnrateForest.Value;                
             }
             SpawnableEnemyWithRarity RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
             if (RedWoodGiant != null) {
@@ -116,9 +116,9 @@ namespace GiantSpecimens {
                     LogIfDebugBuild("Enemy: " + enemy.enemyType.enemyName);
                 }
             } */
-            walkingSpeed = Plugin.config.ConfigSpeedRedWood.Value;
-            distanceFromShip = Plugin.config.ConfigShipDistanceRedWood.Value;
-            seeableDistance = Plugin.config.ConfigForestDistanceRedWood.Value;
+            walkingSpeed = Plugin.ModConfig.ConfigSpeedRedWood.Value;
+            distanceFromShip = Plugin.ModConfig.ConfigShipDistanceRedWood.Value;
+            seeableDistance = Plugin.ModConfig.ConfigForestDistanceRedWood.Value;
 
             // LogIfDebugBuild(giantEnemyType.rarity.ToString());
             LogIfDebugBuild("Pink Giant Enemy Spawned");

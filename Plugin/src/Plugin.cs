@@ -5,6 +5,7 @@ using HarmonyLib;
 using LethalLib.Modules;
 using static LethalLib.Modules.Levels;
 using static LethalLib.Modules.Enemies;
+using static LethalLib.Modules.Items;
 using BepInEx.Logging;
 using System.IO;
 using System.Collections.Generic;
@@ -19,120 +20,73 @@ namespace GiantSpecimens {
         public static EnemyType PinkGiant;
         public static Item RedWoodPlushie;
         public static Item Whistle;
-        public static GiantSpecimensConfig config { get; private set; } // prevent from accidently overriding the config
+        public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
 
         private void Awake() {
             Logger = base.Logger;
             Assets.PopulateAssets();
-            config = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
+            ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
-            //Scrap stuff
+            // Whistle Item/Scrap
             Whistle = Assets.MainAssetBundle.LoadAsset<Item>("WhistleObj");
             Utilities.FixMixerGroups(Whistle.spawnPrefab);
             NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
-            TerminalNode wlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
-            bool whistleScrapEnabled = config.ConfigWhistleScrapEnabled.Value;
-            if (whistleScrapEnabled) {
-                string whistleRarity = config.ConfigWhistleRarity.Value;
-                // Initialize dictionaries to hold spawn rates for predefined and custom levels.
-                Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
-                Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
-                foreach (string entry in whistleRarity.Split(',').Select(s => s.Trim()))
-                {
-                    string[] entryParts = entry.Split('@');
+            TerminalNode wlTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("wlTerminalNode");
+            RegisterShopItemWithConfig(ModConfig.ConfigWhistleEnabled.Value, ModConfig.ConfigWhistleScrapEnabled.Value, Whistle, wlTerminalNode, ModConfig.ConfigWhistleCost.Value, ModConfig.ConfigWhistleRarity.Value);
 
-                    if (entryParts.Length != 2)
-                    {
-                        continue;
-                    }
-
-                    string name = entryParts[0];
-                    int spawnrate;
-
-                    if (!int.TryParse(entryParts[1], out spawnrate))
-                    {
-                        continue;
-                    }
-
-                    if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
-                    {
-                        spawnRateByLevelTypeScrap[levelType] = spawnrate;
-                        Plugin.Logger.LogInfo($"Registered spawn rate for level type {levelType} to {spawnrate}");
-                    }
-                    else
-                    {
-                        spawnRateByCustomLevelTypeScrap[name] = spawnrate;
-                        Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
-                    }
-                }
-                Items.RegisterScrap(Whistle, spawnRateByLevelTypeScrap, spawnRateByCustomLevelTypeScrap);
-            } else {
-                Items.RegisterScrap(Whistle, 0, LevelTypes.All);
-            }
-            
-            bool whistleItemEnabled = config.ConfigWhistleEnabled.Value;
-            if (whistleItemEnabled) {
-                int whistleCostConfig = config.ConfigWhistleCost.Value;
-                Items.RegisterShopItem(Whistle, null, null, wlTerminalNode, whistleCostConfig);
-            }
-
+            // Redwood Plushie Scrap
             RedWoodPlushie = Assets.MainAssetBundle.LoadAsset<Item>("RedWoodPlushieObj");
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
-            bool scrapEnabledConfig = config.ConfigScrapEnabled.Value;
-            if (scrapEnabledConfig) {
-                string scrapSpawnRatesConfig = config.ConfigScrapRarity.Value;
-                // Initialize dictionaries to hold spawn rates for predefined and custom levels.
-                Dictionary<LevelTypes, int> spawnRateByLevelTypeScrap = new Dictionary<LevelTypes, int>();
-                Dictionary<string, int> spawnRateByCustomLevelTypeScrap = new Dictionary<string, int>();
-                foreach (string entry in scrapSpawnRatesConfig.Split(',').Select(s => s.Trim()))
-                {
-                    string[] entryParts = entry.Split('@');
+            RegisterScrapWithConfig(ModConfig.ConfigScrapEnabled.Value, ModConfig.ConfigScrapRarity.Value, RedWoodPlushie);
 
-                    if (entryParts.Length != 2)
-                    {
-                        continue;
-                    }
-
-                    string name = entryParts[0];
-                    int spawnrate;
-
-                    if (!int.TryParse(entryParts[1], out spawnrate))
-                    {
-                        continue;
-                    }
-
-                    if (Enum.TryParse<LevelTypes>(name, true, out LevelTypes levelType))
-                    {
-                        spawnRateByLevelTypeScrap[levelType] = spawnrate;
-                        Plugin.Logger.LogInfo($"Registered spawn rate for level type {levelType} to {spawnrate}");
-                    }
-                    else
-                    {
-                        spawnRateByCustomLevelTypeScrap[name] = spawnrate;
-                        Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
-                    }
-                }
-                Items.RegisterScrap(RedWoodPlushie, spawnRateByLevelTypeScrap, spawnRateByCustomLevelTypeScrap);
-            } else {
-                Items.RegisterScrap(RedWoodPlushie, 0, LevelTypes.All);
-            }
-
-            
+            // Redwood Giant Enemy
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             TerminalNode pgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
             TerminalKeyword pgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
-            
-            // Network Prefabs need to be registered first. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
-            string spawnratesConfig = config.ConfigSpawnRateEntries.Value;
-            // Initialize dictionaries to hold spawn rates for predefined and custom levels.
+            RegisterEnemyWithConfig(true, ModConfig.ConfigSpawnRateEntries.Value, PinkGiant, pgTerminalNode, pgTerminalKeyword);
+
+
+            Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+
+            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
+            InitializeNetworkBehaviours();
+        }
+        private void RegisterEnemyWithConfig(bool enabled, string configMoonRarity, EnemyType enemy, TerminalNode terminalNode, TerminalKeyword terminalKeyword) {
+            if (enabled) { 
+                (Dictionary<LevelTypes, int> spawnRateByLevelType, Dictionary<string, int> spawnRateByCustomLevelType) = ConfigParsing(configMoonRarity);
+                RegisterEnemy(enemy, spawnRateByLevelType, spawnRateByCustomLevelType, terminalNode, terminalKeyword);
+                return;
+            } else {
+                RegisterEnemy(enemy, 0, LevelTypes.All, terminalNode, terminalKeyword);
+                return;
+            }
+        }
+        private void RegisterScrapWithConfig(bool enabled, string configMoonRarity, Item scrap) {
+            if (enabled) { 
+                (Dictionary<LevelTypes, int> spawnRateByLevelType, Dictionary<string, int> spawnRateByCustomLevelType) = ConfigParsing(configMoonRarity);
+                RegisterScrap(scrap, spawnRateByLevelType, spawnRateByCustomLevelType);
+            } else {
+                RegisterScrap(scrap, 0, LevelTypes.All);
+            }
+            return;
+        }
+        private void RegisterShopItemWithConfig(bool enabledShopItem, bool enabledScrap, Item item, TerminalNode terminalNode, int itemCost, string configMoonRarity) {
+            if (enabledShopItem) { 
+                RegisterShopItem(item, null, null, terminalNode, itemCost);
+            }
+            if (enabledScrap) {
+                RegisterScrapWithConfig(true, configMoonRarity, item);
+            }
+            return;
+        }
+        private (Dictionary<LevelTypes, int> spawnRateByLevelType, Dictionary<string, int> spawnRateByCustomLevelType) ConfigParsing(string configMoonRarity) {
             Dictionary<LevelTypes, int> spawnRateByLevelType = new Dictionary<LevelTypes, int>();
             Dictionary<string, int> spawnRateByCustomLevelType = new Dictionary<string, int>();
 
-            foreach (string entry in spawnratesConfig.Split(',').Select(s => s.Trim()))
-            {
+            foreach (string entry in configMoonRarity.Split(',').Select(s => s.Trim())) {
                 string[] entryParts = entry.Split('@');
 
                 if (entryParts.Length != 2)
@@ -159,12 +113,9 @@ namespace GiantSpecimens {
                     Plugin.Logger.LogInfo($"Registered spawn rate for custom level type {name} to {spawnrate}");
                 }
             }
-
-            // Assuming RegisterEnemy is a method that takes the parsed configurations.
-            RegisterEnemy(PinkGiant, spawnRateByLevelType, spawnRateByCustomLevelType, pgTerminalNode, pgTerminalKeyword);
-            Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-
-            // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
+            return (spawnRateByLevelType, spawnRateByCustomLevelType);
+        }
+        private void InitializeNetworkBehaviours() {
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
             {
@@ -180,7 +131,6 @@ namespace GiantSpecimens {
             }
         }
     }
-
     public static class Assets {
         public static AssetBundle MainAssetBundle = null;
         public static void PopulateAssets() {
