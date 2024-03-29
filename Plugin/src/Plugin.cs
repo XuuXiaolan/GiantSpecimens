@@ -11,10 +11,17 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using LobbyCompatibility.Attributes;
+using LobbyCompatibility.Features;
+using static BepInEx.BepInDependency;
+using LobbyCompatibility.Enums;
+
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency(LethalLib.Plugin.ModGUID)] 
+    [BepInDependency("BMX.LobbyCompatibility", DependencyFlags.HardDependency)]
+    [LobbyCompatibility(CompatibilityLevel.Everyone, VersionStrictness.Patch)]
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
