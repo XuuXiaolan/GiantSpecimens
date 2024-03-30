@@ -13,6 +13,7 @@ using static UnityEngine.ParticleSystem;
 using UnityEngine.Animations.Rigging;
 using System.Text.RegularExpressions;
 using UnityEngine.AI;
+using GiantSpecimens.Colours;
 
 namespace GiantSpecimens {
     class PinkGiantAI : EnemyAI {
@@ -78,6 +79,7 @@ namespace GiantSpecimens {
             Color dustColor = Color.grey; // Default to grey if no color found
             string footstepColourValue = Plugin.ModConfig.ConfigColourHexcode.Value;
             if (string.IsNullOrEmpty(footstepColourValue)) {
+                
                 footstepColour = null;
             } else if (Regex.IsMatch(footstepColourValue, "^#?[0-9a-fA-F]{6}$")) {
                 footstepColour = footstepColourValue;
@@ -332,10 +334,10 @@ namespace GiantSpecimens {
             }
         }
         public void ParticlesFromEatingForestKeeper() {
-            ForestKeeperParticles.Play(); // Make the player unable to interact with these particles, same with footstep ones, also make them be affected by the world for proper fog stuff?
+            ForestKeeperParticles.Play(); // Also make them be affected by the world for proper fog stuff?
         }
         
-        public void ShakePlayerCamera() { //TODO: Implement this function in a way that only affects the player that is in range.
+        public void ShakePlayerCamera() {
                 float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
                     case < 10f:

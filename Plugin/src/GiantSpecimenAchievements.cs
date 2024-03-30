@@ -1,4 +1,4 @@
-namespace GiantSpecimens {
+namespace GiantSpecimens.Achievements {
     /*public class CrushedByRedWoodGiant : BaseAchievement
     {
         [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]

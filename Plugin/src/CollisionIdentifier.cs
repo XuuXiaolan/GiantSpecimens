@@ -3,7 +3,7 @@ using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-namespace GiantSpecimens {
+namespace GiantSpecimens.Collisions {
     public class ColliderIdentifier : MonoBehaviour 
     {
         [SerializeField] public AudioSource CreatureSFX;

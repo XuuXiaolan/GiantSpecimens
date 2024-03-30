@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Scrap {
   public class RedwoodPlushieScrap : GrabbableObject {
     [SerializeField] public AudioSource plushiePlayer;
     [SerializeField] public AudioClip[] plushieSounds;
@@ -10,7 +11,9 @@ namespace GiantSpecimens {
     [SerializeField] public float maxPitch;
     private System.Random noisemakerRandom;
     public Animator triggerAnimator;
-    void LogIfDebugBuild(string text) {
+    public AudioClip soundToPlay;
+
+        void LogIfDebugBuild(string text) {
       #if DEBUG
       Plugin.Logger.LogInfo(text);
       #endif
@@ -24,13 +27,37 @@ namespace GiantSpecimens {
       float loudness = (float)noisemakerRandom.Next((int)(minLoudness * 100f), (int)(maxLoudness * 100f)) / 100f;
       float pitch = (float)noisemakerRandom.Next((int)(minPitch * 100f), (int)(maxPitch * 100f)) / 100f;
       plushiePlayer.pitch = pitch;
-      plushiePlayer.PlayOneShot(plushieSounds[clipToPlay], loudness);
+      soundToPlay = plushieSounds[clipToPlay];
+      PlayPlushiePlayer(loudness);
 
       if (playerHeldBy != null) {
-        if (triggerAnimator != null) {
-          triggerAnimator.SetTrigger("playAnim");
-        }
+        triggerAnimator?.SetTrigger("playAnim");
       }
+    }
+    public void PlayPlushiePlayer(float volume) {
+      plushiePlayer.PlayOneShot(soundToPlay, volume);
+      if (IsHost) {
+        PlayPlushiePlayerClientRpc(volume);
+      }
+      else {
+        PlayPlushiePlayerServerRpc(volume);
+      }
+    }
+
+    [ServerRpc]
+    public void PlayPlushiePlayerServerRpc(float volume) {
+      if (!IsHost) {
+        return;
+      }
+      PlayPlushiePlayerClientRpc(volume);
+    }
+
+    [ClientRpc]
+    public void PlayPlushiePlayerClientRpc(float volume) {
+      if (IsHost) {
+        return;
+      }
+      plushiePlayer.PlayOneShot(soundToPlay, volume);
     }
   }
 }

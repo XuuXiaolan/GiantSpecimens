@@ -11,17 +11,14 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using LobbyCompatibility.Attributes;
-using LobbyCompatibility.Features;
 using static BepInEx.BepInDependency;
-using LobbyCompatibility.Enums;
-
+using GiantSpecimens.Dependency;
+using GiantSpecimens.Configs;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency(LethalLib.Plugin.ModGUID)] 
-    [BepInDependency("BMX.LobbyCompatibility", DependencyFlags.HardDependency)]
-    [LobbyCompatibility(CompatibilityLevel.Everyone, VersionStrictness.Patch)]
+    [BepInDependency("BMX.LobbyCompatibility", Flags:BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
@@ -29,13 +26,17 @@ namespace GiantSpecimens {
         public static Item Whistle;
         public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
-
+        public static CauseOfDeath bludgeoning = EnumUtils.Parse<CauseOfDeath>("Bludgeoning");
+        // add the causes of death here
         private void Awake() {
             Logger = base.Logger;
+            // Lobby Compatibility stuff
+            if (LobbyCompatibilityChecker.Enabled) {
+                LobbyCompatibilityChecker.Init();
+            }
             Assets.PopulateAssets();
-            CauseOfDeath bludgeoning = EnumUtils.Parse<CauseOfDeath>("Bludgeoning");
-            ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
+            ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
             // Whistle Item/Scrap
             Whistle = Assets.MainAssetBundle.LoadAsset<Item>("WhistleObj");
             Utilities.FixMixerGroups(Whistle.spawnPrefab);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Scrap {
   public class WhistleItem : GrabbableObject
   {
     [SerializeField] public AudioSource whistlePlayer;

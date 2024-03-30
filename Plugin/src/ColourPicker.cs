@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Colours {
 
     public enum LevelTag
     {

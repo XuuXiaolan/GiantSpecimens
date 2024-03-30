@@ -4,7 +4,7 @@ using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Configs {
     public class GiantSpecimensConfig {
         public ConfigEntry<int> ConfigMultiplierForestkeeper { get; private set; }
         public ConfigEntry<float> ConfigSpeedRedWood { get; private set; }

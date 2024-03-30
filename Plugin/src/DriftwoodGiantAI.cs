@@ -14,7 +14,7 @@ using UnityEngine.Animations.Rigging;
 using System.Text.RegularExpressions;
 using UnityEngine.AI;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Enemy {
     class DriftwoodGiantAI : EnemyAI {
         
         #pragma warning disable 0649
@@ -25,12 +25,17 @@ namespace GiantSpecimens {
         public bool eatingEnemy = false;
         public EnemyAI targetEnemy;
         public float seeableDistance;
+        private static readonly CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
+        [SerializeField] public AnimationClip spawnAnimation;
+        public float spawnTime;
+        [SerializeField] public AudioSource MouthVoice;
         [SerializeField] public AudioClip[] stompSounds;
         [SerializeField] public AudioClip eatenSound;
         [SerializeField] public AudioClip spawnSound;
         public bool testBuild = false; 
         public LineRenderer line;
         enum State {
+            SpawnAnimation, // Spawning
             IdleAnimation, // Idling
             SearchingForPrey, // Wandering
             RunningToPrey, // Chasing
@@ -48,6 +53,9 @@ namespace GiantSpecimens {
         public override void Start()
         {
             base.Start();
+            if (spawnAnimation != null) {
+                spawnTime = spawnAnimation.length+1;
+            }
             
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
@@ -82,7 +90,7 @@ namespace GiantSpecimens {
 
             creatureVoice.PlayOneShot(spawnSound);
 
-            currentBehaviourStateIndex = (int)State.IdleAnimation;
+            currentBehaviourStateIndex = (int)State.SpawnAnimation;
         }
 
         public override void Update(){
@@ -100,6 +108,9 @@ namespace GiantSpecimens {
             };
             
             switch(currentBehaviourStateIndex) {
+                case (int)State.SpawnAnimation:
+                    agent.speed = 0f;
+                    break;
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
                     break;
@@ -206,6 +217,9 @@ namespace GiantSpecimens {
         }
         
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
+            if (collidedEnemy == targetEnemy) {
+                
+            }
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
