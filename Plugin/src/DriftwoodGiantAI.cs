@@ -24,6 +24,9 @@ namespace GiantSpecimens.Enemy {
         public string levelName;
         public bool eatingEnemy = false;
         public EnemyAI targetEnemy;
+        public bool targettingEnemy;
+        public PlayerControllerB targetPlayer_;
+        public bool targettingPlayer;
         public float seeableDistance;
         private static readonly CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
         [SerializeField] public AnimationClip spawnAnimation;
@@ -116,18 +119,40 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SearchingForPrey:
                     agent.speed = 5;
+                    if (FindClosestTargetEnemyInRange(20f)) {
+
+                    } else if (FindClosestPlayerInRange(20f)) {
+
+                    }
+
                     break;
                 case (int)State.RunningToPrey:
                     agent.speed = 20;
                     // Keep targetting target enemy, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
-                        LogIfDebugBuild("Stop chasing target enemy");
-                        DoAnimationClientRpc("startWalk");
-                        StartSearch(transform.position);
-                        SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
-                        return;
+                    if (targettingEnemy) {
+                        if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
+                            LogIfDebugBuild("Stop chasing target enemy");
+                            DoAnimationClientRpc("startWalk");
+                            StartSearch(transform.position);
+                            SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                            return;
+                        }
+                        SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                     }
-                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
+                    else if (targettingPlayer) {
+                        if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null) {
+                            LogIfDebugBuild("Stop chasing target player");
+                            DoAnimationClientRpc("startWalk");
+                            StartSearch(transform.position);
+                            SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                            return;
+                        }
+                        SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
+                    } else {
+                        LogIfDebugBuild("If you see this, something went wrong.");
+                        LogIfDebugBuild("Resettings state to Scream Animation");
+                        SwitchToBehaviourClientRpc((int)State.Scream);
+                    }
                     break;
 
                 case (int)State.EatingPrey:
@@ -211,7 +236,25 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
+        bool FindClosestPlayerInRange(float range) {
+            PlayerControllerB closestPlayer = null;
+            float minDistance = float.MaxValue;
 
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts) {
+                if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
+                    float distance = Vector3.Distance(transform.position, player.transform.position);
+                    if (distance < range && distance < minDistance) {
+                        minDistance = distance;
+                        closestPlayer = player;
+                    }
+                }
+            }
+            if (closestPlayer != null) {
+                targetPlayer_ = closestPlayer;
+                return true;
+            }
+            return false;
+        }
         public void PlayFootstepSound() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }

@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using UnityEngine.AI;
 using GiantSpecimens.Colours;
 
-namespace GiantSpecimens {
+namespace GiantSpecimens.Enemy {
     class PinkGiantAI : EnemyAI {
         
         // We set these in our Asset Bundle, so we can disable warning CS0649:
@@ -44,6 +44,7 @@ namespace GiantSpecimens {
         public float walkingSpeed;
         public float seeableDistance;
         public float distanceFromShip;
+        public float distanceFromEnemy;
         public Vector3 ship;
         [SerializeField] public AudioClip[] stompSounds;
         [SerializeField] public AudioClip eatenSound;
@@ -272,6 +273,20 @@ namespace GiantSpecimens {
 				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
 			}
 		}
+        public void DealEnemyDamageFromShockwave(EnemyAI enemy, string foot) {
+            if (foot == "LeftFoot") {
+                distanceFromEnemy = Vector3.Distance(CollisionFootL.transform.position, enemy.transform.position);
+            } else if (foot == "RightFoot") {
+                distanceFromEnemy = Vector3.Distance(CollisionFootR.transform.position, enemy.transform.position);
+            }
+
+            if (distanceFromEnemy <= 3f) {
+                enemy.HitEnemy(2);
+            } else if (distanceFromEnemy <= 10f) {
+                enemy.HitEnemy(1);
+            }
+            LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
+        }
         public void ShockwaveDamageL() {
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
@@ -281,14 +296,8 @@ namespace GiantSpecimens {
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "MouthDog" && enemy.enemyHP > 4) {
-                    float distance = Vector3.Distance(CollisionFootL.transform.position, enemy.transform.position);
-                    if (distance <= 3f) {
-                        enemy.HitEnemy(2);
-                    } else if (distance <= 10f) {
-                        enemy.HitEnemy(1);
-                    }
-                    LogIfDebugBuild($"Distance: {distance} HP: {enemy.enemyHP}");
+                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead) {
+                    DealEnemyDamageFromShockwave(enemy, "LeftFoot");
                 }
             }
         }
@@ -301,14 +310,8 @@ namespace GiantSpecimens {
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "MouthDog" && enemy.enemyHP > 4) {
-                    float distance = Vector3.Distance(CollisionFootR.transform.position, enemy.transform.position);
-                    if (distance <= 3f) {
-                        enemy.HitEnemy(2);
-                    } else if (distance <= 10f) {
-                        enemy.HitEnemy(1);
-                    }
-                    LogIfDebugBuild($"Distance: {distance} HP: {enemy.enemyHP}");
+                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead) {
+                    DealEnemyDamageFromShockwave(enemy, "RightFoot");
                 }
             }
         }

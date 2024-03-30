@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2407460478
+CRC: 3232893692
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f5747341f34e337af0b068d409b89fd0
+    Hash: 27188a31048b6f96344fed74a4bfedc9
   TypeTreeHash:
     serializedVersion: 2
-    Hash: baeaaf4415ff74559a45c257430f852e
+    Hash: 66b7dbb8a26fedc42559d6e5178a5001
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: f5747341f34e337af0b068d409b89fd0
+    Hash: 27188a31048b6f96344fed74a4bfedc9
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -61,13 +61,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
 - Class: 114
-  Script: {fileID: 1378315576, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
-- Class: 114
-  Script: {fileID: -1861003077, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
-- Class: 114
   Script: {fileID: 268722865, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
 - Class: 114
   Script: {fileID: 1189126927, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+- Class: 114
+  Script: {fileID: 1720121740, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+- Class: 114
+  Script: {fileID: 1494188094, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 136
@@ -94,8 +94,6 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: AISearchRoutine
 - AssemblyName: Assembly-CSharp
-  ClassName: Battery
-- AssemblyName: Assembly-CSharp
   ClassName: CompatibleNoun
 - AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
@@ -107,6 +105,7 @@ Assets:
 - Assets/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/Scraps/RedwoodPlush.prefab
 - Assets/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/DriftwoodGiant/DriftwoodGiantObj.asset
 - Assets/Scraps/ScrapTerminalNodes/wlTerminalNode.asset
 - Assets/Scraps/whistle.prefab
 - Assets/Scraps/WhistleObj.asset
