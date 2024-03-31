@@ -14,6 +14,7 @@ using System;
 using static BepInEx.BepInDependency;
 using GiantSpecimens.Dependency;
 using GiantSpecimens.Configs;
+using GiantSpecimens.Enemy;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -22,11 +23,15 @@ namespace GiantSpecimens {
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
+        public static EnemyType DriftGiant;
         public static Item RedWoodPlushie;
         public static Item Whistle;
         public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
         public static CauseOfDeath bludgeoning = EnumUtils.Parse<CauseOfDeath>("Bludgeoning");
+        public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
+        public static CauseOfDeath InternalBleed = EnumUtils.Create<CauseOfDeath>("InternalBleed");
+        public static CauseOfDeath Thwomped = EnumUtils.Create<CauseOfDeath>("Thwomped");
         // add the causes of death here
         private void Awake() {
             Logger = base.Logger;
@@ -56,6 +61,13 @@ namespace GiantSpecimens {
             TerminalKeyword pgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
             NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigRedWoodEnabled.Value, ModConfig.ConfigRedWoodRarity.Value, PinkGiant, pgTerminalNode, pgTerminalKeyword);
+
+            // Driftwood Giant Enemy
+            DriftGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("DriftwoodGiantObj");
+            TerminalNode dgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("DriftwoodGiantTN");
+            TerminalKeyword dgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("DriftwoodGiantTK");
+            NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
+            RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
 
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

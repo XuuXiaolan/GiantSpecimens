@@ -10,8 +10,6 @@ namespace GiantSpecimens.Collisions {
         [SerializeField] public AudioClip squishSound;
         [SerializeField] public ParticleSystem BloodSplatterLeft;
         [SerializeField] public ParticleSystem BloodSplatterRight;
-        private static readonly CauseOfDeath Thwomped = EnumUtils.Create<CauseOfDeath>("Thwomped");
-
         void LogIfDebugBuild(string text) {
             #if DEBUG
             Plugin.Logger.LogInfo(text);
@@ -53,7 +51,7 @@ namespace GiantSpecimens.Collisions {
             }
             else if ((collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") && !playerControllerB.isInHangarShipRoom) {
                 
-                playerControllerB.DamagePlayer(200, causeOfDeath: Thwomped);
+                playerControllerB.DamagePlayer(200, causeOfDeath: Plugin.Thwomped);
                 CreatureSFX.PlayOneShot(squishSound);
                 if (collidedObject.name == "CollisionFootL") {
                     BloodSplatterLeft.Play();

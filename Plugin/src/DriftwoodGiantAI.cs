@@ -28,7 +28,6 @@ namespace GiantSpecimens.Enemy {
         public PlayerControllerB targetPlayer_;
         public bool targettingPlayer;
         public float seeableDistance;
-        private static readonly CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
         [SerializeField] public AnimationClip spawnAnimation;
         public float spawnTime;
         [SerializeField] public AudioSource MouthVoice;

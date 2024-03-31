@@ -29,7 +29,7 @@ MonoBehaviour:
   highestSalePercentage: 0
   maxValue: 165
   minValue: 125
-  spawnPrefab: {fileID: 6877448102565513978, guid: ecf49a8c16f01f4429fdfb73d8fa3a57,
+  spawnPrefab: {fileID: 4621528103049380706, guid: 9acd1ac00ed11a1429709f4ebfba287d,
     type: 3}
   requiresBattery: 0
   batteryUsage: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   saveItemVariable: 0
   isDefensiveWeapon: 0
   toolTips:
-  - 'Squish Plushie : [LMB]'
+  - 'Squeeze Plushie : [LMB]'
   verticalOffset: 0.35
   floorYOffset: 0
   allowDroppingAheadOfPlayer: 1
