@@ -1,11 +1,11 @@
 using System.Collections;
 using GameNetcodeStuff;
+using GiantSpecimens.Enemy;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 namespace GiantSpecimens.Collisions {
-    public class ColliderIdentifier : MonoBehaviour 
-    {
+    public class ColliderIdentifier : MonoBehaviour {
         [SerializeField] public AudioSource CreatureSFX;
         [SerializeField] public AudioClip squishSound;
         [SerializeField] public ParticleSystem BloodSplatterLeft;
@@ -15,21 +15,19 @@ namespace GiantSpecimens.Collisions {
             Plugin.Logger.LogInfo(text);
             #endif
         } 
-        private void OnTriggerEnter(Collider other)
-        {
+        private void OnTriggerEnter(Collider other) {
             // Check if the collider is a player or another entity you're interested in
             if (other.CompareTag("Player"))
             {
                 PlayerControllerB playerControllerB = other.GetComponent<PlayerControllerB>();
-                if (playerControllerB != null) {
+                if (playerControllerB != null && !playerControllerB.isPlayerDead) {
                     // Determine which part of your GameObject caused the trigger
                     DetectCollider(this.gameObject, playerControllerB);
                 }
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
+        private void OnCollisionEnter(Collision collision) {
             // Check if the collider is a player or another entity you're interested in
             if (collision.collider.CompareTag("Player"))
             {
@@ -41,15 +39,12 @@ namespace GiantSpecimens.Collisions {
             }
         }
 
-        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB)
-        {
+        void DetectCollider(GameObject collidedObject, PlayerControllerB playerControllerB) {
             // Example: Detect which part of your GameObject caused the collision/trigger
-            if (collidedObject.name == "AttackArea")
-            {
+            if (collidedObject.name == "AttackArea") {
                 LogIfDebugBuild("Collided with AttackArea");
                 // Handle AttackArea collision logic here
-            }
-            else if ((collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") && !playerControllerB.isInHangarShipRoom) {
+            } else if ((collidedObject.name == "CollisionFootL" || collidedObject.name == "CollisionFootR") && !playerControllerB.isInHangarShipRoom) {
                 
                 playerControllerB.DamagePlayer(200, causeOfDeath: Plugin.Thwomped);
                 CreatureSFX.PlayOneShot(squishSound);
@@ -58,8 +53,7 @@ namespace GiantSpecimens.Collisions {
                 } else {
                     BloodSplatterRight.Play();
                 }
-            }
-            else {
+            } else {
                 LogIfDebugBuild("Collided with unknown object: " + collidedObject.name);
             }
         }

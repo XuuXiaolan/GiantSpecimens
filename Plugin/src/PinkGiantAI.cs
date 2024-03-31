@@ -21,38 +21,54 @@ namespace GiantSpecimens.Enemy {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
+        [NonSerialized]
         public static LevelColorMapper levelColorMapper = new();
         public Collider AttackArea;
-        public IEnumerable allAlivePlayers;
-        [SerializeField] public ParticleSystem DustParticlesLeft;
-        [SerializeField] public ParticleSystem DustParticlesRight;
-        [SerializeField] public ParticleSystem ForestKeeperParticles;
-        [SerializeField] public Collider CollisionFootR;
-        [SerializeField] public Collider CollisionFootL;
-        [SerializeField] public ChainIKConstraint LeftFoot;
-        [SerializeField] public ChainIKConstraint RightFoot;
+        [NonSerialized]
+        public ParticleSystem DustParticlesLeft;
+        public ParticleSystem DustParticlesRight;
+        public ParticleSystem ForestKeeperParticles;
+        public Collider CollisionFootR;
+        public Collider CollisionFootL;
+        public ChainIKConstraint LeftFoot;
+        public ChainIKConstraint RightFoot;
         #pragma warning restore 0649
+        [NonSerialized]
         public bool sizeUp = false;
+        [NonSerialized]
         public Vector3 newScale;
+        [NonSerialized]
         public string levelName;
+        [NonSerialized]
         public bool eatingEnemy = false;
+        [NonSerialized]
         public string footstepColour;
+        [NonSerialized]
         public EnemyAI targetEnemy;
+        [NonSerialized]
         public bool idleGiant = true;
+        [NonSerialized]
         public bool waitAfterChase = false;
+        [NonSerialized]
         public float walkingSpeed;
+        [NonSerialized]
         public float seeableDistance;
+        [NonSerialized]
         public float distanceFromShip;
+        [NonSerialized]
         public float distanceFromEnemy;
+        [NonSerialized]
         public Vector3 ship;
-        [SerializeField] public AudioClip[] stompSounds;
-        [SerializeField] public AudioClip eatenSound;
-        [SerializeField] public AudioClip spawnSound;
-        [SerializeField] public GameObject rightBone;
-        [SerializeField] public GameObject leftBone;
-        [SerializeField] public GameObject eatingArea;
+        public AudioClip[] stompSounds;
+        public AudioClip eatenSound;
+        public AudioClip spawnSound;
+        public GameObject rightBone;
+        public GameObject leftBone;
+        public GameObject eatingArea;
         public Vector3 midpoint;
+        [NonSerialized]
         public bool testBuild = false; 
+        [NonSerialized]
         public LineRenderer line;
         enum State {
             IdleAnimation, // Idling
@@ -141,7 +157,7 @@ namespace GiantSpecimens.Enemy {
             StartCoroutine(ScalingUp());
             StartCoroutine(PauseDuringIdle());
 
-            currentBehaviourStateIndex = (int)State.IdleAnimation;
+            SwitchToBehaviourClientRpc((int)State.IdleAnimation);
         }
 
         public override void Update(){
@@ -188,7 +204,7 @@ namespace GiantSpecimens.Enemy {
                     agent.speed = 0f;
                     if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
                         DoAnimationClientRpc("startChase");
-                        StartCoroutine(chaseCoolDown());
+                        StartCoroutine(ChaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
@@ -204,7 +220,7 @@ namespace GiantSpecimens.Enemy {
                     agent.speed = walkingSpeed;
                     if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
                         DoAnimationClientRpc("startChase");
-                        StartCoroutine(chaseCoolDown());
+                        StartCoroutine(ChaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
@@ -403,10 +419,10 @@ namespace GiantSpecimens.Enemy {
             }
             StopCoroutine(ScalingUp());
         }
-        IEnumerator chaseCoolDown() {
+        IEnumerator ChaseCoolDown() {
             yield return new WaitForSeconds(2);
             waitAfterChase = true;
-            StopCoroutine(chaseCoolDown());
+            StopCoroutine(ChaseCoolDown());
         }
         IEnumerator PauseDuringIdle() {
             yield return new WaitForSeconds(15);

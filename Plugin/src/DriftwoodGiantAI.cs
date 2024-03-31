@@ -19,28 +19,53 @@ namespace GiantSpecimens.Enemy {
         
         #pragma warning disable 0649
         public Collider AttackArea;
+        [NonSerialized]
         public IEnumerable allAlivePlayers;
         #pragma warning restore 0649
+        [NonSerialized]
         public string levelName;
+        [NonSerialized]
         public bool eatingEnemy = false;
+        [NonSerialized]
         public EnemyAI targetEnemy;
+        [NonSerialized]
         public bool targettingEnemy;
+        [NonSerialized]
         public PlayerControllerB targetPlayer_;
+        [NonSerialized]
         public bool targettingPlayer;
+        [NonSerialized]
         public float seeableDistance;
-        [SerializeField] public AnimationClip spawnAnimation;
-        public float spawnTime;
-        [SerializeField] public AudioSource MouthVoice;
-        [SerializeField] public AudioClip[] stompSounds;
-        [SerializeField] public AudioClip eatenSound;
-        [SerializeField] public AudioClip spawnSound;
+        public AnimationClip spawnAnimation;
+        [NonSerialized]
+        public bool spawned = false;
+        [NonSerialized]
+        public bool screaming = false;
+        public AudioSource MouthVoice;
+        public AudioClip[] stompSounds;
+        public AudioClip eatenSound;
+        public AudioClip screamSound;
+        public AudioClip spawnSound;
+        [NonSerialized]
+        public bool holdPlayer = false;
+        [NonSerialized]
+        public int previousStateIndex = 0;
+        [NonSerialized]
+        public int nextStateIndex = 0;
+        [NonSerialized]
+        public string nextAnimationName = "";
+        [NonSerialized]
         public bool testBuild = false; 
+        [NonSerialized]
+        private System.Random throwRandom;
+        [NonSerialized]
         public LineRenderer line;
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
             SearchingForPrey, // Wandering
             RunningToPrey, // Chasing
+            SlashingPrey, // Hitting prey
             EatingPrey, // Eating
             PlayingWithPrey, // Playing with a player's body
             Scream, // Screams and damages player
@@ -55,10 +80,7 @@ namespace GiantSpecimens.Enemy {
         public override void Start()
         {
             base.Start();
-            if (spawnAnimation != null) {
-                spawnTime = spawnAnimation.length+1;
-            }
-            
+            throwRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
 
@@ -91,7 +113,7 @@ namespace GiantSpecimens.Enemy {
             }
 
             creatureVoice.PlayOneShot(spawnSound);
-
+            StartCoroutine(SpawnAnimationCooldown());
             currentBehaviourStateIndex = (int)State.SpawnAnimation;
         }
 
@@ -119,9 +141,24 @@ namespace GiantSpecimens.Enemy {
                 case (int)State.SearchingForPrey:
                     agent.speed = 5;
                     if (FindClosestTargetEnemyInRange(20f)) {
-
+                        // chase the target enemy.
+                        // SCREAM
+                        StopSearch(currentSearch);
+                        previousBehaviourStateIndex = currentBehaviourStateIndex;
+                        nextStateIndex = (int)State.RunningToPrey;
+                        nextAnimationName = "startChase";
+                        DoAnimationClientRpc("startScream");
+                        SwitchToBehaviourClientRpc((int)State.Scream);
+                        
                     } else if (FindClosestPlayerInRange(20f)) {
-
+                        // chase the target player.
+                        // SCREAM
+                        StopSearch(currentSearch);
+                        previousBehaviourStateIndex = currentBehaviourStateIndex;
+                        nextStateIndex = (int)State.RunningToPrey;
+                        nextAnimationName = "startChase";
+                        DoAnimationClientRpc("startScream");
+                        SwitchToBehaviourClientRpc((int)State.Scream);
                     }
 
                     break;
@@ -131,9 +168,14 @@ namespace GiantSpecimens.Enemy {
                     if (targettingEnemy) {
                         if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
                             LogIfDebugBuild("Stop chasing target enemy");
-                            DoAnimationClientRpc("startWalk");
                             StartSearch(transform.position);
-                            SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                            targettingEnemy = false;
+                            
+                            previousBehaviourStateIndex = currentBehaviourStateIndex;
+                            nextStateIndex = (int)State.SearchingForPrey;
+                            nextAnimationName = "startWalk";
+                            DoAnimationClientRpc("startScream");
+                            SwitchToBehaviourClientRpc((int)State.Scream);
                             return;
                         }
                         SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
@@ -143,23 +185,32 @@ namespace GiantSpecimens.Enemy {
                             LogIfDebugBuild("Stop chasing target player");
                             DoAnimationClientRpc("startWalk");
                             StartSearch(transform.position);
-                            SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                            targettingPlayer = false;
+
+                            previousBehaviourStateIndex = currentBehaviourStateIndex;
+                            nextStateIndex = (int)State.SearchingForPrey;
+                            nextAnimationName = "startWalk";
+                            DoAnimationClientRpc("startScream");
+                            SwitchToBehaviourClientRpc((int)State.Scream);
                             return;
                         }
                         SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
                     } else {
                         LogIfDebugBuild("If you see this, something went wrong.");
                         LogIfDebugBuild("Resettings state to Scream Animation");
+                        previousBehaviourStateIndex = currentBehaviourStateIndex;
                         SwitchToBehaviourClientRpc((int)State.Scream);
                     }
                     break;
-
+                case (int)State.SlashingPrey:
+                    agent.speed = 0f;
+                    break;
                 case (int)State.EatingPrey:
                     agent.speed = 0f;
-                    // Does nothing so far.
 					break;
                 case (int)State.Scream:
                     agent.speed = 0f;
+                    // Does nothing, on purpose.
                     break;
                 case (int)State.PlayingWithPrey:
                     agent.speed = 0f;
@@ -180,18 +231,9 @@ namespace GiantSpecimens.Enemy {
 				line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
 			}
 		}
-        public void ShockwaveDamageScream() {
-            PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
-            if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
-                if (distance <= 10f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(15, causeOfDeath: CauseOfDeath.Blast);
-                }
-            }
-        }
 
         public void ParticlesFromEatingPrey() {
-           
+           // Make some like, red, steaming hot particles come out of the enemy corpses.
         }
         
         public void ShakePlayerCamera() {
@@ -221,7 +263,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "MouthDog" || enemy.enemyType.enemyName == "BaboonHawk" || enemy.enemyType.enemyName == "Masked") { // fact check the names
+                if (enemy.enemyType.enemyName == "MouthDog" || enemy.enemyType.enemyName == "Baboon hawk" || enemy.enemyType.enemyName == "Masked") { // fact check the names
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance) {
                         minDistance = distance;
@@ -231,6 +273,7 @@ namespace GiantSpecimens.Enemy {
             }
             if (closestEnemy != null) {
                 targetEnemy = closestEnemy;
+                targettingEnemy = true;
                 return true;
             }
             return false;
@@ -240,7 +283,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts) {
-                if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
+                if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead && !player.isInHangarShipRoom) {
                     float distance = Vector3.Distance(transform.position, player.transform.position);
                     if (distance < range && distance < minDistance) {
                         minDistance = distance;
@@ -250,18 +293,85 @@ namespace GiantSpecimens.Enemy {
             }
             if (closestPlayer != null) {
                 targetPlayer_ = closestPlayer;
+                targettingPlayer = true;
                 return true;
             }
             return false;
         }
+        public void DriftwoodScream() {
+            ScreamPause();
+            PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
+            if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance <= 10f && !player.isInHangarShipRoom) {
+                    player.DamagePlayer(25, causeOfDeath: Plugin.RupturedEardrums);
+                }
+            }
+        }
         public void PlayFootstepSound() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
-        
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
-            if (collidedEnemy == targetEnemy) {
-                
+            if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
+                SwitchToBehaviourClientRpc((int)State.SlashingPrey);
+                DoAnimationClientRpc("startSlash");
             }
+        }
+        public void SlashEnemy() {
+            // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
+            if (targettingEnemy) {
+                targetEnemy.HitEnemy(1);
+                if (targetEnemy.enemyHP <= 0) {
+                    nextStateIndex = (int)State.EatingPrey;
+                    nextAnimationName = "startEating";
+                    targettingEnemy = false;
+                    targetEnemy = null;
+                }
+            } else {
+                LogIfDebugBuild("This shouldn't be happening, please report this.");
+            }
+        }
+        public override void OnCollideWithPlayer(Collider other) {
+            if (other.GetComponent<PlayerControllerB>() == targetPlayer_) {
+                StartCoroutine(ThrowPlayer());
+            }
+        }
+        public void ThrowingPlayer() {
+            if (targetPlayer_ == null) return; // No player to throw
+
+            // Calculate the throwing direction
+            float randomAngle = throwRandom.Next(-4, 5) * (float)Math.PI / 8; // Random angle between -40 degrees and 40 degrees
+            Vector3 throwingDirection = Quaternion.Euler(0, randomAngle, 0) * Vector3.up;
+            // Throw the player
+            targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 15; // Apply velocity to the player in the calculated direction
+
+            // Reset targeting
+            targettingPlayer = false;
+            targetPlayer_ = null;
+        }
+        IEnumerator ThrowPlayer() {
+            // Make it so that it waits until the animation is over before throwing the player.
+            holdPlayer = true;
+            yield return new WaitForSeconds(4f);
+            holdPlayer = false;
+            ThrowingPlayer();
+            StopCoroutine(ThrowPlayer());
+        }
+        IEnumerator ScreamPause() {
+            // yield return new WaitForSeconds(screamSound.length);
+            yield return new WaitForSeconds(3);
+            DoAnimationClientRpc(nextAnimationName);
+            SwitchToBehaviourClientRpc(nextStateIndex);
+            StopCoroutine(ScreamPause());
+        }
+        IEnumerator SpawnAnimationCooldown() {
+            // yield return new WaitForSeconds(spawnAnimation.length);
+            yield return new WaitForSeconds(3);
+            previousBehaviourStateIndex = currentBehaviourStateIndex;
+            StartSearch(transform.position);
+            DoAnimationClientRpc("startWalk");
+            SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+            StopCoroutine(SpawnAnimationCooldown());
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
