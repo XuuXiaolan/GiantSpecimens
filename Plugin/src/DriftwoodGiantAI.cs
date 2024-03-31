@@ -18,7 +18,7 @@ namespace GiantSpecimens.Enemy {
     class DriftwoodGiantAI : EnemyAI {
         
         #pragma warning disable 0649
-        public Collider AttackArea;
+        public Collider grabArea;
         [NonSerialized]
         public IEnumerable allAlivePlayers;
         #pragma warning restore 0649
@@ -37,6 +37,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public float seeableDistance = 50f;
         public AnimationClip spawnAnimation;
+        public AnimationClip throwAnimation;
         [NonSerialized]
         public bool spawned = false;
         [NonSerialized]
@@ -111,7 +112,6 @@ namespace GiantSpecimens.Enemy {
                 line.widthMultiplier = 0.2f; // reduce width of the line
                 #endif
             }
-
             creatureVoice.PlayOneShot(spawnSound);
             StartCoroutine(SpawnAnimationCooldown());
             currentBehaviourStateIndex = (int)State.SpawnAnimation;
@@ -175,7 +175,7 @@ namespace GiantSpecimens.Enemy {
                             LogIfDebugBuild("Stop chasing target enemy");
                             StartSearch(transform.position);
                             targettingEnemy = false;
-                            
+                            targetEnemy = null;
                             previousBehaviourStateIndex = currentBehaviourStateIndex;
                             nextStateIndex = (int)State.SearchingForPrey;
                             nextAnimationName = "startWalk";
@@ -193,14 +193,14 @@ namespace GiantSpecimens.Enemy {
                             // DoAnimationClientRpc("startWalk");
                             StartSearch(transform.position);
                             targettingPlayer = false;
-
+                            targetPlayer_ = null;
                             previousBehaviourStateIndex = currentBehaviourStateIndex;
                             nextStateIndex = (int)State.SearchingForPrey;
                             nextAnimationName = "startWalk";
                             // DoAnimationClientRpc("startScream");
                             currentBehaviourStateIndex = (int)State.Scream;
                             SwitchToBehaviourClientRpc((int)State.Scream);
-                            DriftwoodScream(); //REPLACE ALL DriftwoodScream WITH ANIMATION EVENTS
+                            DriftwoodScream(); //REPLACE ALL DriftwoodScream() WITH ANIMATION EVENTS
                             return;
                         }
                         SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
@@ -343,30 +343,46 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
-            if (other.GetComponent<PlayerControllerB>() == targetPlayer_) {
+            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !holdPlayer) {
                 StartCoroutine(ThrowPlayer());
+                previousBehaviourStateIndex = currentBehaviourStateIndex;
+                currentBehaviourStateIndex = (int)State.PlayingWithPrey;
+                SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
         }
-        public void ThrowingPlayer() {
-            if (targetPlayer_ == null) return; // No player to throw
 
+        public void ThrowingPlayer() { // Setting velocity of a kinematic body is not supported, change this method
+            if (targetPlayer_ == null) return; // No player to throw
+            holdPlayer = false;
             // Calculate the throwing direction
-            float randomAngle = throwRandom.Next(-4, 5) * (float)Math.PI / 8; // Random angle between -40 degrees and 40 degrees
-            Vector3 throwingDirection = Quaternion.Euler(0, randomAngle, 0) * Vector3.up;
+            float randomAngle = -80;
+            Vector3 throwingDirection = Quaternion.Euler(randomAngle, 0, 0) * (transform.forward*-1);
             // Throw the player
             LogIfDebugBuild("Launching Player");
-            targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 15; // Apply velocity to the player in the calculated direction
-
-            // Reset targeting
-            targettingPlayer = false;
-            targetPlayer_ = null;
+            targetPlayer_.thisController.enabled = false;
+            targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
+            targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 50; // Apply velocity to the player in the calculated direction
         }
         IEnumerator ThrowPlayer() {
             // Make it so that it waits until the animation is over before throwing the player.
+            // Make it call ThrowingPlayer() during the animationEvent
             holdPlayer = true;
-            yield return new WaitForSeconds(4f);
-            holdPlayer = false;
+            // yield return new WaitForSeconds(throwAnimation.length);
+            yield return new WaitForSeconds(3f);
             ThrowingPlayer();
+            yield return new WaitForSeconds(1f);
+            targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
+            targetPlayer_.thisController.enabled = true;
+            // Reset targeting
+            targettingPlayer = false;
+            targetPlayer_ = null;
+
+            previousBehaviourStateIndex = currentBehaviourStateIndex;
+            nextStateIndex = (int)State.SearchingForPrey;
+            nextAnimationName = "startWalk";
+            currentBehaviourStateIndex = (int)State.Scream;
+            SwitchToBehaviourClientRpc((int)State.Scream);
+            DriftwoodScream();
             StopCoroutine(ThrowPlayer());
         }
         IEnumerator ScreamPause() {

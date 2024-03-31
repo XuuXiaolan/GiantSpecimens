@@ -28,7 +28,6 @@ namespace GiantSpecimens {
         public static Item Whistle;
         public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
-        public static CauseOfDeath bludgeoning = EnumUtils.Parse<CauseOfDeath>("Bludgeoning");
         public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
         public static CauseOfDeath InternalBleed = EnumUtils.Create<CauseOfDeath>("InternalBleed");
         public static CauseOfDeath Thwomped = EnumUtils.Create<CauseOfDeath>("Thwomped");

@@ -320,22 +320,14 @@ MonoBehaviour:
   stunnedByPlayer: {fileID: 0}
   debugEnemyAI: 0
   isOutside: 1
-  AttackArea: {fileID: 4977400778008324452}
-  levelName: 
-  eatingEnemy: 0
-  targetEnemy: {fileID: 0}
-  targettingEnemy: 0
-  targetPlayer_: {fileID: 0}
-  targettingPlayer: 0
-  seeableDistance: 0
+  grabArea: {fileID: 0}
   spawnAnimation: {fileID: 0}
-  spawnTime: 0
+  throwAnimation: {fileID: 0}
   MouthVoice: {fileID: 0}
   stompSounds: []
   eatenSound: {fileID: 0}
+  screamSound: {fileID: 0}
   spawnSound: {fileID: 0}
-  testBuild: 0
-  line: {fileID: 0}
 --- !u!1 &1760494545514185940
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,10 +517,9 @@ GameObject:
   - component: {fileID: 4977400778008324452}
   - component: {fileID: 2404083747590330350}
   - component: {fileID: 475170678178170824}
-  - component: {fileID: 1279831380146465837}
   m_Layer: 19
-  m_Name: AttackArea
-  m_TagString: Untagged
+  m_Name: GrabArea
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,7 +534,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5303, y: 1.8172313, z: 1.1987605}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1726638350594255407}
@@ -563,7 +554,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -591,8 +582,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -611,22 +602,6 @@ MonoBehaviour:
   mainScript: {fileID: 4742397117755799529}
   canCollideWithEnemies: 1
   onlyCollideWhenGrounded: 0
---- !u!114 &1279831380146465837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3672817918767437113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1720121740, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CreatureSFX: {fileID: 6423160387804008587}
-  squishSound: {fileID: 0}
-  BloodSplatterLeft: {fileID: 0}
-  BloodSplatterRight: {fileID: 0}
 --- !u!1 &3777807698898498947
 GameObject:
   m_ObjectHideFlags: 0
