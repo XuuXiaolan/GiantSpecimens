@@ -35,7 +35,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public bool targettingPlayer;
         [NonSerialized]
-        public float seeableDistance;
+        public float seeableDistance = 50f;
         public AnimationClip spawnAnimation;
         [NonSerialized]
         public bool spawned = false;
@@ -55,7 +55,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public string nextAnimationName = "";
         [NonSerialized]
-        public bool testBuild = false; 
+        public bool testBuild = true; 
         [NonSerialized]
         private System.Random throwRandom;
         [NonSerialized]
@@ -147,7 +147,8 @@ namespace GiantSpecimens.Enemy {
                         previousBehaviourStateIndex = currentBehaviourStateIndex;
                         nextStateIndex = (int)State.RunningToPrey;
                         nextAnimationName = "startChase";
-                        DoAnimationClientRpc("startScream");
+                        // DoAnimationClientRpc("startScream");
+                        currentBehaviourStateIndex = (int)State.Scream;
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         
                     } else if (FindClosestPlayerInRange(20f)) {
@@ -157,8 +158,12 @@ namespace GiantSpecimens.Enemy {
                         previousBehaviourStateIndex = currentBehaviourStateIndex;
                         nextStateIndex = (int)State.RunningToPrey;
                         nextAnimationName = "startChase";
-                        DoAnimationClientRpc("startScream");
+                        // DoAnimationClientRpc("startScream");
+                        currentBehaviourStateIndex = (int)State.Scream;
                         SwitchToBehaviourClientRpc((int)State.Scream);
+                        targettingPlayer = true;
+                        DriftwoodScream();
+                        return;
                     }
 
                     break;
@@ -174,8 +179,10 @@ namespace GiantSpecimens.Enemy {
                             previousBehaviourStateIndex = currentBehaviourStateIndex;
                             nextStateIndex = (int)State.SearchingForPrey;
                             nextAnimationName = "startWalk";
-                            DoAnimationClientRpc("startScream");
+                            // DoAnimationClientRpc("startScream");
+                            currentBehaviourStateIndex = (int)State.Scream;
                             SwitchToBehaviourClientRpc((int)State.Scream);
+                            DriftwoodScream();
                             return;
                         }
                         SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
@@ -183,15 +190,17 @@ namespace GiantSpecimens.Enemy {
                     else if (targettingPlayer) {
                         if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null) {
                             LogIfDebugBuild("Stop chasing target player");
-                            DoAnimationClientRpc("startWalk");
+                            // DoAnimationClientRpc("startWalk");
                             StartSearch(transform.position);
                             targettingPlayer = false;
 
                             previousBehaviourStateIndex = currentBehaviourStateIndex;
                             nextStateIndex = (int)State.SearchingForPrey;
                             nextAnimationName = "startWalk";
-                            DoAnimationClientRpc("startScream");
+                            // DoAnimationClientRpc("startScream");
+                            currentBehaviourStateIndex = (int)State.Scream;
                             SwitchToBehaviourClientRpc((int)State.Scream);
+                            DriftwoodScream(); //REPLACE ALL DriftwoodScream WITH ANIMATION EVENTS
                             return;
                         }
                         SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
@@ -199,6 +208,7 @@ namespace GiantSpecimens.Enemy {
                         LogIfDebugBuild("If you see this, something went wrong.");
                         LogIfDebugBuild("Resettings state to Scream Animation");
                         previousBehaviourStateIndex = currentBehaviourStateIndex;
+                        currentBehaviourStateIndex = (int)State.Scream;
                         SwitchToBehaviourClientRpc((int)State.Scream);
                     }
                     break;
@@ -299,11 +309,11 @@ namespace GiantSpecimens.Enemy {
             return false;
         }
         public void DriftwoodScream() {
-            ScreamPause();
+            StartCoroutine(ScreamPause());
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
-                if (distance <= 10f && !player.isInHangarShipRoom) {
+                if (distance <= 30f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(25, causeOfDeath: Plugin.RupturedEardrums);
                 }
             }
@@ -313,8 +323,9 @@ namespace GiantSpecimens.Enemy {
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
             if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
+                currentBehaviourStateIndex = (int)State.SlashingPrey;
                 SwitchToBehaviourClientRpc((int)State.SlashingPrey);
-                DoAnimationClientRpc("startSlash");
+                // DoAnimationClientRpc("startSlash");
             }
         }
         public void SlashEnemy() {
@@ -343,6 +354,7 @@ namespace GiantSpecimens.Enemy {
             float randomAngle = throwRandom.Next(-4, 5) * (float)Math.PI / 8; // Random angle between -40 degrees and 40 degrees
             Vector3 throwingDirection = Quaternion.Euler(0, randomAngle, 0) * Vector3.up;
             // Throw the player
+            LogIfDebugBuild("Launching Player");
             targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 15; // Apply velocity to the player in the calculated direction
 
             // Reset targeting
@@ -360,7 +372,8 @@ namespace GiantSpecimens.Enemy {
         IEnumerator ScreamPause() {
             // yield return new WaitForSeconds(screamSound.length);
             yield return new WaitForSeconds(3);
-            DoAnimationClientRpc(nextAnimationName);
+            // DoAnimationClientRpc(nextAnimationName);
+            currentBehaviourStateIndex = nextStateIndex;
             SwitchToBehaviourClientRpc(nextStateIndex);
             StopCoroutine(ScreamPause());
         }
@@ -369,7 +382,8 @@ namespace GiantSpecimens.Enemy {
             yield return new WaitForSeconds(3);
             previousBehaviourStateIndex = currentBehaviourStateIndex;
             StartSearch(transform.position);
-            DoAnimationClientRpc("startWalk");
+            // DoAnimationClientRpc("startWalk");
+            currentBehaviourStateIndex = (int)State.SearchingForPrey;
             SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
             StopCoroutine(SpawnAnimationCooldown());
         }

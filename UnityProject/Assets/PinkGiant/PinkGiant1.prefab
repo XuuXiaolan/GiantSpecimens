@@ -10678,7 +10678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScript: {fileID: 0}
+  mainScript: {fileID: 6467145502882101534}
   canCollideWithEnemies: 0
   onlyCollideWhenGrounded: 1
 --- !u!65 &7245915093902742686
