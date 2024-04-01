@@ -14,6 +14,7 @@ using UnityEngine.Animations.Rigging;
 using System.Text.RegularExpressions;
 using UnityEngine.AI;
 using GiantSpecimens.Colours;
+using System.Reflection;
 
 namespace GiantSpecimens.Enemy {
     class PinkGiantAI : EnemyAI {
@@ -24,7 +25,6 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public static LevelColorMapper levelColorMapper = new();
         public Collider AttackArea;
-        [NonSerialized]
         public ParticleSystem DustParticlesLeft;
         public ParticleSystem DustParticlesRight;
         public ParticleSystem ForestKeeperParticles;
@@ -65,6 +65,7 @@ namespace GiantSpecimens.Enemy {
         public GameObject rightBone;
         public GameObject leftBone;
         public GameObject eatingArea;
+        [NonSerialized]
         public Vector3 midpoint;
         [NonSerialized]
         public bool testBuild = false; 
@@ -83,11 +84,13 @@ namespace GiantSpecimens.Enemy {
             #endif
         }
 
+
         public override void Start()
         {
             base.Start();
-            
+
             levelName = RoundManager.Instance.currentLevel.name;
+            
             LogIfDebugBuild(levelName);
             ship = StartOfRound.Instance.elevatorTransform.position;
             
@@ -232,7 +235,7 @@ namespace GiantSpecimens.Enemy {
                             Distance = Vector3.Distance(player.transform.position, transform.position)
                         })
                         .OrderBy(x => x.Distance)
-                        .FirstOrDefault(x => HasLineOfSightToPosition(x.Player.transform.position));
+                        .FirstOrDefault(x => RWHasLineOfSightToPosition(x.Player.transform.position));
                     if (closestPlayer != null) {
                         ChainIKConstraint closestFoot = GetClosestCollisionFoot(transform.position);
                         if (closestFoot != null && closestFoot.data.target == null) {
@@ -249,7 +252,7 @@ namespace GiantSpecimens.Enemy {
                 case (int)State.RunningToForestKeeper:
                     agent.speed = walkingSpeed * 4;
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, ship) <= distanceFromShip) {
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, ship) <= distanceFromShip) {
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
@@ -454,8 +457,7 @@ namespace GiantSpecimens.Enemy {
             StopCoroutine(EatForestKeeper());
         }
         
-        public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) 
-        {
+        public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy)  {
             if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation) && waitAfterChase) {
                 eatingEnemy = true;
                 targetEnemy.GetComponent<BoxCollider>().enabled = false;
@@ -464,6 +466,22 @@ namespace GiantSpecimens.Enemy {
                 targetEnemy.agent.enabled = false;
                 StartCoroutine(EatForestKeeper());
             }
+        }
+
+        public bool RWHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 60, float proximityAwareness = -1f) {
+            if (eye == null) {
+                _ = transform;
+            } else {
+                _ = eye;
+            }
+
+            if (Vector3.Distance(eye.position, pos) < (float)range && !Physics.Linecast(eye.position, pos, StartOfRound.Instance.collidersAndRoomMaskAndDefault)) {
+                Vector3 to = pos - eye.position;
+                if (Vector3.Angle(eye.forward, to) < width || Vector3.Distance(transform.position, pos) < proximityAwareness) {
+                    return true;
+                }
+            }
+            return false;
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)

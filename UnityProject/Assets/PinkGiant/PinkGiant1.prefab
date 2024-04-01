@@ -5498,7 +5498,7 @@ AudioSource:
   m_GameObject: {fileID: 3455035492200802635}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300042, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
+  OutputAudioMixerGroup: {fileID: 24300008, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
@@ -15905,7 +15905,7 @@ AudioSource:
   m_GameObject: {fileID: 7106771812439242330}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300042, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
+  OutputAudioMixerGroup: {fileID: 24300008, guid: cb9fb87df5ca10840a2a5b2dc5a4284c,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
@@ -15937,26 +15937,26 @@ AudioSource:
       inWeight: 0
       outWeight: 0.53714675
     - serializedVersion: 3
-      time: 0.17202455
-      value: 0.40350342
-      inSlope: -1.930597
-      outSlope: -1.930597
+      time: 0.29932863
+      value: 0.45239258
+      inSlope: -1.3945124
+      outSlope: -1.3945124
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.28559855
+      outWeight: 0.21045746
     - serializedVersion: 3
-      time: 0.53078616
-      value: 0.07670593
-      inSlope: -0.4530217
-      outSlope: -0.4530217
+      time: 0.6654602
+      value: 0.18534851
+      inSlope: -0.46589053
+      outSlope: -0.46589053
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.281917
-      outWeight: 0.2734463
+      outWeight: 0.2830378
     - serializedVersion: 3
       time: 1
-      value: 0.01273194
+      value: 0.113226324
       inSlope: -0.12944469
       outSlope: -0.12944469
       tangentMode: 0
@@ -26960,28 +26960,17 @@ MonoBehaviour:
   CollisionFootL: {fileID: 1718243051634059981}
   LeftFoot: {fileID: 1090942959471345453}
   RightFoot: {fileID: 1925312714256464198}
-  sizeUp: 0
-  newScale: {x: 0, y: 0, z: 0}
-  levelName: 
-  eatingEnemy: 0
-  footstepColour: 
-  targetEnemy: {fileID: 0}
-  idleGiant: 1
-  waitAfterChase: 0
-  walkingSpeed: 0
-  seeableDistance: 0
-  distanceFromShip: 0
-  distanceFromEnemy: 0
-  ship: {x: 0, y: 0, z: 0}
-  stompSounds: []
+  stompSounds:
+  - {fileID: 8300000, guid: ecb1a0cbaeb35804c82327aa22356d8c, type: 3}
+  - {fileID: 8300000, guid: 9c3a8f4e5ca314c4b855a8b08413ae4f, type: 3}
+  - {fileID: 8300000, guid: fc31f77b31a885641af79b974908280e, type: 3}
+  - {fileID: 8300000, guid: 38614a9bd3465754e9079d69249fae51, type: 3}
   eatenSound: {fileID: 8300000, guid: 8e7d862da249a214b915beddaf216e92, type: 3}
   spawnSound: {fileID: 8300000, guid: 761762607577f0b478ecc681b0d0073c, type: 3}
   rightBone: {fileID: 2985979343833894823}
   leftBone: {fileID: 4759125576862044272}
   eatingArea: {fileID: 7413607098762727321}
   midpoint: {x: 0, y: 0, z: 0}
-  testBuild: 0
-  line: {fileID: 0}
 --- !u!4 &4191697983304776165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd81896e5197bb642a78aaf63015cf00,

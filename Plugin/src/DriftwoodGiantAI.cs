@@ -13,6 +13,7 @@ using static UnityEngine.ParticleSystem;
 using UnityEngine.Animations.Rigging;
 using System.Text.RegularExpressions;
 using UnityEngine.AI;
+using System.Reflection;
 
 namespace GiantSpecimens.Enemy {
     class DriftwoodGiantAI : EnemyAI {
@@ -61,6 +62,7 @@ namespace GiantSpecimens.Enemy {
         private System.Random throwRandom;
         [NonSerialized]
         public LineRenderer line;
+
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
@@ -171,7 +173,7 @@ namespace GiantSpecimens.Enemy {
                     agent.speed = 20;
                     // Keep targetting target enemy, unless they are over 20 units away and we can't see them.
                     if (targettingEnemy) {
-                        if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
+                        if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
                             LogIfDebugBuild("Stop chasing target enemy");
                             StartSearch(transform.position);
                             targettingEnemy = false;
@@ -188,7 +190,7 @@ namespace GiantSpecimens.Enemy {
                         SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                     }
                     else if (targettingPlayer) {
-                        if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !HasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null) {
+                        if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null) {
                             LogIfDebugBuild("Stop chasing target player");
                             // DoAnimationClientRpc("startWalk");
                             StartSearch(transform.position);
@@ -352,8 +354,10 @@ namespace GiantSpecimens.Enemy {
         }
 
         public void ThrowingPlayer() { // Setting velocity of a kinematic body is not supported, change this method
-            if (targetPlayer_ == null) return; // No player to throw
-            holdPlayer = false;
+            if (targetPlayer_ == null) {
+                LogIfDebugBuild("No player to throw, This is a bug, please report this");
+                return;
+            }
             // Calculate the throwing direction
             float randomAngle = -80;
             Vector3 throwingDirection = Quaternion.Euler(randomAngle, 0, 0) * (transform.forward*-1);
@@ -362,6 +366,7 @@ namespace GiantSpecimens.Enemy {
             targetPlayer_.thisController.enabled = false;
             targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
             targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 50; // Apply velocity to the player in the calculated direction
+            holdPlayer = false;
         }
         IEnumerator ThrowPlayer() {
             // Make it so that it waits until the animation is over before throwing the player.
@@ -377,9 +382,11 @@ namespace GiantSpecimens.Enemy {
             targettingPlayer = false;
             targetPlayer_ = null;
 
+            
             previousBehaviourStateIndex = currentBehaviourStateIndex;
             nextStateIndex = (int)State.SearchingForPrey;
             nextAnimationName = "startWalk";
+            // DoAnimationClientRpc("startScream");
             currentBehaviourStateIndex = (int)State.Scream;
             SwitchToBehaviourClientRpc((int)State.Scream);
             DriftwoodScream();
@@ -390,8 +397,26 @@ namespace GiantSpecimens.Enemy {
             yield return new WaitForSeconds(3);
             // DoAnimationClientRpc(nextAnimationName);
             currentBehaviourStateIndex = nextStateIndex;
+            if (previousBehaviourStateIndex == (int)State.PlayingWithPrey) {
+                StartSearch(transform.position);    
+            }
             SwitchToBehaviourClientRpc(nextStateIndex);
             StopCoroutine(ScreamPause());
+        }
+        public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 60, float proximityAwareness = -1f) {
+            if (eye == null) {
+                _ = transform;
+            } else {
+                _ = eye;
+            }
+
+            if (Vector3.Distance(eye.position, pos) < (float)range && !Physics.Linecast(eye.position, pos, StartOfRound.Instance.collidersAndRoomMaskAndDefault)) {
+                Vector3 to = pos - eye.position;
+                if (Vector3.Angle(eye.forward, to) < width || Vector3.Distance(transform.position, pos) < proximityAwareness) {
+                    return true;
+                }
+            }
+            return false;
         }
         IEnumerator SpawnAnimationCooldown() {
             // yield return new WaitForSeconds(spawnAnimation.length);
