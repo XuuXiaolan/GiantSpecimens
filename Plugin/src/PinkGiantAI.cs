@@ -305,10 +305,13 @@ namespace GiantSpecimens.Enemy {
             }
             LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
         }
-        public void ShockwaveDamageL() {
+
+        public void LeftFootStepInteractions() {
+            DustParticlesLeft.Play(); // Play the particle system with the updated color
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
+                float distance = Vector3.Distance(CollisionFootL.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15, causeOfDeath: Plugin.InternalBleed);
                 }
@@ -319,10 +322,13 @@ namespace GiantSpecimens.Enemy {
                 }
             }
         }
-        public void ShockwaveDamageR() {
+
+        public void RightFootStepInteractions() {
+            DustParticlesRight.Play(); // Play the particle system with the updated color
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
+                float distance = Vector3.Distance(CollisionFootR.transform.position, player.transform.position);
                 if (distance <= 10f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(15, causeOfDeath: Plugin.InternalBleed);
                 }
@@ -332,14 +338,6 @@ namespace GiantSpecimens.Enemy {
                     DealEnemyDamageFromShockwave(enemy, "RightFoot");
                 }
             }
-        }
-
-        public void DustFromLeftFootstep() {
-            DustParticlesLeft.Play(); // Play the particle system with the updated color
-        }
-
-        public void DustFromRightFootstep() {
-            DustParticlesRight.Play(); // Play the particle system with the updated color
         }
 
         private Color HexToColor(string hexCode) {
@@ -431,9 +429,6 @@ namespace GiantSpecimens.Enemy {
             yield return new WaitForSeconds(15);
             idleGiant = false;
             StopCoroutine(PauseDuringIdle());
-        }
-        public void PlayFootstepSound() {
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         IEnumerator EatForestKeeper() {
             targetEnemy.currentBehaviourStateIndex = 0;
