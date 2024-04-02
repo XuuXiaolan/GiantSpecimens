@@ -246,6 +246,7 @@ namespace GiantSpecimens.Enemy {
 
         public void ParticlesFromEatingPrey() {
            // Make some like, red, steaming hot particles come out of the enemy corpses.
+           // Also colour the hands a bit red.
         }
         
         public void ShakePlayerCamera() {
