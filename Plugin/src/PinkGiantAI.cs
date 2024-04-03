@@ -170,7 +170,7 @@ namespace GiantSpecimens.Enemy {
             SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
 
-        public override void Update(){
+        public override void Update() {
             base.Update();
 
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
@@ -302,9 +302,9 @@ namespace GiantSpecimens.Enemy {
             }
 
             if (distanceFromEnemy <= 3f) {
-                enemy.HitEnemy(2);
+                enemy.HitEnemy(2, null, false);
             } else if (distanceFromEnemy <= 10f) {
-                enemy.HitEnemy(1);
+                enemy.HitEnemy(1, null, false);
             }
             LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
         }
@@ -320,7 +320,7 @@ namespace GiantSpecimens.Enemy {
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead) {
+                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
                     DealEnemyDamageFromShockwave(enemy, "LeftFoot");
                 }
             }
@@ -337,7 +337,7 @@ namespace GiantSpecimens.Enemy {
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead) {
+                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
                     DealEnemyDamageFromShockwave(enemy, "RightFoot");
                 }
             }
