@@ -360,11 +360,11 @@ namespace GiantSpecimens.Enemy {
                 return;
             }
             // Calculate the throwing direction
-            float randomAngle = -80;
+            float randomAngle = 60;
             Vector3 throwingDirection = Quaternion.Euler(randomAngle, 0, 0) * (transform.forward*-1);
             // Throw the player
             LogIfDebugBuild("Launching Player");
-            targetPlayer_.thisController.enabled = false;
+            // targetPlayer_.thisController.enabled = false;
             targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
             targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 50; // Apply velocity to the player in the calculated direction
             holdPlayer = false;
@@ -378,7 +378,7 @@ namespace GiantSpecimens.Enemy {
             ThrowingPlayer();
             yield return new WaitForSeconds(1f);
             targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
-            targetPlayer_.thisController.enabled = true;
+            //targetPlayer_.thisController.enabled = true;
             // Reset targeting
             targettingPlayer = false;
             targetPlayer_ = null;
