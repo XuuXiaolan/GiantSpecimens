@@ -61,6 +61,10 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         private System.Random throwRandom;
         [NonSerialized]
+        public float delayedResponse;
+        [NonSerialized]
+        public bool tooFarAway = false;
+        [NonSerialized]
         public LineRenderer line;
 
         enum State {
@@ -211,6 +215,15 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SlashingPrey:
                     agent.speed = 0f;
+                    
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) >= 2f && targetEnemy != null) {
+                        tooFarAway = true;
+                        if (delayedResponse >= 4f) {
+                            previousStateIndex = currentBehaviourStateIndex;
+                            // DoAnimationClientRpc("startChase");
+                            SwitchToBehaviourClientRpc((int)State.RunningToPrey);
+                        }
+                    }
                     break;
                 case (int)State.EatingPrey:
                     agent.speed = 0f;
@@ -320,7 +333,9 @@ namespace GiantSpecimens.Enemy {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
-            if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
+            if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && tooFarAway) {
+                tooFarAway = false;
+                delayedResponse = 0f;
                 SwitchToBehaviourClientRpc((int)State.SlashingPrey);
                 // DoAnimationClientRpc("startSlash");
             }
@@ -328,12 +343,14 @@ namespace GiantSpecimens.Enemy {
         public void SlashEnemy() {
             // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
             if (targettingEnemy) {
-                targetEnemy.HitEnemy(1, null, false);
-                if (targetEnemy.enemyHP <= 0) {
-                    nextStateIndex = (int)State.EatingPrey;
-                    nextAnimationName = "startEating";
-                    targettingEnemy = false;
-                    targetEnemy = null;
+                if (!tooFarAway) {
+                    targetEnemy.HitEnemy(1, null, true);
+                    if (targetEnemy.enemyHP <= 0) {
+                        nextStateIndex = (int)State.EatingPrey;
+                        nextAnimationName = "startEating";
+                        targettingEnemy = false;
+                        targetEnemy = null;
+                    }
                 }
             } else {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
