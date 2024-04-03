@@ -347,37 +347,52 @@ namespace GiantSpecimens.Enemy {
         }
         public override void OnCollideWithPlayer(Collider other) {
             if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !holdPlayer) {
+                holdPlayer = true;
                 StartCoroutine(ThrowPlayer());
                 previousBehaviourStateIndex = currentBehaviourStateIndex;
                 currentBehaviourStateIndex = (int)State.PlayingWithPrey;
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
         }
-
-        public void ThrowingPlayer() { // Setting velocity of a kinematic body is not supported, change this method
+        public void ThrowingPlayer() {
             if (targetPlayer_ == null) {
                 LogIfDebugBuild("No player to throw, This is a bug, please report this");
                 return;
             }
-            // Calculate the throwing direction
-            float randomAngle = 60;
-            Vector3 throwingDirection = Quaternion.Euler(randomAngle, 0, 0) * (transform.forward*-1);
+
+            // Calculate the throwing direction with an upward angle
+            Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
+            Vector3 upDirection = transform.TransformDirection(Vector3.up).normalized;
+            // Creating a direction that is 60 degrees upwards from the back direction
+            Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(45, transform.right) * upDirection).normalized;
+
+            // Calculate the throwing force
+            float throwForceMagnitude = 100;
             // Throw the player
             LogIfDebugBuild("Launching Player");
-            // targetPlayer_.thisController.enabled = false;
+
+            Rigidbody playerBody = targetPlayer_.GetComponent<Rigidbody>();
             targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
-            targetPlayer_.GetComponent<Rigidbody>().velocity = throwingDirection * 50; // Apply velocity to the player in the calculated direction
-            holdPlayer = false;
+            playerBody.velocity = Vector3.zero; // Reset any existing velocity
+            playerBody.AddTorque(Vector3.Cross(throwingDirection, transform.up) * throwForceMagnitude, ForceMode.Impulse);
+            playerBody.AddForce(throwingDirection * throwForceMagnitude, ForceMode.Impulse);
         }
+
+
         IEnumerator ThrowPlayer() {
             // Make it so that it waits until the animation is over before throwing the player.
             // Make it call ThrowingPlayer() during the animationEvent
-            holdPlayer = true;
             // yield return new WaitForSeconds(throwAnimation.length);
             yield return new WaitForSeconds(3f);
             ThrowingPlayer();
-            yield return new WaitForSeconds(1f);
-            targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
+            holdPlayer = false;
+            yield return new WaitForSeconds(2f);
+            try {
+                LogIfDebugBuild("Setting to null");
+                targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
+            } catch {
+                LogIfDebugBuild("Trying to change kinematics of an unknown player.");
+            }
             //targetPlayer_.thisController.enabled = true;
             // Reset targeting
             targettingPlayer = false;

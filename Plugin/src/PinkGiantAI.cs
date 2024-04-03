@@ -380,7 +380,7 @@ namespace GiantSpecimens.Enemy {
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
-                }
+                } 
         }
         bool FindClosestForestKeeperInRange(float range) {
             EnemyAI closestEnemy = null;
