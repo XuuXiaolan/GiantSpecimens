@@ -363,6 +363,7 @@ namespace GiantSpecimens.Enemy {
                 float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
                     case < 10f:
+                    
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Long);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
