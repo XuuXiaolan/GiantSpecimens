@@ -1,14 +1,14 @@
-## v 2.0.0 NEW ENEMY
+## v 2.0.0 OVERHAUL UPDATE
 - Added BMX-Lobby Compatibility for public lobbies.
 - ~~Added achievements.~~
 - Added dependency -> EnumUtils, allows me to setup custom causes of death :3.
 - Fixed plushie sounds being client-sided.
 - Made mod compatible for v50.
 - ~~Ported over to LLL (Lethal Level Loader).~~
-- ~~Added NEW ENEMY, Driftwood Giant.~~
+- Added NEW ENEMY, Driftwood Giant.
 - Improved footstep range colliders for shockwaves.
 - ~~Hopefully added a shader to improve particle system by now~~
-- ~~Reworked all Redwood Giant animations and added a new one with a roar with its own custom sound~~
+- Reworked all Redwood Giant animations and added a new one with a roar with its own custom sound.
 - ~~If target enemy to Redwood Giant is [REDACTED], Switch particle system.~~
 
 ## v 1.7.2 *QoL update*

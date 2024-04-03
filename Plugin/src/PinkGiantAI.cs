@@ -50,8 +50,6 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public bool idleGiant = true;
         [NonSerialized]
-        public bool waitAfterChase = false;
-        [NonSerialized]
         public float walkingSpeed;
         [NonSerialized]
         public float seeableDistance;
@@ -61,9 +59,14 @@ namespace GiantSpecimens.Enemy {
         public float distanceFromEnemy;
         [NonSerialized]
         public Transform shipBoundaries;
+        public AnimationClip idle;
+        public AnimationClip walking;
+        public AnimationClip eating;
+        public AnimationClip roaring;
         public AudioClip[] stompSounds;
         public AudioClip eatenSound;
         public AudioClip spawnSound;
+        public AudioClip roarSound;
         public GameObject rightBone;
         public GameObject leftBone;
         public GameObject eatingArea;
@@ -74,6 +77,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public LineRenderer line;
         enum State {
+            SpawnAnimation, // Roaring
             IdleAnimation, // Idling
             SearchingForForestKeeper, // Wandering
             RunningToForestKeeper, // Chasing
@@ -159,18 +163,17 @@ namespace GiantSpecimens.Enemy {
             }
 
             FootSource.PlayOneShot(spawnSound);
-            transform.position += new Vector3(0f, 10f, 0f);
+            EnemyMouthSource.PlayOneShot(roarSound);
             StartCoroutine(ScalingUp());
-            StartCoroutine(PauseDuringIdle());
-
-            SwitchToBehaviourClientRpc((int)State.IdleAnimation);
+            currentBehaviourStateIndex = (int)State.SpawnAnimation;
+            SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
 
         public override void Update(){
             base.Update();
 
             if (currentBehaviourStateIndex == (int)State.EatingForestKeeper && targetEnemy != null) {
-                midpoint = (rightBone.transform.position + leftBone.transform.position) / 2;
+                midpoint = leftBone.transform.position;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
                 targetEnemy.transform.LookAt(eatingArea.transform.position);
                 targetEnemy.transform.position = midpoint + new Vector3(0, -5.5f, 0);
@@ -195,6 +198,22 @@ namespace GiantSpecimens.Enemy {
                 // targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.5f);
             } //Should I have this whole thing be in AIInterval instead?
         }
+        public void SearchOrChaseTarget() {
+            if (FindClosestForestKeeperInRange(seeableDistance)){
+                DoAnimationClientRpc("startChase");
+                LogIfDebugBuild("Start Target ForestKeeper");
+                StopSearch(currentSearch);
+                currentBehaviourStateIndex = (int)State.RunningToForestKeeper;
+                SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
+            } // Look for Forest Keeper
+            else {
+                DoAnimationClientRpc("startWalk");
+                LogIfDebugBuild("Start Walking Around");
+                StartSearch(transform.position);
+                currentBehaviourStateIndex = (int)State.SearchingForForestKeeper;
+                SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
+            }
+        }
         public override void DoAIInterval()
         {
             
@@ -206,29 +225,19 @@ namespace GiantSpecimens.Enemy {
                 return;
             };
             switch(currentBehaviourStateIndex) {
+                case (int)State.SpawnAnimation:
+                    agent.speed = 0f;
+                    break;
                 case (int)State.IdleAnimation:
                     agent.speed = 0f;
-                    if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
-                        DoAnimationClientRpc("startChase");
-                        StartCoroutine(ChaseCoolDown());
-                        LogIfDebugBuild("Start Target ForestKeeper");
-                        StopSearch(currentSearch);
-                        SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
-                    } // Look for Forest Keeper
-                    else if (!idleGiant) {
-                        DoAnimationClientRpc("startWalk");
-                        LogIfDebugBuild("Start Walking Around");
-                        StartSearch(transform.position);
-                        SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
-                    }
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = walkingSpeed;
-                    if (FindClosestForestKeeperInRange(seeableDistance) && !idleGiant){
+                    if (FindClosestForestKeeperInRange(seeableDistance)){
                         DoAnimationClientRpc("startChase");
-                        StartCoroutine(ChaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
                         StopSearch(currentSearch);
+                        currentBehaviourStateIndex = (int)State.RunningToForestKeeper;
                         SwitchToBehaviourClientRpc((int)State.RunningToForestKeeper);
                     } // Look for Forest Keeper
                     var closestPlayer = StartOfRound.Instance.allPlayerScripts
@@ -259,6 +268,7 @@ namespace GiantSpecimens.Enemy {
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
+                        currentBehaviourStateIndex = (int)State.SearchingForForestKeeper;
                         SwitchToBehaviourClientRpc((int)State.SearchingForForestKeeper);
                         return;
                     }
@@ -424,14 +434,8 @@ namespace GiantSpecimens.Enemy {
             }
             StopCoroutine(ScalingUp());
         }
-        IEnumerator ChaseCoolDown() {
-            yield return new WaitForSeconds(2);
-            waitAfterChase = true;
-            StopCoroutine(ChaseCoolDown());
-        }
         IEnumerator PauseDuringIdle() {
-            yield return new WaitForSeconds(15);
-            idleGiant = false;
+            yield return new WaitForSeconds(idle.length);
             StopCoroutine(PauseDuringIdle());
         }
         IEnumerator EatForestKeeper() {
@@ -442,22 +446,22 @@ namespace GiantSpecimens.Enemy {
             targetEnemy.creatureVoice.Stop();
             targetEnemy.creatureSFX.Stop();
             EnemyMouthSource.PlayOneShot(eatenSound, 1);
-            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);            
+            currentBehaviourStateIndex = (int)State.EatingForestKeeper;
+            SwitchToBehaviourClientRpc((int)State.EatingForestKeeper);
             DoAnimationClientRpc("eatForestKeeper");
-            yield return new WaitForSeconds(10);
-            targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
-            eatingEnemy = false;
-            sizeUp = false;
-            idleGiant = true;
-            waitAfterChase = false;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(eating.length);
             StartCoroutine(PauseDuringIdle());
+            currentBehaviourStateIndex = (int)State.IdleAnimation;
             SwitchToBehaviourClientRpc((int)State.IdleAnimation);
             StopCoroutine(EatForestKeeper());
         }
-        
+        public void EatingTargetGiant() {
+            targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
+            eatingEnemy = false;
+            sizeUp = false;
+        }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy)  {
-            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation) && waitAfterChase) {
+            if (collidedEnemy == targetEnemy && !eatingEnemy && !(currentBehaviourStateIndex == (int)State.IdleAnimation)) {
                 eatingEnemy = true;
                 targetEnemy.GetComponent<BoxCollider>().enabled = false;
                 targetEnemy.transform.Find("FGiantModelContainer").Find("AnimContainer").Find("metarig").Find("spine").Find("spine.003").Find("shoulder.R").Find("upper_arm.R").Find("forearm.R").Find("hand.R").GetComponent<BoxCollider>().enabled = false;
