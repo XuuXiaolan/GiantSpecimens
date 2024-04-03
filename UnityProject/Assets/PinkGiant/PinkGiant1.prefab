@@ -26875,6 +26875,14 @@ MonoBehaviour:
   eye: {fileID: 8217395349451536069}
   dieSFX: {fileID: 0}
   enemyBehaviourStates:
+  - name: SpawnAnimation
+    VoiceClip: {fileID: 0}
+    playOneShotVoice: 0
+    SFXClip: {fileID: 0}
+    playOneShotSFX: 0
+    IsAnimTrigger: 0
+    parameterString: 
+    boolValue: 0
   - name: IdleAnimation
     VoiceClip: {fileID: 0}
     playOneShotVoice: 0
