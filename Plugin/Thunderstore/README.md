@@ -1,3 +1,12 @@
+<img src="https://img.shields.io/badge/lc--version-v50-000" /></a>
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/XuXiaolan/TheGiantSpecimens?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/XuXiaolan/TheGiantSpecimens?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
+
+![banner](https://imgur.com/a/gMsoLOi)
+
+Mod that adds a variety of giant enemies, part of the forest keeper family, Currently adds 2 brand new enemies.
+## Credits
+
 The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-company/p/XuVELD/HotbarRD/).
 
 (currently adds one enemy, the RedWood Giant, License is public on the github, all rights are reserved)

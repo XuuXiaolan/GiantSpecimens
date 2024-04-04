@@ -14,10 +14,10 @@ using UnityEngine.Animations.Rigging;
 using System.Text.RegularExpressions;
 using UnityEngine.AI;
 using System.Reflection;
+using GiantSpecimens.Patches;
 
 namespace GiantSpecimens.Enemy {
-    class DriftwoodGiantAI : EnemyAI {
-        
+    class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         #pragma warning disable 0649
         public Collider grabArea;
         [NonSerialized]
@@ -65,8 +65,43 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public bool tooFarAway = false;
         [NonSerialized]
+        public int numberOfFeedings = 0;
+        [NonSerialized]
         public LineRenderer line;
+        ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
 
+        int IVisibleThreat.SendSpecialBehaviour(int id) {
+            return 0;
+        }
+        int IVisibleThreat.GetThreatLevel(Vector3 seenByPosition) {
+            return 18;
+        }
+        int IVisibleThreat.GetInterestLevel() {
+            return 5;
+        }
+        Transform IVisibleThreat.GetThreatLookTransform() {
+            return eye;
+        }
+        Transform IVisibleThreat.GetThreatTransform() {
+            return transform;
+        }
+        Vector3 IVisibleThreat.GetThreatVelocity() {
+            if (IsOwner)
+            {
+                return agent.velocity;
+            }
+
+            return Vector3.zero;
+        }
+        float IVisibleThreat.GetVisibility() {
+            if (isEnemyDead) {
+                return 0f;
+            }
+            if (agent.velocity.sqrMagnitude > 0f) {
+                return 1f;
+            }
+            return 0.75f;
+        }
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
@@ -123,12 +158,18 @@ namespace GiantSpecimens.Enemy {
             SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
 
-        public override void Update(){
+        public override void Update() {
             base.Update();
+            if (GameNetworkManager.Instance.localPlayerController != null) {
+                DriftwoodGiantSeePlayerEffect();
+            }
+            if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
+                isEnemyDead = true;
+                KillEnemyOnOwnerClient(false);
+                // DoAnimationClientRpc("startDeath");
+            }
         }
-        public override void DoAIInterval()
-        {
-            
+        public override void DoAIInterval() {
             base.DoAIInterval();
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
@@ -146,7 +187,7 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SearchingForPrey:
                     agent.speed = 5;
-                    if (FindClosestTargetEnemyInRange(20f)) {
+                    if (FindClosestTargetEnemyInRange(30f)) {
                         // chase the target enemy.
                         // SCREAM
                         StopSearch(currentSearch);
@@ -156,7 +197,7 @@ namespace GiantSpecimens.Enemy {
                         // DoAnimationClientRpc("startScream");
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         
-                    } else if (FindClosestPlayerInRange(20f)) {
+                    } else if (FindClosestPlayerInRange(30f)) {
                         // chase the target player.
                         // SCREAM
                         StopSearch(currentSearch);
@@ -257,7 +298,7 @@ namespace GiantSpecimens.Enemy {
            // Also colour the hands a bit red.
         }
         
-        public void ShakePlayerCamera() {
+        public void ShakePlayerCameraOnDistance() {
                 float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
                     case < 10f:
@@ -299,6 +340,10 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
+        public override void HitFromExplosion(float distance)
+        {
+            base.HitFromExplosion(distance);
+        }
         bool FindClosestPlayerInRange(float range) {
             PlayerControllerB closestPlayer = null;
             float minDistance = float.MaxValue;
@@ -319,13 +364,13 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
-        public void DriftwoodScream() {
-            StartCoroutine(ScreamPause());
+        public void DriftwoodScream() { // run this multiple times in one scream animation
+            StartCoroutine(ScreamPause()); // make this coroutine start at the start of the scream animation using animationEvents instead.
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
                 if (distance <= 30f && !player.isInHangarShipRoom) {
-                    player.DamagePlayer(100, causeOfDeath: Plugin.RupturedEardrums);
+                    player.DamagePlayer(5, causeOfDeath: Plugin.RupturedEardrums); // make this damage multiple times through the scream animation
                 }
             }
         }
@@ -356,10 +401,24 @@ namespace GiantSpecimens.Enemy {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
         }
+        public void DiggingIntoEnemyBody() {
+            if (numberOfFeedings <= 4) {
+                numberOfFeedings++;
+                // TODO: change colour of hand material into a redder colour gradually
+            }
+            else {
+                numberOfFeedings = 0;
+                previousStateIndex = currentBehaviourStateIndex;
+                // DoAnimationClientRpc("startWalk");
+                SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                //change animation
+            }
+        }
         public override void OnCollideWithPlayer(Collider other) {
             if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !holdPlayer) {
                 holdPlayer = true;
                 StartCoroutine(ThrowPlayer());
+                // DoAnimationClientRpc("startThrow");
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
         }
@@ -379,14 +438,29 @@ namespace GiantSpecimens.Enemy {
             float throwForceMagnitude = 100;
             // Throw the player
             LogIfDebugBuild("Launching Player");
-
+            GiantPatches.thrownByGiant = true;
             Rigidbody playerBody = targetPlayer_.GetComponent<Rigidbody>();
             targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
             playerBody.velocity = Vector3.zero; // Reset any existing velocity
             playerBody.AddTorque(Vector3.Cross(throwingDirection, transform.up) * throwForceMagnitude, ForceMode.Impulse);
             playerBody.AddForce(throwingDirection * throwForceMagnitude, ForceMode.Impulse);
         }
-
+        public void DriftwoodGiantSeePlayerEffect() {
+            if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && targetPlayer_ != null && !targettingPlayer) {
+                return;
+            }
+            if (currentBehaviourStateIndex == (int)State.RunningToPrey && targetPlayer_ == GameNetworkManager.Instance.localPlayerController) {
+                GameNetworkManager.Instance.localPlayerController.IncreaseFearLevelOverTime(1.4f);
+                return;
+            }
+            if (!GameNetworkManager.Instance.localPlayerController.isInHangarShipRoom && CheckLineOfSightForPosition(GameNetworkManager.Instance.localPlayerController.gameplayCamera.transform.position, 45f, 70)) {
+                if (Vector3.Distance(base.transform.position, GameNetworkManager.Instance.localPlayerController.transform.position) < 15f) {
+                    GameNetworkManager.Instance.localPlayerController.JumpToFearLevel(0.7f);
+                } else {
+                    GameNetworkManager.Instance.localPlayerController.JumpToFearLevel(0.4f);
+                }
+            }
+        }
 
         IEnumerator ThrowPlayer() {
             // Make it so that it waits until the animation is over before throwing the player.

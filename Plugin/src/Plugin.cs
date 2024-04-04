@@ -15,6 +15,7 @@ using static BepInEx.BepInDependency;
 using GiantSpecimens.Dependency;
 using GiantSpecimens.Configs;
 using GiantSpecimens.Enemy;
+using GiantSpecimens.Patches;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -68,6 +69,7 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
 
+            GiantPatches.Init();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 

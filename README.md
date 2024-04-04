@@ -1,7 +1,7 @@
 Mod that adds a variety of giant enemies, part of the forest keeper family.
 ## Credits
 
-The Giant Specimens, created by Xu Xiaolan.
+The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-company/p/XuVELD/HotbarRD/).
 
 (currently adds one enemy, the RedWood Giant, License is public on the github, all rights are reserved)
 
@@ -21,9 +21,16 @@ The Giant Specimens, created by Xu Xiaolan.
 
 -New RedWood Giant model textures and material are created by [@MeatBallDemon](https://twitter.com/_MeatBallDemon_) on twitter, fantastic work done (V1.4.0+)!
 
--Texture help provided by [@Sconey](https://thunderstore.io/c/lethal-company/p/Sconeys/abandonedcompanyassets/) with her lovely mod.
+-Driftwood Giant textures provided by [@Sconey](https://thunderstore.io/c/lethal-company/p/Sconeys/abandonedcompanyassets/) with her lovely mod.
 
 -Plushie Model and animations by [@Sintego](https://thunderstore.io/c/lethal-company/p/Scintesto/Monster_Plushies/).
+
+-Driftwood Giant animations by shrkiツ
+
+-Redwood Giant animations by shrkiツ
+
+-Uh, support me if you'd like on the support button next to Manual Download on thunderstore :p
+
 
 ## Sound Credits.
 

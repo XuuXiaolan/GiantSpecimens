@@ -107,7 +107,6 @@ namespace GiantSpecimens.Enemy {
             Color dustColor = Color.grey; // Default to grey if no color found
             string footstepColourValue = Plugin.ModConfig.ConfigColourHexcode.Value;
             if (string.IsNullOrEmpty(footstepColourValue)) {
-                
                 footstepColour = null;
             } else if (Regex.IsMatch(footstepColourValue, "^#?[0-9a-fA-F]{6}$")) {
                 footstepColour = footstepColourValue;
