@@ -99,7 +99,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useNumberSpawnedFalloff: 1
-  enemyPrefab: {fileID: 981355394639798793, guid: 9a18bf08944c88d4bb8af31b56e31550,
+  enemyPrefab: {fileID: 1472772988145881168, guid: 97ee3806b3572a64a915e49f199d14c1,
     type: 3}
   PowerLevel: 1
   MaxCount: 4
