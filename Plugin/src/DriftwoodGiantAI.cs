@@ -402,7 +402,8 @@ namespace GiantSpecimens.Enemy {
                 LogIfDebugBuild("No player to throw, This is a bug, please report this");
                 return;
             }
-            // GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
+            currentlyGrabbed = false;
+            GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
 
             // Calculate the throwing direction with an upward angle
             Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
@@ -445,7 +446,6 @@ namespace GiantSpecimens.Enemy {
             yield return new WaitForSeconds(throwAnimation.length);
             try {
                 LogIfDebugBuild("Setting to null");
-                currentlyGrabbed = false;
                 targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
             } catch {
                 LogIfDebugBuild("Trying to change kinematics of an unknown player.");
