@@ -8,7 +8,7 @@ namespace GiantSpecimens.Patches;
 
 public static class GiantPatches {
     public static bool thrownByGiant = false;
-    public static NavMeshBuildSource BoxSource10x10() {
+    /*public static NavMeshBuildSource BoxSource10x10() {
         Collider shipBounds = StartOfRound.Instance.shipBounds;
         MeshFilter meshFilter = shipBounds.GetComponent<MeshFilter>();
 
@@ -20,13 +20,13 @@ public static class GiantPatches {
         };
 
         return src;
-    }
+    }*/
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
-        On.RoundManager.Awake += RoundManager_Awake;
+        // On.RoundManager.Awake += RoundManager_Awake;
     }
 
-    private static void RoundManager_Awake(On.RoundManager.orig_Awake orig, RoundManager self) {
+    /*private static void RoundManager_Awake(On.RoundManager.orig_Awake orig, RoundManager self) {
         orig(self);
             // Create a list of NavMeshBuildSource objects
         List<NavMeshBuildSource> sources =
@@ -37,7 +37,7 @@ public static class GiantPatches {
 
         // Define the area in which you want the NavMesh to be built
         // This should be large enough to encompass all the sources you're including
-        Bounds bounds = new Bounds(StartOfRound.Instance.shipBounds.transform.position, StartOfRound.Instance.shipBounds.transform.localScale); // Adjust this to fit your game's needs
+        Bounds bounds = new Bounds(StartOfRound.Instance.shipBounds.transform.position, StartOfRound.Instance.shipBounds.transform.localScale);
 
         // Get the default NavMesh build settings
         var buildSettings = NavMesh.GetSettingsByID(0);
@@ -53,7 +53,7 @@ public static class GiantPatches {
         } else {
             Debug.LogError("Failed to bake NavMesh.");
         }
-    }
+    }*/
 
     private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
         if (thrownByGiant) {
