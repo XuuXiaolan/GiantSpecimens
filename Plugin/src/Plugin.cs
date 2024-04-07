@@ -32,6 +32,7 @@ namespace GiantSpecimens {
         public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
         public static CauseOfDeath InternalBleed = EnumUtils.Create<CauseOfDeath>("InternalBleed");
         public static CauseOfDeath Thwomped = EnumUtils.Create<CauseOfDeath>("Thwomped");
+        public static ThreatType DriftwoodGiant = EnumUtils.Create<ThreatType>("DriftwoodGiant");
         // add the causes of death here
         private void Awake() {
             Logger = base.Logger;

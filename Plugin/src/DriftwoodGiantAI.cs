@@ -68,7 +68,7 @@ namespace GiantSpecimens.Enemy {
         public int numberOfFeedings = 0;
         [NonSerialized]
         public LineRenderer line;
-        ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
+        ThreatType IVisibleThreat.type => Plugin.DriftwoodGiant;
 
         int IVisibleThreat.SendSpecialBehaviour(int id) {
             return 0;
@@ -98,7 +98,7 @@ namespace GiantSpecimens.Enemy {
                 return 0f;
             }
             if (agent.velocity.sqrMagnitude > 0f) {
-                return 1f;
+                return 0.5f;
             }
             return 0.75f;
         }
@@ -122,6 +122,7 @@ namespace GiantSpecimens.Enemy {
         public override void Start()
         {
             base.Start();
+            
             throwRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
@@ -157,7 +158,6 @@ namespace GiantSpecimens.Enemy {
             StartCoroutine(SpawnAnimationCooldown());
             SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
-
         public override void Update() {
             base.Update();
             if (GameNetworkManager.Instance.localPlayerController != null) {
