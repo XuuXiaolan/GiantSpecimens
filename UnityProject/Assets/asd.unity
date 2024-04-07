@@ -124,7 +124,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &131314237
+--- !u!1001 &6089502160236407377
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -132,143 +132,65 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3557904968736990047, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_Name
-      value: PinkGiant1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3836968317997771202, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 3722999877
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -8.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -25.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.1603397
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9870619
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 198.453
-      objectReference: {fileID: 0}
-    - target: {fileID: 4191697983304776165, guid: 02289ad966df406499db271667241680,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 02289ad966df406499db271667241680, type: 3}
---- !u!1001 &3269360825685268557
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1472772988145881168, guid: 97ee3806b3572a64a915e49f199d14c1,
-        type: 3}
-      propertyPath: m_Name
-      value: AnimatedDriftwoodV11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 30.835152
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -4.4136314
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2250541518518061802, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7454393755612235324, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3294786988664788413, guid: 97ee3806b3572a64a915e49f199d14c1,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239104572702603063, guid: 97ee3806b3572a64a915e49f199d14c1,
+    - target: {fileID: 7713137263235069350, guid: 97ee3806b3572a64a915e49f199d14c1,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2175182613
+      value: 3715129842
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798126845334396038, guid: 97ee3806b3572a64a915e49f199d14c1,
+        type: 3}
+      propertyPath: m_Name
+      value: AnimatedDriftwoodV11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -279,5 +201,4 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 3269360825685268557}
-  - {fileID: 131314237}
+  - {fileID: 6089502160236407377}

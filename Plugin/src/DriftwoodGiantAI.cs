@@ -50,8 +50,6 @@ namespace GiantSpecimens.Enemy {
         public AudioClip screamSound;
         public AudioClip spawnSound;
         [NonSerialized]
-        public bool holdPlayer = false;
-        [NonSerialized]
         public bool currentlyGrabbed = false;
         [NonSerialized]
         public int previousStateIndex = 0;
@@ -136,6 +134,7 @@ namespace GiantSpecimens.Enemy {
                 isEnemyDead = true;
                 KillEnemyOnOwnerClient(false);
                 DoAnimationClientRpc("startDeath");
+                creatureVoice.PlayOneShot(dieSFX);
             }
 
             if (targetPlayer_ == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
@@ -341,8 +340,11 @@ namespace GiantSpecimens.Enemy {
                 }
             }
         }
-        public void PlayFootstepSound() {
-            //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+        public void PlayRunFootsteps() {
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+        }
+        public void PlayWalkFootsteps() {
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
             if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && tooFarAway) {
@@ -387,8 +389,7 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
-            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !holdPlayer) {
-                holdPlayer = true;
+            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !currentlyGrabbed) {
                 DoAnimationClientRpc("startThrow");
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
@@ -441,7 +442,6 @@ namespace GiantSpecimens.Enemy {
             // Make it call ThrowingPlayer() during the animationEvent
             yield return new WaitForSeconds(throwAnimation.length);
             ThrowingPlayer();
-            holdPlayer = false;
             try {
                 LogIfDebugBuild("Setting to null");
                 targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
@@ -461,6 +461,7 @@ namespace GiantSpecimens.Enemy {
             StopCoroutine(ThrowPlayer());
         }
         IEnumerator ScreamPause() {
+            creatureVoice.PlayOneShot(screamSound);
             yield return new WaitForSeconds(screamAnimation.length);
             DoAnimationClientRpc(nextAnimationName);
             if (previousStateIndex == (int)State.PlayingWithPrey) {

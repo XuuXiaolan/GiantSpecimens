@@ -1,4 +1,14 @@
 ## v 2.0.0 OVERHAUL UPDATE
+- Added NEW ENEMY, Driftwood Giant.
+- Added achievements.
+- If target enemy to Redwood Giant is [REDACTED], Switch particle system.
+- Hopefully added a shader to improve particle system by now
+- Ported over to LLL (Lethal Level Loader).
+
+<details>
+  <summary>Older Versions</summary>
+
+## v 1.8.0 *QoL + v50 compat*
 - Added BMX-Lobby Compatibility for public lobbies.
 - Added dependency -> EnumUtils, allows me to setup custom causes of death for when you scan dead players :3.
 - Fixed plushie sounds being client-sided.
@@ -6,12 +16,6 @@
 - Improved footstep range colliders for shockwaves.
 - Reworked all Redwood Giant animations and added a new one with a roar with its own custom sound.
 - Added a ship hitbox that prevents giants from approaching it/dealing damage there.
-
-- Added NEW ENEMY, Driftwood Giant.
-- ~~Added achievements.~~
-- ~~If target enemy to Redwood Giant is [REDACTED], Switch particle system.~~
-- ~~Hopefully added a shader to improve particle system by now~~
-- ~~Ported over to LLL (Lethal Level Loader).~~
 
 ## v 1.7.2 *QoL update*
 - Updated dependency to latest LethalLib, meaning you can now specify to have the items and enemy spawn in.
@@ -36,11 +40,6 @@
 - Made Enable/Disable config for having whistle as a spawnable scrap.
 - Made rarity config for whistle scrap.
 - Good chance there's bugs, so report em.
-
-- I'm running out of ideas and features for this monster, hop on the discord and suggest me some! also like the mod thanks.
-
-<details>
-  <summary>Older Versions</summary>
 
 ## v 1.6.8  *bug fixes*
 - Fixed scrap config rarity.

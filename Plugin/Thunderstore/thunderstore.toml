@@ -10,8 +10,8 @@ websiteUrl = "https://github.com/XuuXiao/GiantSpecimens"
 containsNsfwContent = false
 [package.dependencies]
 BepInEx-BepInExPack = "5.4.2100"
-Evaisa-LethalLib = "0.15.0"
-MegaPiggy-EnumUtils = "1.0.4"
+Evaisa-LethalLib = "0.15.1"
+MegaPiggy-EnumUtils = "1.0.3"
 
 [build]
 icon = "./icon.png"
@@ -19,12 +19,12 @@ readme = "./README.md"
 outdir = "./Packages"
 
 [[build.copy]]
-source = "../bin/Release/netstandard2.1/GiantSpecimens.dll"
-target = "plugins/GiantSpecimens/"
+source = "../bin/Release/netstandard2.1/TheGiantSpecimens.dll"
+target = "plugins/TheGiantSpecimens/"
 
 [[build.copy]]
 source = "../../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassets"
-target = "plugins/GiantSpecimens/"
+target = "plugins/TheGiantSpecimens/"
 
 [[build.copy]]
 source = "./CHANGELOG.md"
