@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 8488407
+CRC: 2170422029
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 94182c082e1ea04d9273b1317d1e8873
+    Hash: 5e1d38f269898f349473f28be2ff777d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3da04ed4fdac1ee42b3dc8767b09a43f
+    Hash: e2eafcc4517cc8e79eed983699c80ced
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 94182c082e1ea04d9273b1317d1e8873
+    Hash: 5e1d38f269898f349473f28be2ff777d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -43,8 +43,6 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 1494188094, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 65d3fcb39dd67306e9bb17a603308070, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
@@ -63,13 +61,15 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
 - Class: 114
-  Script: {fileID: 1720121740, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  Script: {fileID: 1720121740, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
-  Script: {fileID: 1352902129, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  Script: {fileID: 1352902129, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
-  Script: {fileID: -2097174394, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  Script: {fileID: 1494188094, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
-  Script: {fileID: 1404812377, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  Script: {fileID: -2097174394, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 136
@@ -113,7 +113,10 @@ Assets:
 - Assets/DriftwoodGiant/DriftwoodGiantObj.asset
 - Assets/Scraps/ScrapTerminalNodes/wlTerminalNode.asset
 - Assets/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
+- Assets/Scraps/RedwoodPlush.prefab
 - Assets/Scraps/WhistleObj.asset
+- Assets/DriftwoodGiant/AnimatedDriftwoodV11.prefab
 - Assets/PinkGiant/PinkGiantObj.asset
+- Assets/Scraps/whistle.prefab
 - Assets/Models/RedwoodPlush.fbx
 Dependencies: []

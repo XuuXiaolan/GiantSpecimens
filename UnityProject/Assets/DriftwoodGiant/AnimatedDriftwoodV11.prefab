@@ -570,12 +570,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325786921438881342}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42761737, y: -0, z: -0, w: 0.9039599}
-  m_LocalPosition: {x: -3.709999, y: 1.1, z: 1.96}
-  m_LocalScale: {x: 2.41916, y: 2.8727503, z: 4.12495}
+  m_LocalRotation: {x: 0.5023076, y: 0.3456746, z: 0.732742, w: -0.30213475}
+  m_LocalPosition: {x: -0.0013228433, y: -0.0073261, z: -0.0021610348}
+  m_LocalScale: {x: 0.024191594, y: 0.028727494, z: 0.04124949}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7454393755612235324}
+  m_Father: {fileID: 5756512438143566926}
   m_LocalEulerAnglesHint: {x: 50.633, y: 0, z: 0}
 --- !u!65 &1353307683977045659
 BoxCollider:
@@ -637,7 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScript: {fileID: 7368599746584151622}
+  mainScript: {fileID: 1601784040882292484}
   canCollideWithEnemies: 1
   onlyCollideWhenGrounded: 0
 --- !u!1 &1327532578865205816
@@ -955,12 +955,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2342759709817957953}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.45595762, y: -0, z: -0, w: 0.8900015}
-  m_LocalPosition: {x: 3.5699997, y: 1.52, z: 1.4100003}
-  m_LocalScale: {x: 2.43661, y: 2.8934698, z: 4.1547}
+  m_LocalRotation: {x: 0.028961957, y: 0.3828503, z: 0.9233527, w: -0.002589209}
+  m_LocalPosition: {x: -0.0008702139, y: -0.010326231, z: -0.007758717}
+  m_LocalScale: {x: 0.024366083, y: 0.028934684, z: 0.041546986}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7454393755612235324}
+  m_Father: {fileID: 7014233629238870901}
   m_LocalEulerAnglesHint: {x: 54.253, y: 0, z: 0}
 --- !u!65 &6485628330435334269
 BoxCollider:
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScript: {fileID: 7368599746584151622}
+  mainScript: {fileID: 1601784040882292484}
   canCollideWithEnemies: 1
   onlyCollideWhenGrounded: 0
 --- !u!1 &2389597922876310362
@@ -3652,7 +3652,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.004169269, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5660452342137618293}
   m_Father: {fileID: 7564030279192587813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6537853084310611285
@@ -4197,7 +4198,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.004169269, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6122757363536971806}
   m_Father: {fileID: 532286350445893303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7432714983626623193
@@ -4610,8 +4612,8 @@ GameObject:
   - component: {fileID: 7454393755612235324}
   - component: {fileID: 7713137263235069350}
   - component: {fileID: 8578171315888604530}
-  - component: {fileID: 7368599746584151622}
   - component: {fileID: 8810998374450522553}
+  - component: {fileID: 1601784040882292484}
   m_Layer: 19
   m_Name: AnimatedDriftwoodV11
   m_TagString: Enemy
@@ -4635,8 +4637,6 @@ Transform:
   - {fileID: 2000591037139228322}
   - {fileID: 6425736290922834925}
   - {fileID: 2862908381702335855}
-  - {fileID: 5660452342137618293}
-  - {fileID: 6122757363536971806}
   - {fileID: 5731785106569967995}
   - {fileID: 871009972259103724}
   - {fileID: 8631941555271031700}
@@ -4684,7 +4684,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7368599746584151622
+--- !u!195 &8810998374450522553
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798126845334396038}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.5
+  m_Speed: 3.5
+  m_Acceleration: 35
+  avoidancePriority: 50
+  m_AngularSpeed: 100
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 31
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1601784040882292484
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4693,7 +4715,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7798126845334396038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1352902129, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Script: {fileID: 1352902129, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: {fileID: 11400000, guid: 1ecb4624c2cb7ba4a83a70b2bf6d0cff, type: 2}
@@ -4842,28 +4864,6 @@ MonoBehaviour:
   eatenSound: {fileID: 0}
   screamSound: {fileID: 0}
   spawnSound: {fileID: 0}
---- !u!195 &8810998374450522553
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7798126845334396038}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 1.5
-  m_Speed: 3.5
-  m_Acceleration: 35
-  avoidancePriority: 50
-  m_AngularSpeed: 100
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 31
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &7866009023462465070
 GameObject:
   m_ObjectHideFlags: 0

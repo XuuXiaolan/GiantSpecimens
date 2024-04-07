@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4891951176339813238}
   - component: {fileID: 1610155050885626748}
   - component: {fileID: 4572844812079170811}
-  - component: {fileID: 4152619654159323265}
+  - component: {fileID: 2593411064373047801}
   m_Layer: 6
   m_Name: whistle
   m_TagString: PhysicsProp
@@ -260,7 +260,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4152619654159323265
+--- !u!114 &2593411064373047801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1803592460704612924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1404812377, guid: 2c9c8ce460dc7e443866a40f5beffe5a, type: 3}
+  m_Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   grabbable: 1
@@ -314,7 +314,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4a8a4b7c735dc6148b322d24aa642fb0, type: 3}
   maxLoudness: 1
   minLoudness: 0.5
-  minPitch: 0.5
+  minPitch: 1
   maxPitch: 3
   triggerAnimator: {fileID: 4891951176339813238}
   count: 0

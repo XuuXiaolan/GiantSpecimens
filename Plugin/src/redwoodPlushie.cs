@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace GiantSpecimens.Scrap {
     [SerializeField] public float maxPitch;
     private System.Random noisemakerRandom;
     public Animator triggerAnimator;
+    [NonSerialized]
     public AudioClip soundToPlay;
 
         void LogIfDebugBuild(string text) {

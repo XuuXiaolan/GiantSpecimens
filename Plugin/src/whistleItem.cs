@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace GiantSpecimens.Scrap {
@@ -11,6 +12,7 @@ namespace GiantSpecimens.Scrap {
     [SerializeField] public float maxPitch;
     private System.Random noisemakerRandom;
     public Animator triggerAnimator;
+    [NonSerialized]
     public int count;
     void LogIfDebugBuild(string text) {
       #if DEBUG
