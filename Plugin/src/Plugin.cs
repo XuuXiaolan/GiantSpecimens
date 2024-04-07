@@ -64,13 +64,13 @@ namespace GiantSpecimens {
             RegisterEnemyWithConfig(ModConfig.ConfigRedWoodEnabled.Value, ModConfig.ConfigRedWoodRarity.Value, PinkGiant, pgTerminalNode, pgTerminalKeyword);
 
             // Driftwood Giant Enemy
-            /*
+            
             DriftGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("DriftwoodGiantObj");
             TerminalNode dgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("DriftwoodGiantTN");
             TerminalKeyword dgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("DriftwoodGiantTK");
             NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
-            */
+            
             GiantPatches.Init();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

@@ -50,6 +50,8 @@ namespace GiantSpecimens.Enemy {
         public AudioClip screamSound;
         public AudioClip spawnSound;
         [NonSerialized]
+        public Vector3 playerPositionBeforeGrab;
+        [NonSerialized]
         public bool currentlyGrabbed = false;
         [NonSerialized]
         public int previousStateIndex = 0;
@@ -127,7 +129,7 @@ namespace GiantSpecimens.Enemy {
         }
         public override void Update() {
             base.Update();
-            if (GameNetworkManager.Instance.localPlayerController != null) {
+            if (GameNetworkManager.Instance.localPlayerController != null && DWHasLineOfSightToPosition(GameNetworkManager.Instance.localPlayerController.transform.position)) {
                 DriftwoodGiantSeePlayerEffect();
             }
             if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
@@ -389,20 +391,18 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
-            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !currentlyGrabbed) {
+            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex != (int)State.PlayingWithPrey) {
+                playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
                 DoAnimationClientRpc("startThrow");
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
-        }
-        public void GrabPlayer() {
-            currentlyGrabbed = true;
         }
         public void ThrowingPlayer() {
             if (targetPlayer_ == null) {
                 LogIfDebugBuild("No player to throw, This is a bug, please report this");
                 return;
             }
-            currentlyGrabbed = false;
+            // GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
 
             // Calculate the throwing direction with an upward angle
             Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
@@ -437,13 +437,15 @@ namespace GiantSpecimens.Enemy {
                 }
             }
         }
-
+        public void GrabPlayer() {
+            currentlyGrabbed = true;
+        }
         IEnumerator ThrowPlayer() {
             // Make it call ThrowingPlayer() during the animationEvent
             yield return new WaitForSeconds(throwAnimation.length);
-            ThrowingPlayer();
             try {
                 LogIfDebugBuild("Setting to null");
+                currentlyGrabbed = false;
                 targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
             } catch {
                 LogIfDebugBuild("Trying to change kinematics of an unknown player.");

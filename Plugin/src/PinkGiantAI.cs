@@ -305,7 +305,7 @@ namespace GiantSpecimens.Enemy {
             } else if (distanceFromEnemy <= 10f) {
                 enemy.HitEnemy(1, null, false);
             }
-            LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
+            // LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
         }
 
         public void LeftFootStepInteractions() {
