@@ -2,7 +2,7 @@
 [![Thunderstore Version](https://img.shields.io/thunderstore/v/XuXiaolan/TheGiantSpecimens?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
 [![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/XuXiaolan/TheGiantSpecimens?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
 
-![banner](https://imgur.com/a/gMsoLOi)
+![banner](https://i.imgur.com/K2OS9SB.jpeg)
 
 Mod that adds a variety of giant enemies, part of the forest keeper family, Currently adds 2 brand new enemies.
 ## Credits
