@@ -17,7 +17,7 @@ using System.Reflection;
 using GiantSpecimens.Patches;
 
 namespace GiantSpecimens.Enemy {
-    class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
+    class DriftwoodGiantAI : EnemyAI {
         #pragma warning disable 0649
         public Collider grabArea;
         [NonSerialized]
@@ -52,6 +52,8 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public bool holdPlayer = false;
         [NonSerialized]
+        public bool currentlyGrabbed = false;
+        [NonSerialized]
         public int previousStateIndex = 0;
         [NonSerialized]
         public int nextStateIndex = 0;
@@ -69,40 +71,6 @@ namespace GiantSpecimens.Enemy {
         public int numberOfFeedings = 0;
         [NonSerialized]
         public LineRenderer line;
-        ThreatType IVisibleThreat.type => Plugin.DriftwoodGiant;
-
-        int IVisibleThreat.SendSpecialBehaviour(int id) {
-            return 0;
-        }
-        int IVisibleThreat.GetThreatLevel(Vector3 seenByPosition) {
-            return 18;
-        }
-        int IVisibleThreat.GetInterestLevel() {
-            return 5;
-        }
-        Transform IVisibleThreat.GetThreatLookTransform() {
-            return eye;
-        }
-        Transform IVisibleThreat.GetThreatTransform() {
-            return transform;
-        }
-        Vector3 IVisibleThreat.GetThreatVelocity() {
-            if (IsOwner)
-            {
-                return agent.velocity;
-            }
-
-            return Vector3.zero;
-        }
-        float IVisibleThreat.GetVisibility() {
-            if (isEnemyDead) {
-                return 0f;
-            }
-            if (agent.velocity.sqrMagnitude > 0f) {
-                return 0.5f;
-            }
-            return 0.75f;
-        }
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
@@ -169,6 +137,11 @@ namespace GiantSpecimens.Enemy {
                 KillEnemyOnOwnerClient(false);
                 DoAnimationClientRpc("startDeath");
             }
+
+            if (targetPlayer_ == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
+                GameNetworkManager.Instance.localPlayerController.transform.position = grabArea.transform.position;
+                GameNetworkManager.Instance.localPlayerController.transform.LookAt(transform.position);
+            }
         }
         public override void DoAIInterval() {
             base.DoAIInterval();
@@ -198,7 +171,6 @@ namespace GiantSpecimens.Enemy {
                         DoAnimationClientRpc("startScream");
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         targettingEnemy = true;
-                        DriftwoodScream();
                     } else if (FindClosestPlayerInRange(30f)) {
                         // chase the target player.
                         // SCREAM
@@ -209,7 +181,6 @@ namespace GiantSpecimens.Enemy {
                         DoAnimationClientRpc("startScream");
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         targettingPlayer = true;
-                        DriftwoodScream();
                         return;
                     }
 
@@ -228,7 +199,6 @@ namespace GiantSpecimens.Enemy {
                             nextAnimationName = "startWalk";
                             DoAnimationClientRpc("startScream");
                             SwitchToBehaviourClientRpc((int)State.Scream);
-                            DriftwoodScream();
                             return;
                         }
                         SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
@@ -244,7 +214,6 @@ namespace GiantSpecimens.Enemy {
                             nextAnimationName = "startWalk";
                             DoAnimationClientRpc("startScream");
                             SwitchToBehaviourClientRpc((int)State.Scream);
-                            DriftwoodScream(); //REPLACE ALL DriftwoodScream() WITH ANIMATION EVENTS
                             return;
                         }
                         SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
@@ -260,9 +229,11 @@ namespace GiantSpecimens.Enemy {
                     
                     if (Vector3.Distance(transform.position, targetEnemy.transform.position) >= 2f && targetEnemy != null) {
                         tooFarAway = true;
-                        if (delayedResponse >= 4f) {
+                        delayedResponse+= Time.deltaTime;
+                        if (delayedResponse >= 3f) {
+                            delayedResponse = 0f;
                             previousStateIndex = currentBehaviourStateIndex;
-                            // DoAnimationClientRpc("startChase");
+                            DoAnimationClientRpc("startChase");
                             SwitchToBehaviourClientRpc((int)State.RunningToPrey);
                         }
                     }
@@ -302,7 +273,7 @@ namespace GiantSpecimens.Enemy {
         public void ShakePlayerCameraOnDistance() {
                 float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
-                    case < 10f:
+                    case < 19f:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Long);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
@@ -310,12 +281,12 @@ namespace GiantSpecimens.Enemy {
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
-                    case < 20 and >= 10:
+                    case < 25 and >= 20:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
-                    case < 50f and >= 20:
+                    case < 35f and >= 25:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
@@ -341,10 +312,6 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
-        public override void HitFromExplosion(float distance)
-        {
-            base.HitFromExplosion(distance);
-        }
         bool FindClosestPlayerInRange(float range) {
             PlayerControllerB closestPlayer = null;
             float minDistance = float.MaxValue;
@@ -366,24 +333,23 @@ namespace GiantSpecimens.Enemy {
             return false;
         }
         public void DriftwoodScream() { // run this multiple times in one scream animation
-            StartCoroutine(ScreamPause()); // make this coroutine start at the start of the scream animation using animationEvents instead.
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
                 float distance = Vector3.Distance(transform.position, player.transform.position);
-                if (distance <= 30f && !player.isInHangarShipRoom) {
+                if (distance <= 20f && !player.isInHangarShipRoom) {
                     player.DamagePlayer(5, causeOfDeath: Plugin.RupturedEardrums); // make this damage multiple times through the scream animation
                 }
             }
         }
         public void PlayFootstepSound() {
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
             if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && tooFarAway) {
                 tooFarAway = false;
                 delayedResponse = 0f;
                 SwitchToBehaviourClientRpc((int)State.SlashingPrey);
-                // DoAnimationClientRpc("startSlash");
+                DoAnimationClientRpc("startSlash");
             }
         }
         public void SlashEnemy() {
@@ -402,6 +368,12 @@ namespace GiantSpecimens.Enemy {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
         }
+        public void ApproachCorpse() {
+            // TODO: approach the corpse and then feed on it
+
+            SwitchToBehaviourClientRpc(nextStateIndex);
+            DoAnimationClientRpc(nextAnimationName);
+        }
         public void DiggingIntoEnemyBody() {
             if (numberOfFeedings <= 4) {
                 numberOfFeedings++;
@@ -410,24 +382,26 @@ namespace GiantSpecimens.Enemy {
             else {
                 numberOfFeedings = 0;
                 previousStateIndex = currentBehaviourStateIndex;
-                // DoAnimationClientRpc("startWalk");
+                DoAnimationClientRpc("startWalk");
                 SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
-                //change animation
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
             if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && !holdPlayer) {
                 holdPlayer = true;
-                StartCoroutine(ThrowPlayer());
                 DoAnimationClientRpc("startThrow");
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
+        }
+        public void GrabPlayer() {
+            currentlyGrabbed = true;
         }
         public void ThrowingPlayer() {
             if (targetPlayer_ == null) {
                 LogIfDebugBuild("No player to throw, This is a bug, please report this");
                 return;
             }
+            currentlyGrabbed = false;
 
             // Calculate the throwing direction with an upward angle
             Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
@@ -464,7 +438,6 @@ namespace GiantSpecimens.Enemy {
         }
 
         IEnumerator ThrowPlayer() {
-            // Make it so that it waits until the animation is over before throwing the player.
             // Make it call ThrowingPlayer() during the animationEvent
             yield return new WaitForSeconds(throwAnimation.length);
             ThrowingPlayer();
@@ -485,7 +458,6 @@ namespace GiantSpecimens.Enemy {
             nextAnimationName = "startWalk";
             DoAnimationClientRpc("startScream");
             SwitchToBehaviourClientRpc((int)State.Scream);
-            DriftwoodScream();
             StopCoroutine(ThrowPlayer());
         }
         IEnumerator ScreamPause() {

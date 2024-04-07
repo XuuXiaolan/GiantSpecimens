@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3203087136
+CRC: 2457833181
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fe30b77301ed13d9075accdf07f1de0f
+    Hash: 46e6edd1a48659857a0bbe5390cecc65
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 34f96c7758319a9aa759f7e9cd214ff8
+    Hash: 3da04ed4fdac1ee42b3dc8767b09a43f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: fe30b77301ed13d9075accdf07f1de0f
+    Hash: 46e6edd1a48659857a0bbe5390cecc65
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -114,7 +114,6 @@ Assets:
 - Assets/Scraps/ScrapTerminalNodes/wlTerminalNode.asset
 - Assets/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
 - Assets/Scraps/WhistleObj.asset
-- Assets/DriftwoodGiant/AnimatedDriftwoodV11.prefab
 - Assets/PinkGiant/PinkGiantObj.asset
 - Assets/Models/RedwoodPlush.fbx
 Dependencies: []
