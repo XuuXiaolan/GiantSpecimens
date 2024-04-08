@@ -56,7 +56,7 @@ public static class GiantPatches {
     }*/
 
     private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
-        if (thrownByGiant) {
+        if (thrownByGiant && self != null && self.fallValueUncapped < -41) {
             self.fallValueUncapped = -41;
             thrownByGiant = false;
         }
