@@ -4960,6 +4960,7 @@ MonoBehaviour:
   spawnAnimation: {fileID: 7400000, guid: a6071e3d5c6b9014bbf5c64e5325aebb, type: 2}
   screamAnimation: {fileID: 7400000, guid: 41fa9047eb903fb4a8628ba9da3a3d8c, type: 2}
   throwAnimation: {fileID: 7400000, guid: 2c1317563061e8f48809a5478c899dab, type: 2}
+  slashAnimation: {fileID: 7400000, guid: eb48ddbb1b56b864dbfa9e402d50f674, type: 2}
   MouthVoice: {fileID: 9135485790209383857}
   stompSounds: []
   eatenSound: {fileID: 0}

@@ -223,7 +223,7 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SearchingForForestKeeper:
                     agent.speed = walkingSpeed;
-                    if (FindClosestForestKeeperInRange(seeableDistance)){
+                    if (FindClosestAliveForestKeeperInRange(seeableDistance)){
                         DoAnimationClientRpc("startChase");
                         StartCoroutine(ChaseCoolDown());
                         LogIfDebugBuild("Start Target ForestKeeper");
@@ -254,7 +254,7 @@ namespace GiantSpecimens.Enemy {
                 case (int)State.RunningToForestKeeper:
                     agent.speed = walkingSpeed * 4;
                     // Keep targetting closest ForestKeeper, unless they are over 20 units away and we can't see them.
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip || targetEnemy.enemyHP <= 0) {
                         LogIfDebugBuild("Stop Target ForestKeeper");
                         DoAnimationClientRpc("startWalk");
                         StartSearch(transform.position);
@@ -381,12 +381,12 @@ namespace GiantSpecimens.Enemy {
                         break;
                 } 
         }
-        bool FindClosestForestKeeperInRange(float range) {
+        bool FindClosestAliveForestKeeperInRange(float range) {
             EnemyAI closestEnemy = null;
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "ForestGiant" && enemy.enemyHP > 0) {
+                if (enemy.enemyType.enemyName == "ForestGiant" && enemy.enemyHP > 0 && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
                         minDistance = distance;

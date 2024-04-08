@@ -40,6 +40,7 @@ namespace GiantSpecimens.Enemy {
         public AnimationClip spawnAnimation;
         public AnimationClip screamAnimation;
         public AnimationClip throwAnimation;
+        public AnimationClip slashAnimation;
         [NonSerialized]
         public bool spawned = false;
         [NonSerialized]
@@ -49,6 +50,8 @@ namespace GiantSpecimens.Enemy {
         public AudioClip eatenSound;
         public AudioClip screamSound;
         public AudioClip spawnSound;
+        [NonSerialized]
+        public float slashingRange = 10f;
         [NonSerialized]
         public Vector3 playerPositionBeforeGrab;
         [NonSerialized]
@@ -72,8 +75,6 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public float delayedResponse;
         [NonSerialized]
-        public bool tooFarAway = false;
-        [NonSerialized]
         public int numberOfFeedings = 0; // Number of times the giant has dipped its hand inside the giant.
         [NonSerialized]
         public LineRenderer line; // Debug line that shows destination of movement
@@ -87,6 +88,8 @@ namespace GiantSpecimens.Enemy {
         public float awarenessIncreaseRate = 10.0f; // Base rate of awareness increase when the player is seen
         [NonSerialized]
         public float awarenessIncreaseMultiplier = 2.0f; // Multiplier for awareness increase based on proximity
+        [NonSerialized]
+        public bool canSlash = true;
 
         enum State {
             SpawnAnimation, // Spawning
@@ -245,13 +248,20 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SlashingPrey:
                     agent.speed = 0f;
-                    
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) >= 3f && targetEnemy != null) {
-                        tooFarAway = true;
-                        delayedResponse+= Time.deltaTime;
-                        if (delayedResponse >= 3f) {
-                            delayedResponse = 0f;
+                    LogIfDebugBuild(canSlash.ToString());
+
+                    if (targettingEnemy) {
+                        float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+                        if (distanceToEnemy < slashingRange && canSlash) { // assuming `slashingRange` is defined somewhere as the distance within which slashing can occur
+                            // Continue attacking
+                            DoAnimationClientRpc("startSlash"); // This might need a check to ensure it doesn't trigger too often
+                            canSlash = false;
+                            StartCoroutine(SlashCooldown());
+                        }
+                        else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null) {
+                            // Enemy is alive but out of slashing range, reposition
                             previousStateIndex = currentBehaviourStateIndex;
+                            nextStateIndex = (int)State.RunningToPrey;
                             DoAnimationClientRpc("startChase");
                             SwitchToBehaviourClientRpc((int)State.RunningToPrey);
                         }
@@ -369,7 +379,7 @@ namespace GiantSpecimens.Enemy {
             // Calculate the throwing direction with an upward angle
             Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
             Vector3 upDirection = transform.TransformDirection(Vector3.up).normalized;
-            // Creating a direction that is 60 degrees upwards from the back direction
+            // Creating a direction that is 45 degrees upwards from the back direction
             Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(45, transform.right) * upDirection).normalized;
 
             // Calculate the throwing force
@@ -386,17 +396,16 @@ namespace GiantSpecimens.Enemy {
         public void SlashEnemy() {
             // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
             if (targettingEnemy) {
-                if (!tooFarAway) {
-                    enemyPositionBeforeDeath = targetEnemy.transform.position;
-                    targetEnemy.HitEnemy(1, null, true);
-                    if (targetEnemy.enemyHP <= 0) {
-                        nextStateIndex = (int)State.EatingPrey;
-                        nextAnimationName = "startEating";
-                        targettingEnemy = false;
-                        targetEnemy = null;
-                        ApproachCorpse();
-                    }
+                enemyPositionBeforeDeath = targetEnemy.transform.position;
+                targetEnemy.HitEnemy(1, null, true);
+                if (targetEnemy.enemyHP <= 0) {
+                    nextStateIndex = (int)State.EatingPrey;
+                    nextAnimationName = "startEating";
+                    targettingEnemy = false;
+                    targetEnemy = null;
+                    ApproachCorpse();
                 }
+                LogIfDebugBuild(targetEnemy.enemyHP.ToString());
             } else {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
@@ -462,11 +471,9 @@ namespace GiantSpecimens.Enemy {
             return false;
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
-            if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && !tooFarAway) {
-                tooFarAway = false;
+            if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
                 delayedResponse = 0f;
                 SwitchToBehaviourClientRpc((int)State.SlashingPrey);
-                DoAnimationClientRpc("startSlash");
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
@@ -563,6 +570,11 @@ namespace GiantSpecimens.Enemy {
                 }
             }
             return false;
+        }
+        public IEnumerator SlashCooldown() {
+            yield return new WaitForSeconds(slashAnimation.length);
+            canSlash = true;
+            StopCoroutine(SlashCooldown());
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
