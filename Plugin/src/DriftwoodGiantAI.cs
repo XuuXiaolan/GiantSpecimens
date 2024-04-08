@@ -51,7 +51,7 @@ namespace GiantSpecimens.Enemy {
         public AudioClip screamSound;
         public AudioClip spawnSound;
         [NonSerialized]
-        public float slashingRange = 2.5f;
+        public float slashingRange = 7.5f;
         [NonSerialized]
         public Vector3 playerPositionBeforeGrab;
         [NonSerialized]
@@ -257,8 +257,8 @@ namespace GiantSpecimens.Enemy {
                             DoAnimationClientRpc("startSlash"); // This might need a check to ensure it doesn't trigger too often
                             canSlash = false;
                             StartCoroutine(SlashCooldown());
-                        }
-                        else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null) {
+                        } // TODO: Fix transitions between chase and slash in unity project, then add chain IK to perfect it
+                        else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null && canSlash) {
                             // Enemy is alive but out of slashing range, reposition
                             previousStateIndex = currentBehaviourStateIndex;
                             nextStateIndex = (int)State.RunningToPrey;
@@ -410,7 +410,7 @@ namespace GiantSpecimens.Enemy {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
         }
-        public void DiggingIntoEnemyBody() { //TODO: Do this through an animation event
+        public void DiggingIntoEnemyBody() { //TODO: Do this through an animation event, i need the eating animation before i can continue doing this last bit.
             if (numberOfFeedings <= 4) { //TODO: Eating animation should loop
                 numberOfFeedings++;
                 // TODO: change colour of hand material into a redder colour gradually
@@ -423,9 +423,11 @@ namespace GiantSpecimens.Enemy {
             }
         }
         // Methods that aren't called during AnimationEvents
-        public void ApproachCorpse() {
+        public void ApproachCorpse() { // TODO: Change all the LookAt to slowly turn instead of forcefully
             // TODO: approach the corpse and then feed on it
+            agent.speed = 3.5f;
             SetDestinationToPosition(enemyPositionBeforeDeath - new Vector3(0.3f, 0f, 0.3f), true);
+            transform.LookAt(enemyPositionBeforeDeath);
             SwitchToBehaviourClientRpc(nextStateIndex);
             DoAnimationClientRpc(nextAnimationName);
         }
