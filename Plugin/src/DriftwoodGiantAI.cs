@@ -60,6 +60,10 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public int nextStateIndex = 0;
         [NonSerialized]
+        public bool playerNoticed = false;
+        [NonSerialized]
+        public float rangeOfSight = 50f;
+        [NonSerialized]
         public string nextAnimationName = "";
         [NonSerialized]
         public bool testBuild = true; 
@@ -70,9 +74,20 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public bool tooFarAway = false;
         [NonSerialized]
-        public int numberOfFeedings = 0;
+        public int numberOfFeedings = 0; // Number of times the giant has dipped its hand inside the giant.
         [NonSerialized]
-        public LineRenderer line;
+        public LineRenderer line; // Debug line that shows destination of movement
+        [NonSerialized]
+        public float awarenessLevel = 0.0f; // Giant's awareness level of the player
+        [NonSerialized]
+        public float maxAwarenessLevel = 100.0f; // Maximum awareness level
+        [NonSerialized]
+        public float awarenessDecreaseRate = 5.0f; // Rate of awareness decrease per second when the player is not seen
+        [NonSerialized]
+        public float awarenessIncreaseRate = 10.0f; // Base rate of awareness increase when the player is seen
+        [NonSerialized]
+        public float awarenessIncreaseMultiplier = 2.0f; // Multiplier for awareness increase based on proximity
+
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
@@ -140,7 +155,9 @@ namespace GiantSpecimens.Enemy {
                 DoAnimationClientRpc("startDeath");
                 creatureVoice.PlayOneShot(dieSFX);
             }
-
+            if (currentBehaviourStateIndex == (int)State.SearchingForPrey) {
+                UpdateAwareness();
+            }
             if (targetPlayer_ == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
                 GameNetworkManager.Instance.localPlayerController.transform.position = grabArea.transform.position;
             }
@@ -153,7 +170,7 @@ namespace GiantSpecimens.Enemy {
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
             };
-            
+            LogIfDebugBuild(awarenessLevel.ToString());
             switch(currentBehaviourStateIndex) {
                 case (int)State.SpawnAnimation:
                     agent.speed = 0f;
@@ -163,7 +180,7 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SearchingForPrey:
                     agent.speed = 5;
-                    if (FindClosestTargetEnemyInRange(30f)) {
+                    if (FindClosestTargetEnemyInRange(rangeOfSight)) {
                         // chase the target enemy.
                         // SCREAM
                         StopSearch(currentSearch);
@@ -173,7 +190,7 @@ namespace GiantSpecimens.Enemy {
                         DoAnimationClientRpc("startScream");
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         targettingEnemy = true;
-                    } else if (FindClosestPlayerInRange(30f)) {
+                    } else if (FindClosestPlayerInRange(rangeOfSight) && awarenessLevel >= 35f) {
                         // chase the target player.
                         // SCREAM
                         StopSearch(currentSearch);
@@ -307,7 +324,7 @@ namespace GiantSpecimens.Enemy {
                     player.DamagePlayer(5, causeOfDeath: Plugin.RupturedEardrums); // make this damage multiple times through the scream animation
                 }
             }
-        }
+        } 
         public void ParticlesFromEatingPrey() {
            // Make some like, red, steaming hot particles come out of the enemy corpses.
            // Also colour the hands a bit red.
@@ -317,6 +334,91 @@ namespace GiantSpecimens.Enemy {
         }
         public void PlayWalkFootsteps() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+        }
+        public IEnumerator ThrowPlayer() {
+            yield return new WaitForSeconds(throwAnimation.length);
+            try {
+                LogIfDebugBuild("Setting Kinematics to true");
+                targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
+            } catch {
+                LogIfDebugBuild("Trying to change kinematics of an unknown player.");
+            }
+            // Reset targeting
+            targettingPlayer = false;
+            targetPlayer_ = null;
+            playerNoticed = false;
+            
+            previousStateIndex = currentBehaviourStateIndex;
+            nextStateIndex = (int)State.SearchingForPrey;
+            nextAnimationName = "startWalk";
+            DoAnimationClientRpc("startScream");
+            SwitchToBehaviourClientRpc((int)State.Scream);
+            StopCoroutine(ThrowPlayer());
+        }
+        public void GrabPlayer() {
+            currentlyGrabbed = true;
+        }
+        public void ThrowingPlayer() {
+            if (targetPlayer_ == null) {
+                LogIfDebugBuild("No player to throw, This is a bug, please report this");
+                return;
+            }
+            currentlyGrabbed = false;
+            // GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
+
+            // Calculate the throwing direction with an upward angle
+            Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
+            Vector3 upDirection = transform.TransformDirection(Vector3.up).normalized;
+            // Creating a direction that is 60 degrees upwards from the back direction
+            Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(45, transform.right) * upDirection).normalized;
+
+            // Calculate the throwing force
+            float throwForceMagnitude = 125;
+            // Throw the player
+            LogIfDebugBuild("Launching Player");
+            GiantPatches.thrownByGiant = true;
+            Rigidbody playerBody = targetPlayer_.GetComponent<Rigidbody>();
+            targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
+            playerBody.velocity = Vector3.zero; // Reset any existing velocity
+            playerBody.AddTorque(Vector3.Cross(throwingDirection, transform.up) * throwForceMagnitude, ForceMode.Impulse);
+            playerBody.AddForce(throwingDirection * throwForceMagnitude, ForceMode.Impulse);
+        }
+        public void SlashEnemy() {
+            // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
+            if (targettingEnemy) {
+                if (!tooFarAway) {
+                    enemyPositionBeforeDeath = targetEnemy.transform.position;
+                    targetEnemy.HitEnemy(1, null, true);
+                    if (targetEnemy.enemyHP <= 0) {
+                        nextStateIndex = (int)State.EatingPrey;
+                        nextAnimationName = "startEating";
+                        targettingEnemy = false;
+                        targetEnemy = null;
+                        ApproachCorpse();
+                    }
+                }
+            } else {
+                LogIfDebugBuild("This shouldn't be happening, please report this.");
+            }
+        }
+        public void DiggingIntoEnemyBody() { //TODO: Do this through an animation event
+            if (numberOfFeedings <= 4) { //TODO: Eating animation should loop
+                numberOfFeedings++;
+                // TODO: change colour of hand material into a redder colour gradually
+            }
+            else {
+                numberOfFeedings = 0;
+                previousStateIndex = currentBehaviourStateIndex;
+                DoAnimationClientRpc("startWalk");
+                SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+            }
+        }
+        // Methods that aren't called during AnimationEvents
+        public void ApproachCorpse() {
+            // TODO: approach the corpse and then feed on it
+            SetDestinationToPosition(enemyPositionBeforeDeath - new Vector3(0.3f, 0f, 0.3f), true);
+            SwitchToBehaviourClientRpc(nextStateIndex);
+            DoAnimationClientRpc(nextAnimationName);
         }
         public bool FindClosestTargetEnemyInRange(float range) {
             EnemyAI closestEnemy = null;
@@ -359,42 +461,6 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
-        public void SlashEnemy() {
-            // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
-            if (targettingEnemy) {
-                if (!tooFarAway) {
-                    enemyPositionBeforeDeath = targetEnemy.transform.position;
-                    targetEnemy.HitEnemy(1, null, true);
-                    if (targetEnemy.enemyHP <= 0) {
-                        nextStateIndex = (int)State.EatingPrey;
-                        nextAnimationName = "startEating";
-                        targettingEnemy = false;
-                        targetEnemy = null;
-                        ApproachCorpse();
-                    }
-                }
-            } else {
-                LogIfDebugBuild("This shouldn't be happening, please report this.");
-            }
-        }
-        public void ApproachCorpse() {
-            // TODO: approach the corpse and then feed on it
-            SetDestinationToPosition(enemyPositionBeforeDeath - new Vector3(0.3f, 0f, 0.3f), true);
-            SwitchToBehaviourClientRpc(nextStateIndex);
-            DoAnimationClientRpc(nextAnimationName);
-        }
-        public void DiggingIntoEnemyBody() { //TODO: Do this through an animation event
-            if (numberOfFeedings <= 4) { //TODO: Eating animation should loop
-                numberOfFeedings++;
-                // TODO: change colour of hand material into a redder colour gradually
-            }
-            else {
-                numberOfFeedings = 0;
-                previousStateIndex = currentBehaviourStateIndex;
-                DoAnimationClientRpc("startWalk");
-                SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
-            }
-        }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
             if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && !tooFarAway) {
                 tooFarAway = false;
@@ -404,59 +470,11 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
-            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex != (int)State.PlayingWithPrey) {
+            if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
                 playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
                 DoAnimationClientRpc("startThrow");
                 SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
             }
-        }
-        public IEnumerator ThrowPlayer() {
-            yield return new WaitForSeconds(throwAnimation.length);
-            try {
-                LogIfDebugBuild("Setting Kinematics to true");
-                targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
-            } catch {
-                LogIfDebugBuild("Trying to change kinematics of an unknown player.");
-            }
-            // Reset targeting
-            targettingPlayer = false;
-            targetPlayer_ = null;
-
-            
-            previousStateIndex = currentBehaviourStateIndex;
-            nextStateIndex = (int)State.SearchingForPrey;
-            nextAnimationName = "startWalk";
-            DoAnimationClientRpc("startScream");
-            SwitchToBehaviourClientRpc((int)State.Scream);
-            StopCoroutine(ThrowPlayer());
-        }
-        public void GrabPlayer() {
-            currentlyGrabbed = true;
-        }
-        public void ThrowingPlayer() {
-            if (targetPlayer_ == null) {
-                LogIfDebugBuild("No player to throw, This is a bug, please report this");
-                return;
-            }
-            currentlyGrabbed = false;
-            // GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
-
-            // Calculate the throwing direction with an upward angle
-            Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
-            Vector3 upDirection = transform.TransformDirection(Vector3.up).normalized;
-            // Creating a direction that is 60 degrees upwards from the back direction
-            Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(45, transform.right) * upDirection).normalized;
-
-            // Calculate the throwing force
-            float throwForceMagnitude = 75;
-            // Throw the player
-            LogIfDebugBuild("Launching Player");
-            GiantPatches.thrownByGiant = true;
-            Rigidbody playerBody = targetPlayer_.GetComponent<Rigidbody>();
-            targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
-            playerBody.velocity = Vector3.zero; // Reset any existing velocity
-            playerBody.AddTorque(Vector3.Cross(throwingDirection, transform.up) * throwForceMagnitude, ForceMode.Impulse);
-            playerBody.AddForce(throwingDirection * throwForceMagnitude, ForceMode.Impulse);
         }
         public void DriftwoodGiantSeePlayerEffect() {
             if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && targetPlayer_ != null && !targettingPlayer) {
@@ -474,7 +492,7 @@ namespace GiantSpecimens.Enemy {
                 }
             }
         }
-        public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 60, float proximityAwareness = 7.5f) {
+        public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 30, float proximityAwareness = 7.5f) {
             if (eye == null) {
                 _ = transform;
             } else {
@@ -496,6 +514,55 @@ namespace GiantSpecimens.Enemy {
             DoAnimationClientRpc("startWalk");
             SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
             StopCoroutine(SpawnAnimationCooldown());
+        }
+        public void UpdateAwareness() {
+            bool playerSeen = false;
+            float closestPlayerDistance = float.MaxValue;
+
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts) {
+                if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead && !player.isInHangarShipRoom && DWHasLineOfSightToPosition(player.transform.position)) {
+                    playerSeen = true;
+                    float distance = Vector3.Distance(transform.position, player.transform.position);
+                    if (distance < closestPlayerDistance) {
+                        closestPlayerDistance = distance;
+                    }
+                }
+            }
+
+            if (playerSeen) {
+                // Increase awareness more quickly for closer players
+                float distanceFactor = Mathf.Clamp01((rangeOfSight - closestPlayerDistance) / rangeOfSight);
+                awarenessLevel += awarenessIncreaseRate * Time.deltaTime * (1 + distanceFactor * awarenessIncreaseMultiplier);
+                awarenessLevel = Mathf.Min(awarenessLevel, maxAwarenessLevel);
+            } else {
+                // Decrease awareness over time if no player is seen
+                awarenessLevel -= awarenessDecreaseRate * Time.deltaTime;
+                awarenessLevel = Mathf.Max(awarenessLevel, 0.0f);
+            }
+        }
+        public IEnumerator DecreaseAwarenessOverTime() {
+            while (true) {
+                yield return new WaitForSeconds(1f); // Check every second
+
+                if (!PlayerInSight()) { // Implement this method to check if any player is in sight
+                    awarenessLevel -= awarenessDecreaseRate;
+                    awarenessLevel = Mathf.Max(awarenessLevel, 0.0f);
+                }
+
+                // Reset awareness if it goes below a certain threshold or after certain conditions are met
+                if (awarenessLevel <= 0) {
+                    awarenessLevel = 0;
+                }
+            }
+        }
+        public bool PlayerInSight() {
+            PlayerControllerB[] playerControllerB = StartOfRound.Instance.allPlayerScripts;
+            foreach (PlayerControllerB player in playerControllerB) {
+                if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead && !player.isInHangarShipRoom && DWHasLineOfSightToPosition(player.transform.position)) {
+                    return true;
+                }
+            }
+            return false;
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
