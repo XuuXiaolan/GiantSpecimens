@@ -386,7 +386,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "ForestGiant") {
+                if (enemy.enemyType.enemyName == "ForestGiant" && enemy.enemyHP > 0) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
                         minDistance = distance;
