@@ -51,7 +51,7 @@ namespace GiantSpecimens.Enemy {
         public AudioClip screamSound;
         public AudioClip spawnSound;
         [NonSerialized]
-        public float slashingRange = 10f;
+        public float slashingRange = 2.5f;
         [NonSerialized]
         public Vector3 playerPositionBeforeGrab;
         [NonSerialized]
@@ -397,6 +397,7 @@ namespace GiantSpecimens.Enemy {
             // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
             if (targettingEnemy) {
                 enemyPositionBeforeDeath = targetEnemy.transform.position;
+                transform.LookAt(targetEnemy.transform.position);
                 targetEnemy.HitEnemy(1, null, true);
                 if (targetEnemy.enemyHP <= 0) {
                     nextStateIndex = (int)State.EatingPrey;
@@ -405,7 +406,6 @@ namespace GiantSpecimens.Enemy {
                     targetEnemy = null;
                     ApproachCorpse();
                 }
-                LogIfDebugBuild(targetEnemy.enemyHP.ToString());
             } else {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
