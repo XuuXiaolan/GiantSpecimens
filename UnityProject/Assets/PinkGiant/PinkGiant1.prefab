@@ -5800,7 +5800,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 30
-  MaxDistance: 150
+  MaxDistance: 75
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -10866,7 +10866,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3557904968736990047}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9870619, z: -0, w: -0.1603397}
+  m_LocalRotation: {x: 0, y: 0.9870622, z: -0, w: -0.1603377}
   m_LocalPosition: {x: -8.68, y: -0.67, z: -25.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10981,7 +10981,7 @@ MonoBehaviour:
     IsAnimTrigger: 0
     parameterString: 
     boolValue: 0
-  - name: SearchingForForestKeeper
+  - name: SearchingForGiant
     VoiceClip: {fileID: 0}
     playOneShotVoice: 0
     SFXClip: {fileID: 0}
@@ -10989,7 +10989,7 @@ MonoBehaviour:
     IsAnimTrigger: 0
     parameterString: 
     boolValue: 0
-  - name: RunningToForestKeeper
+  - name: RunningToGiant
     VoiceClip: {fileID: 0}
     playOneShotVoice: 0
     SFXClip: {fileID: 0}
@@ -10997,7 +10997,7 @@ MonoBehaviour:
     IsAnimTrigger: 0
     parameterString: 
     boolValue: 0
-  - name: EatingForestKeeper
+  - name: EatingGiant
     VoiceClip: {fileID: 0}
     playOneShotVoice: 0
     SFXClip: {fileID: 0}
@@ -17138,7 +17138,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 30
-  MaxDistance: 150
+  MaxDistance: 75
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0

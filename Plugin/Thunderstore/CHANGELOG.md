@@ -1,9 +1,12 @@
-## v 2.0.0 OVERHAUL UPDATE
+## v 2.0.0 NEW ENEMY UPDATE
 - Added NEW ENEMY, Driftwood Giant.
 - Added achievements.
-- If target enemy to Redwood Giant is [REDACTED], Switch particle system.
+- If target enemy to Redwood Giant is Old bird or Driftwood, Switch particle system.
 - Hopefully added a shader to improve particle system by now
 - Ported over to LLL (Lethal Level Loader).
+- Fixed Whistle and plushie sounds being picked up/dropped being global.
+- Allowed Redwood Giant to target old birds and Driftwood Giants.
+- Fixed bug with Redwood Giant being stuck after eating a corpse of a ForestGiant.
 
 <details>
   <summary>Older Versions</summary>

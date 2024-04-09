@@ -175,10 +175,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.8629869
-  MaxDistance: 100
+  MinDistance: 0
+  MaxDistance: 17
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -317,7 +317,6 @@ MonoBehaviour:
   minPitch: 1
   maxPitch: 3
   triggerAnimator: {fileID: 4891951176339813238}
-  count: 0
 --- !u!1 &4680475631927498673
 GameObject:
   m_ObjectHideFlags: 0
