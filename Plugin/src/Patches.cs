@@ -8,6 +8,7 @@ namespace GiantSpecimens.Patches;
 
 public static class GiantPatches {
     public static bool thrownByGiant = false;
+    public static Vector3 newExplosionPosition;
     /*public static NavMeshBuildSource BoxSource10x10() {
         Collider shipBounds = StartOfRound.Instance.shipBounds;
         MeshFilter meshFilter = shipBounds.GetComponent<MeshFilter>();
@@ -23,7 +24,20 @@ public static class GiantPatches {
     }*/
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
+        On.RadMechAI.StartExplosion += RadMechAI_StartExplosion;
         // On.RoundManager.Awake += RoundManager_Awake;
+    }
+
+    private static void RadMechAI_StartExplosion(On.RadMechAI.orig_StartExplosion orig, RadMechAI self, Vector3 explosionPosition, Vector3 forwardRotation, bool calledByClient) {
+        newExplosionPosition = explosionPosition;
+        orig(self, explosionPosition, forwardRotation, calledByClient);
+    }
+    private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
+        if (thrownByGiant && self != null && self.fallValueUncapped < -41) {
+            self.fallValueUncapped = -41;
+            thrownByGiant = false;
+        }
+        orig(self);
     }
 
     /*private static void RoundManager_Awake(On.RoundManager.orig_Awake orig, RoundManager self) {
@@ -54,12 +68,4 @@ public static class GiantPatches {
             Debug.LogError("Failed to bake NavMesh.");
         }
     }*/
-
-    private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
-        if (thrownByGiant && self != null && self.fallValueUncapped < -41) {
-            self.fallValueUncapped = -41;
-            thrownByGiant = false;
-        }
-        orig(self);
-    }
 }

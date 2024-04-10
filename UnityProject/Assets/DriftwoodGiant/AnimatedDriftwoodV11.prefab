@@ -565,7 +565,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 1.3, z: 1.3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4491694931787856982
 Rigidbody:
@@ -950,7 +950,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 1.3, z: 1.3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4294861652194758975
 Rigidbody:
@@ -4718,6 +4718,7 @@ GameObject:
   - component: {fileID: 8578171315888604530}
   - component: {fileID: 8810998374450522553}
   - component: {fileID: 1601784040882292484}
+  - component: {fileID: 8492589892959911901}
   m_Layer: 19
   m_Name: AnimatedDriftwoodV11
   m_TagString: Enemy
@@ -4966,6 +4967,27 @@ MonoBehaviour:
   eatenSound: {fileID: 0}
   screamSound: {fileID: 0}
   spawnSound: {fileID: 0}
+--- !u!65 &8492589892959911901
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798126845334396038}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7, y: 8, z: 1}
+  m_Center: {x: 0, y: 4, z: 0}
 --- !u!1 &7866009023462465070
 GameObject:
   m_ObjectHideFlags: 0

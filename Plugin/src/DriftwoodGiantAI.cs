@@ -17,7 +17,7 @@ using System.Reflection;
 using GiantSpecimens.Patches;
 
 namespace GiantSpecimens.Enemy {
-    class DriftwoodGiantAI : EnemyAI {
+    class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         #pragma warning disable 0649
         public Collider grabArea;
         [NonSerialized]
@@ -90,7 +90,37 @@ namespace GiantSpecimens.Enemy {
         public float awarenessIncreaseMultiplier = 2.0f; // Multiplier for awareness increase based on proximity
         [NonSerialized]
         public bool canSlash = true;
-
+        ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
+        int IVisibleThreat.SendSpecialBehaviour(int id) {
+            return 0; 
+        }
+        int IVisibleThreat.GetThreatLevel(Vector3 seenByPosition) {
+            return 18;
+        }
+        int IVisibleThreat.GetInterestLevel() {
+            return 0;
+        }
+        Transform IVisibleThreat.GetThreatLookTransform() {
+            return eye;
+        }
+        Transform IVisibleThreat.GetThreatTransform() {
+            return base.transform;
+        }
+        Vector3 IVisibleThreat.GetThreatVelocity() {
+            if (base.IsOwner) {
+                return agent.velocity;
+            }
+            return Vector3.zero;
+        }
+        float IVisibleThreat.GetVisibility() {
+            if (isEnemyDead) {
+                return 0f;
+            }
+            if (agent.velocity.sqrMagnitude > 0f) {
+                return 1f;
+            }
+            return 0.75f;
+        }
         enum State {
             SpawnAnimation, // Spawning
             IdleAnimation, // Idling
@@ -577,6 +607,41 @@ namespace GiantSpecimens.Enemy {
             yield return new WaitForSeconds(slashAnimation.length);
             canSlash = true;
             StopCoroutine(SlashCooldown());
+        }
+
+        public void DetectExplosions() { // todo: get rid of this later along with its patch
+            Vector3 explosionPosition = GiantPatches.newExplosionPosition;
+            if (Vector3.Distance(explosionPosition, transform.position) <= 10f) {
+                enemyHP -= 1;
+                StopSearch(currentSearch);
+                previousStateIndex = currentBehaviourStateIndex;
+                nextStateIndex = (int)State.RunningToPrey;
+                nextAnimationName = "startChase";
+                DoAnimationClientRpc("startScream");
+                SwitchToBehaviourClientRpc((int)State.Scream);
+                targettingEnemy = true;
+            }
+            LogIfDebugBuild(enemyHP.ToString());
+        }
+        public bool TargetClosestRadMech(float range) {
+            EnemyAI closestEnemy = null;
+            float minDistance = float.MaxValue;
+
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.enemyName == "RadMech" && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range)) {
+                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestEnemy = enemy;
+                    }
+                }
+            }
+            if (closestEnemy != null) {
+                targetEnemy = closestEnemy;
+                targettingEnemy = true;
+                return true;
+            }
+            return false;
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
