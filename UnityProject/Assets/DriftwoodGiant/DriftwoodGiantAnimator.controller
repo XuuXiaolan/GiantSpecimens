@@ -296,43 +296,49 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startDeath
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startScream
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startChase
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startSlash
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startThrow
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: startEating
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: startChaseRadMech
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -558,7 +564,7 @@ AnimatorStateMachine:
     m_Position: {x: 1320, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6072887121538633753}
-    m_Position: {x: 960, y: -330, z: 0}
+    m_Position: {x: 1600, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3229984242502732849}
     m_Position: {x: 880, y: -20, z: 0}
@@ -578,9 +584,9 @@ AnimatorStateMachine:
   - {fileID: 1282063456233406792}
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 980, y: -400, z: 0}
+  m_AnyStatePosition: {x: 1620, y: -160, z: 0}
   m_EntryPosition: {x: 520, y: 60, z: 0}
-  m_ExitPosition: {x: 980, y: -250, z: 0}
+  m_ExitPosition: {x: 1620, y: -10, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -7588469988308617143}
 --- !u!1102 &5731984288298942006

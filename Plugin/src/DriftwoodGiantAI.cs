@@ -608,18 +608,27 @@ namespace GiantSpecimens.Enemy {
             canSlash = true;
             StopCoroutine(SlashCooldown());
         }
-
-        public void DetectExplosions() { // todo: get rid of this later along with its patch
-            Vector3 explosionPosition = GiantPatches.newExplosionPosition;
-            if (Vector3.Distance(explosionPosition, transform.position) <= 10f) {
+        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
+            base.HitEnemy(force, playerWhoHit, playHitSFX);
+            if (force == 6) {
+                enemyHP -= 3;
+                TargetClosestRadMech(40f);
+            } else if (force >= 3) {
+                enemyHP -= 2;
+            } else if (force >= 1){
                 enemyHP -= 1;
+            }
+        }
+        public void DetectExplosionsAndRedirect(Vector3 explosionPosition, EnemyAI shootingEnemy) {
+            if (Vector3.Distance(explosionPosition, transform.position) <= 10f) {
                 StopSearch(currentSearch);
+                targetEnemy = shootingEnemy;
+                targettingEnemy = true;
                 previousStateIndex = currentBehaviourStateIndex;
                 nextStateIndex = (int)State.RunningToPrey;
                 nextAnimationName = "startChase";
                 DoAnimationClientRpc("startScream");
                 SwitchToBehaviourClientRpc((int)State.Scream);
-                targettingEnemy = true;
             }
             LogIfDebugBuild(enemyHP.ToString());
         }

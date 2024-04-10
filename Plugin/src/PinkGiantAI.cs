@@ -17,7 +17,7 @@ using GiantSpecimens.Colours;
 using System.Reflection;
 
 namespace GiantSpecimens.Enemy {
-    class PinkGiantAI : EnemyAI {
+    class PinkGiantAI : EnemyAI, IVisibleThreat {
         
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
@@ -78,6 +78,37 @@ namespace GiantSpecimens.Enemy {
         public bool testBuild = false; 
         [NonSerialized]
         public LineRenderer line;
+        ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
+        int IVisibleThreat.SendSpecialBehaviour(int id) {
+            return 0; 
+        }
+        int IVisibleThreat.GetThreatLevel(Vector3 seenByPosition) {
+            return 18;
+        }
+        int IVisibleThreat.GetInterestLevel() {
+            return 0;
+        }
+        Transform IVisibleThreat.GetThreatLookTransform() {
+            return eye;
+        }
+        Transform IVisibleThreat.GetThreatTransform() {
+            return base.transform;
+        }
+        Vector3 IVisibleThreat.GetThreatVelocity() {
+            if (base.IsOwner) {
+                return agent.velocity;
+            }
+            return Vector3.zero;
+        }
+        float IVisibleThreat.GetVisibility() {
+            if (isEnemyDead) {
+                return 0f;
+            }
+            if (agent.velocity.sqrMagnitude > 0f) {
+                return 1f;
+            }
+            return 0.75f;
+        }
         enum State {
             SpawnAnimation, // Roaring
             IdleAnimation, // Idling
@@ -170,8 +201,12 @@ namespace GiantSpecimens.Enemy {
         }
 
         public override void Update() {
+            if (enemyHP <= 0 && !isEnemyDead) {
+                isEnemyDead = true;
+                DoAnimationClientRpc("startDeath");
+                return;
+            }
             base.Update();
-
             if (currentBehaviourStateIndex == (int)State.EatingGiant && targetEnemy != null) {
                 midpoint = leftBone.transform.position;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
@@ -206,14 +241,13 @@ namespace GiantSpecimens.Enemy {
         }
         public override void DoAIInterval()
         {
-            
+            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
+                return;
+            }
             base.DoAIInterval();
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
             }
-            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
-                return;
-            };
             switch(currentBehaviourStateIndex) {
                 case (int)State.SpawnAnimation:
                     agent.speed = 0f;
@@ -454,6 +488,7 @@ namespace GiantSpecimens.Enemy {
             waitAfterChase = false;
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy)  {
+            if (isEnemyDead) return;
             if (collidedEnemy == targetEnemy && !eatingEnemy && (currentBehaviourStateIndex == (int)State.RunningToGiant) && waitAfterChase) {
                 eatingEnemy = true;
                 if (targetEnemy.enemyType.enemyName == "ForestGiant") {
@@ -487,6 +522,16 @@ namespace GiantSpecimens.Enemy {
                 }
             }
             return false;
+        }
+        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
+            base.HitEnemy(force, playerWhoHit, playHitSFX);
+            if (force == 6) {
+                enemyHP -= 5;
+            } else if (force >= 3) {
+                enemyHP -= 2;
+            } else if (force >= 1) {
+                enemyHP -= 1;
+            }
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
