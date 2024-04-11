@@ -178,15 +178,15 @@ namespace GiantSpecimens.Enemy {
             SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
         public override void Update() {
-            base.Update();
-            if (GameNetworkManager.Instance.localPlayerController != null && DWHasLineOfSightToPosition(GameNetworkManager.Instance.localPlayerController.transform.position)) {
-                DriftwoodGiantSeePlayerEffect();
-            }
-            if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
+            if (enemyHP <= 0 && !isEnemyDead) {
                 isEnemyDead = true;
                 KillEnemyOnOwnerClient(false);
                 DoAnimationClientRpc("startDeath");
                 creatureVoice.PlayOneShot(dieSFX);
+            }
+            base.Update();
+            if (GameNetworkManager.Instance.localPlayerController != null && DWHasLineOfSightToPosition(GameNetworkManager.Instance.localPlayerController.transform.position)) {
+                DriftwoodGiantSeePlayerEffect();
             }
             if (currentBehaviourStateIndex == (int)State.SearchingForPrey) {
                 UpdateAwareness();
@@ -196,13 +196,13 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void DoAIInterval() {
+            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
+                return;
+            };
             base.DoAIInterval();
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
             }
-            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
-                return;
-            };
             LogIfDebugBuild(awarenessLevel.ToString());
             switch(currentBehaviourStateIndex) {
                 case (int)State.SpawnAnimation:

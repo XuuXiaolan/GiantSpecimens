@@ -8,6 +8,8 @@
 - Allowed Redwood Giant to target old birds and Driftwood Giants.
 - Fixed bug with Redwood Giant being stuck after eating a corpse of a ForestGiant.
 - Added death animation for Redwood Giant.
+- Compatible with Lethal Haptics
+
 
 <details>
   <summary>Older Versions</summary>
