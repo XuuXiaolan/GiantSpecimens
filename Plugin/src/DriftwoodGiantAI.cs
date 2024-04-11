@@ -20,37 +20,32 @@ namespace GiantSpecimens.Enemy {
     class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         #pragma warning disable 0649
         public Collider grabArea;
-        [NonSerialized]
-        public IEnumerable allAlivePlayers;
+        public Material handsMaterial;
+        public AnimationClip spawnAnimation;
+        public AnimationClip screamAnimation;
+        public AnimationClip throwAnimation;
+        public AnimationClip slashAnimation;
+        public ChainIKConstraint RightShoulder;        
+        public AudioSource MouthVoice;
+        public AudioClip[] stompSounds;
+        public AudioClip eatenSound;
+        public AudioClip screamSound;
+        public AudioClip spawnSound;
         #pragma warning restore 0649
         [NonSerialized]
         public string levelName;
         [NonSerialized]
-        public bool eatingEnemy = false;
-        [NonSerialized]
         public EnemyAI targetEnemy;
         [NonSerialized]
         public bool targettingEnemy = false;
+        [NonSerialized]
+        public Material newHandsMaterial;
         [NonSerialized]
         public PlayerControllerB targetPlayer_;
         [NonSerialized]
         public bool targettingPlayer = false;
         [NonSerialized]
         public float seeableDistance = 50f;
-        public AnimationClip spawnAnimation;
-        public AnimationClip screamAnimation;
-        public AnimationClip throwAnimation;
-        public AnimationClip slashAnimation;
-        public ChainIKConstraint RightShoulder;
-        [NonSerialized]
-        public bool spawned = false;
-        [NonSerialized]
-        public bool screaming = false;
-        public AudioSource MouthVoice;
-        public AudioClip[] stompSounds;
-        public AudioClip eatenSound;
-        public AudioClip screamSound;
-        public AudioClip spawnSound;
         [NonSerialized]
         public float slashingRange = 7.5f;
         [NonSerialized]
@@ -64,13 +59,11 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public int nextStateIndex = 0;
         [NonSerialized]
-        public bool playerNoticed = false;
-        [NonSerialized]
         public float rangeOfSight = 50f;
         [NonSerialized]
         public string nextAnimationName = "";
         [NonSerialized]
-        public bool testBuild = true; 
+        public bool testBuild = false; 
         [NonSerialized]
         private System.Random throwRandom;
         [NonSerialized]
@@ -138,11 +131,36 @@ namespace GiantSpecimens.Enemy {
             Plugin.Logger.LogInfo(text);
             #endif
         }
-
-        public override void Start()
-        {
+        public void AdjustMaterialColor(Material material, float redAdjustment) {
+            Color originalColor = material.color;
+            float newRed = Mathf.Clamp01(originalColor.r + redAdjustment);
+            float newGreen = Mathf.Clamp01(originalColor.g - redAdjustment);
+            float newBlue = Mathf.Clamp01(originalColor.b - redAdjustment);
+            material.color = new Color(newRed, newGreen, newBlue, originalColor.a);
+            Debug.Log($"Adjusted Color: {material.color}");  // Log to confirm the color adjustment
+        }
+        public override void Start() {
             base.Start();
-            
+            // Find the renderer for the hands
+            SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
+            if (handsRenderer != null) {
+                Material handsMaterial = null;
+                for (int i = 0; i < handsRenderer.materials.Length; i++) {
+                    if (handsRenderer.materials[i].name.Contains("DW-Hands")) {
+                        handsMaterial = handsRenderer.materials[i];
+                        break; // Exit the loop once you find the material
+                    }
+                } 
+                if (handsMaterial != null) {
+                    // Create a new material based on the found material to ensure it is a unique instance
+                    newHandsMaterial = new Material(handsMaterial);
+                    handsRenderer.materials = handsRenderer.materials.Select(m => m.name.Contains("DW-Hands") ? newHandsMaterial : m).ToArray();
+                } else {
+                    LogIfDebugBuild("Material not found");
+                }
+            } else {
+                LogIfDebugBuild("Renderer not found");
+            }
             throwRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
             levelName = RoundManager.Instance.currentLevel.name;
             LogIfDebugBuild(levelName);
@@ -286,7 +304,7 @@ namespace GiantSpecimens.Enemy {
                             RightShoulder.data.target = targetEnemy.transform;
                             canSlash = false;
                             StartCoroutine(SlashCooldown());
-                        } // TODO: add chain IK to perfect it
+                        }
                         else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null && canSlash) {
                             // Enemy is alive but out of slashing range, reposition
                             previousStateIndex = currentBehaviourStateIndex;
@@ -377,7 +395,7 @@ namespace GiantSpecimens.Enemy {
         }
         public IEnumerator ThrowPlayer() {
             RightShoulder.data.target = targetPlayer_.transform;
-            yield return new WaitForSeconds(throwAnimation.length);
+            yield return new WaitForSeconds(throwAnimation.length+2f);
             try {
                 LogIfDebugBuild("Setting Kinematics to true");
                 targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
@@ -387,7 +405,6 @@ namespace GiantSpecimens.Enemy {
             // Reset targeting
             targettingPlayer = false;
             targetPlayer_ = null;
-            playerNoticed = false;
             
             previousStateIndex = currentBehaviourStateIndex;
             nextStateIndex = (int)State.SearchingForPrey;
@@ -412,10 +429,10 @@ namespace GiantSpecimens.Enemy {
             Vector3 backDirection = transform.TransformDirection(Vector3.back).normalized;
             Vector3 upDirection = transform.TransformDirection(Vector3.up).normalized;
             // Creating a direction that is 45 degrees upwards from the back direction
-            Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(45, transform.right) * upDirection).normalized;
+            Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(55, transform.right) * upDirection).normalized;
 
             // Calculate the throwing force
-            float throwForceMagnitude = 125;
+            float throwForceMagnitude = 100;
             // Throw the player
             LogIfDebugBuild("Launching Player");
             GiantPatches.thrownByGiant = true;
@@ -448,7 +465,8 @@ namespace GiantSpecimens.Enemy {
         }
         public void DiggingIntoEnemyBody() {
             numberOfFeedings++;
-            // TODO: change colour of hand material into a redder colour gradually
+            // Adjust the color of the new material to be similar to the original but 5% more red
+            AdjustMaterialColor(newHandsMaterial, 0.05f); // Adjust red by an additional 5%
             if (numberOfFeedings >= 8) {
                 numberOfFeedings = 0;
                 previousStateIndex = currentBehaviourStateIndex;
@@ -622,7 +640,7 @@ namespace GiantSpecimens.Enemy {
                 TargetClosestRadMech(40f);
             } else if (force >= 3 && playerWhoHit == null) {
                 enemyHP -= 2;
-            } else if (force >= 1 && playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
+            } else if (playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
                 enemyHP -= force;
             }
         }

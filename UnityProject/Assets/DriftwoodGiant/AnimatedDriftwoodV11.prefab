@@ -4982,6 +4982,7 @@ MonoBehaviour:
   debugEnemyAI: 0
   isOutside: 1
   grabArea: {fileID: 6485628330435334269}
+  handsMaterial: {fileID: 2100000, guid: 8167380c912992a438bee567f09e982c, type: 2}
   spawnAnimation: {fileID: 7400000, guid: a6071e3d5c6b9014bbf5c64e5325aebb, type: 2}
   screamAnimation: {fileID: 7400000, guid: 41fa9047eb903fb4a8628ba9da3a3d8c, type: 2}
   throwAnimation: {fileID: 7400000, guid: 2c1317563061e8f48809a5478c899dab, type: 2}

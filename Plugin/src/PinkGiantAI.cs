@@ -22,8 +22,6 @@ namespace GiantSpecimens.Enemy {
         // We set these in our Asset Bundle, so we can disable warning CS0649:
         // Field 'field' is never assigned to, and will always have its default value 'value'
         #pragma warning disable 0649
-        [NonSerialized]
-        public static LevelColorMapper levelColorMapper = new();
         public Collider AttackArea;
         public ParticleSystem DustParticlesLeft;
         public ParticleSystem DustParticlesRight;
@@ -34,9 +32,22 @@ namespace GiantSpecimens.Enemy {
         public ChainIKConstraint RightFoot;
         public AudioSource FootSource;
         public AudioSource EnemyMouthSource;
+        public AnimationClip idle;
+        public AnimationClip walking;
+        public AnimationClip eating;
+        public AnimationClip roaring;
+        public AudioClip[] stompSounds;
+        public AudioClip eatenSound;
+        public AudioClip spawnSound;
+        public AudioClip roarSound;
+        public GameObject rightBone;
+        public GameObject leftBone;
+        public GameObject eatingArea;
         #pragma warning restore 0649
         [NonSerialized]
         public bool sizeUp = false;
+        [NonSerialized]
+        public static LevelColorMapper levelColorMapper = new();
         [NonSerialized]
         public Vector3 newScale;
         [NonSerialized]
@@ -61,17 +72,6 @@ namespace GiantSpecimens.Enemy {
         public float distanceFromEnemy;
         [NonSerialized]
         public Transform shipBoundaries;
-        public AnimationClip idle;
-        public AnimationClip walking;
-        public AnimationClip eating;
-        public AnimationClip roaring;
-        public AudioClip[] stompSounds;
-        public AudioClip eatenSound;
-        public AudioClip spawnSound;
-        public AudioClip roarSound;
-        public GameObject rightBone;
-        public GameObject leftBone;
-        public GameObject eatingArea;
         [NonSerialized]
         public Vector3 midpoint;
         [NonSerialized]
