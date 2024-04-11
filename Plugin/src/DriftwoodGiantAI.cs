@@ -41,6 +41,7 @@ namespace GiantSpecimens.Enemy {
         public AnimationClip screamAnimation;
         public AnimationClip throwAnimation;
         public AnimationClip slashAnimation;
+        public ChainIKConstraint RightShoulder;
         [NonSerialized]
         public bool spawned = false;
         [NonSerialized]
@@ -203,7 +204,6 @@ namespace GiantSpecimens.Enemy {
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
             }
-            LogIfDebugBuild(awarenessLevel.ToString());
             switch(currentBehaviourStateIndex) {
                 case (int)State.SpawnAnimation:
                     agent.speed = 0f;
@@ -278,16 +278,15 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SlashingPrey:
                     agent.speed = 0f;
-                    LogIfDebugBuild(canSlash.ToString());
-
                     if (targettingEnemy) {
                         float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
                         if (distanceToEnemy < slashingRange && canSlash) { // assuming `slashingRange` is defined somewhere as the distance within which slashing can occur
                             // Continue attacking
-                            DoAnimationClientRpc("startSlash"); // This might need a check to ensure it doesn't trigger too often
+                            DoAnimationClientRpc("startSlash");
+                            RightShoulder.data.target = targetEnemy.transform;
                             canSlash = false;
                             StartCoroutine(SlashCooldown());
-                        } // TODO: Fix transitions between chase and slash in unity project, then add chain IK to perfect it
+                        } // TODO: add chain IK to perfect it
                         else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null && canSlash) {
                             // Enemy is alive but out of slashing range, reposition
                             previousStateIndex = currentBehaviourStateIndex;
@@ -298,7 +297,6 @@ namespace GiantSpecimens.Enemy {
                     }
                     break;
                 case (int)State.EatingPrey:
-                    agent.speed = 0f;
 					break;
                 case (int)State.Scream:
                     agent.speed = 0f;
@@ -327,7 +325,7 @@ namespace GiantSpecimens.Enemy {
         public void ShakePlayerCameraOnDistance() {
                 float distance = Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position);
                 switch (distance) {
-                    case < 19f:
+                    case < 4f:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Long);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.VeryStrong);
@@ -335,12 +333,12 @@ namespace GiantSpecimens.Enemy {
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
-                    case < 25 and >= 20:
+                    case < 15 and >= 5:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Big);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
-                    case < 35f and >= 25:
+                    case < 25f and >= 15:
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                         break;
@@ -371,11 +369,14 @@ namespace GiantSpecimens.Enemy {
         }
         public void PlayRunFootsteps() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public void PlayWalkFootsteps() {
             creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public IEnumerator ThrowPlayer() {
+            RightShoulder.data.target = targetPlayer_.transform;
             yield return new WaitForSeconds(throwAnimation.length);
             try {
                 LogIfDebugBuild("Setting Kinematics to true");
@@ -397,6 +398,7 @@ namespace GiantSpecimens.Enemy {
         }
         public void GrabPlayer() {
             currentlyGrabbed = true;
+            RightShoulder.data.target = null;
         }
         public void ThrowingPlayer() {
             if (targetPlayer_ == null) {
@@ -427,8 +429,12 @@ namespace GiantSpecimens.Enemy {
             // Do Chain IK stuff later, see PinkGiantAI.cs for reference.
             if (targettingEnemy) {
                 enemyPositionBeforeDeath = targetEnemy.transform.position;
-                transform.LookAt(targetEnemy.transform.position);
-                targetEnemy.HitEnemy(1, null, true);
+                // Slowly turn towards the target enemy
+                Vector3 targetDirection = (targetEnemy.transform.position - transform.position).normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection, transform.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3f);
+                
+                targetEnemy.HitEnemy(1, null, false);
                 if (targetEnemy.enemyHP <= 0) {
                     nextStateIndex = (int)State.EatingPrey;
                     nextAnimationName = "startEating";
@@ -440,23 +446,21 @@ namespace GiantSpecimens.Enemy {
                 LogIfDebugBuild("This shouldn't be happening, please report this.");
             }
         }
-        public void DiggingIntoEnemyBody() { //TODO: Do this through an animation event, i need the eating animation before i can continue doing this last bit.
-            if (numberOfFeedings <= 4) { //TODO: Eating animation should loop
-                numberOfFeedings++;
-                // TODO: change colour of hand material into a redder colour gradually
-            }
-            else {
+        public void DiggingIntoEnemyBody() {
+            numberOfFeedings++;
+            // TODO: change colour of hand material into a redder colour gradually
+            if (numberOfFeedings >= 8) {
                 numberOfFeedings = 0;
                 previousStateIndex = currentBehaviourStateIndex;
+                StartSearch(transform.position);
                 DoAnimationClientRpc("startWalk");
                 SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
             }
         }
         // Methods that aren't called during AnimationEvents
-        public void ApproachCorpse() { // TODO: Change all the LookAt to slowly turn instead of forcefully
-            // TODO: approach the corpse and then feed on it
+        public void ApproachCorpse() {
             agent.speed = 3.5f;
-            SetDestinationToPosition(enemyPositionBeforeDeath - new Vector3(0.3f, 0f, 0.3f), true);
+            SetDestinationToPosition(enemyPositionBeforeDeath, true);
             transform.LookAt(enemyPositionBeforeDeath);
             SwitchToBehaviourClientRpc(nextStateIndex);
             DoAnimationClientRpc(nextAnimationName);
@@ -466,7 +470,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if ((enemy.enemyType.enemyName == "MouthDog" || enemy.enemyType.enemyName == "Baboon hawk" || enemy.enemyType.enemyName == "Masked") && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range)) {
+                if ((enemy.enemyType.enemyName == "MouthDog" || enemy.enemyType.enemyName == "Baboon hawk" || enemy.enemyType.enemyName == "Masked") && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < minDistance) {
                         minDistance = distance;
@@ -503,12 +507,14 @@ namespace GiantSpecimens.Enemy {
             return false;
         }
         public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
+            if (isEnemyDead) return;
             if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
                 delayedResponse = 0f;
                 SwitchToBehaviourClientRpc((int)State.SlashingPrey);
             }
         }
         public override void OnCollideWithPlayer(Collider other) {
+            if (isEnemyDead) return;
             if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
                 playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
                 DoAnimationClientRpc("startThrow");
@@ -606,38 +612,26 @@ namespace GiantSpecimens.Enemy {
         public IEnumerator SlashCooldown() {
             yield return new WaitForSeconds(slashAnimation.length);
             canSlash = true;
+            RightShoulder.data.target = null;
             StopCoroutine(SlashCooldown());
         }
         public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
             base.HitEnemy(force, playerWhoHit, playHitSFX);
-            if (force == 6) {
+            if (force == 6 && playerWhoHit == null) {
                 enemyHP -= 3;
                 TargetClosestRadMech(40f);
-            } else if (force >= 3) {
+            } else if (force >= 3 && playerWhoHit == null) {
                 enemyHP -= 2;
-            } else if (force >= 1){
-                enemyHP -= 1;
+            } else if (force >= 1 && playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
+                enemyHP -= force;
             }
-        }
-        public void DetectExplosionsAndRedirect(Vector3 explosionPosition, EnemyAI shootingEnemy) {
-            if (Vector3.Distance(explosionPosition, transform.position) <= 10f) {
-                StopSearch(currentSearch);
-                targetEnemy = shootingEnemy;
-                targettingEnemy = true;
-                previousStateIndex = currentBehaviourStateIndex;
-                nextStateIndex = (int)State.RunningToPrey;
-                nextAnimationName = "startChase";
-                DoAnimationClientRpc("startScream");
-                SwitchToBehaviourClientRpc((int)State.Scream);
-            }
-            LogIfDebugBuild(enemyHP.ToString());
         }
         public bool TargetClosestRadMech(float range) {
             EnemyAI closestEnemy = null;
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "RadMech" && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range)) {
+                if (enemy.enemyType.enemyName == "RadMech" && !enemy.isEnemyDead && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range)) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < minDistance) {
                         minDistance = distance;

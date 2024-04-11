@@ -203,6 +203,7 @@ namespace GiantSpecimens.Enemy {
         public override void Update() {
             if (enemyHP <= 0 && !isEnemyDead) {
                 isEnemyDead = true;
+                KillEnemyOnOwnerClient(false);
                 DoAnimationClientRpc("startDeath");
                 return;
             }
