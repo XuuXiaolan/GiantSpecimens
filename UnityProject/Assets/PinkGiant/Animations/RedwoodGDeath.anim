@@ -38648,6 +38648,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 7.8333335
+    functionName: EnableDeathColliders
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 9
     functionName: ShakePlayerCamera
     data: 
@@ -38839,6 +38846,13 @@ AnimationClip:
     messageOptions: 0
   - time: 13.766666
     functionName: LeftFootStepInteractions
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 14.033334
+    functionName: DisableDeathColliders
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

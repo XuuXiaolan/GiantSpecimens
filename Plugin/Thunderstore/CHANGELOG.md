@@ -9,7 +9,7 @@
 - Fixed bug with Redwood Giant being stuck after eating a corpse of a ForestGiant.
 - Added death animation for Redwood Giant.
 - Compatible with Lethal Haptics
-
+- You can get crushed by the Redwood Giant while they're falling during the death animation.
 
 <details>
   <summary>Older Versions</summary>

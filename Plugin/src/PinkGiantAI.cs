@@ -204,6 +204,8 @@ namespace GiantSpecimens.Enemy {
             if (enemyHP <= 0 && !isEnemyDead) {
                 isEnemyDead = true;
                 KillEnemyOnOwnerClient(false);
+                transform.Find("Armature").Find("Bone.008.L.002").Find("Bone.008.L.002_end").Find("CollisionFootL").GetComponent<BoxCollider>().enabled = false;
+                transform.Find("Armature").Find("Bone.008.R.001").Find("Bone.008.R.001_end").Find("CollisionFootR").GetComponent<BoxCollider>().enabled = false;
                 DoAnimationClientRpc("startDeath");
                 return;
             }
@@ -422,7 +424,7 @@ namespace GiantSpecimens.Enemy {
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
                 string enemyName = enemy.enemyType.enemyName;
-                if (enemyName == "ForestGiant" || enemyName == "DriftWoodGiant" || enemyName == "RadMech" && !enemy.isEnemyDead) {
+                if ((enemyName == "ForestGiant" || enemyName == "DriftWoodGiant" || enemyName == "RadMech") && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
                         minDistance = distance;
@@ -533,6 +535,24 @@ namespace GiantSpecimens.Enemy {
             } else if (force >= 1) {
                 enemyHP -= 1;
             }
+        }
+        public void EnableDeathColliders() {
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone").Find("DeathColliderChest").GetComponent<CapsuleCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("DeathColliderLeftHip").GetComponent<CapsuleCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("Bone.008.L").Find("DeathColliderLeftLeg").GetComponent<CapsuleCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("Bone.008.L").Find("DeathColliderLeftLeg").GetComponent<BoxCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("DeathColliderRightHip").GetComponent<CapsuleCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<CapsuleCollider>().enabled = true;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = true;
+        }
+        public void DisableDeathColliders() {
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone").Find("DeathColliderChest").GetComponent<CapsuleCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("DeathColliderLeftHip").GetComponent<CapsuleCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("Bone.008.L").Find("DeathColliderLeftLeg").GetComponent<CapsuleCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("Bone.008.L").Find("DeathColliderLeftLeg").GetComponent<BoxCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("DeathColliderRightHip").GetComponent<CapsuleCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<CapsuleCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = false;
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)

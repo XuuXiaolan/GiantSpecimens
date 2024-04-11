@@ -53,6 +53,9 @@ namespace GiantSpecimens.Collisions {
                 } else {
                     BloodSplatterRight.Play();
                 }
+            } else if (collidedObject.name.Contains("Death") && !playerControllerB.isInHangarShipRoom) {
+                playerControllerB.DamagePlayer(200, causeOfDeath: CauseOfDeath.Crushing);
+                CreatureSFX.PlayOneShot(squishSound);
             } else {
                 LogIfDebugBuild("Collided with unknown object: " + collidedObject.name);
             }

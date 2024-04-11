@@ -77,11 +77,11 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public float maxAwarenessLevel = 100.0f; // Maximum awareness level
         [NonSerialized]
-        public float awarenessDecreaseRate = 5.0f; // Rate of awareness decrease per second when the player is not seen
+        public float awarenessDecreaseRate = 2.5f; // Rate of awareness decrease per second when the player is not seen
         [NonSerialized]
-        public float awarenessIncreaseRate = 10.0f; // Base rate of awareness increase when the player is seen
+        public float awarenessIncreaseRate = 15.0f; // Base rate of awareness increase when the player is seen
         [NonSerialized]
-        public float awarenessIncreaseMultiplier = 2.0f; // Multiplier for awareness increase based on proximity
+        public float awarenessIncreaseMultiplier = 3.0f; // Multiplier for awareness increase based on proximity
         [NonSerialized]
         public bool canSlash = true;
         ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
@@ -141,6 +141,7 @@ namespace GiantSpecimens.Enemy {
         }
         public override void Start() {
             base.Start();
+            // TODO: I need the following sounds: DieSFX, TakingDamageSFX (multiple for different variety of damages being taken would be good), SlashSFX, EatSFX, FootstepSFX, HeavierFootstepSFX, ScreamSFX, SpawnSFX, EnemyHurtingSFX (might need multiple for different enemies), ThrowSFX 
             // Find the renderer for the hands
             SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
             if (handsRenderer != null) {
@@ -603,21 +604,6 @@ namespace GiantSpecimens.Enemy {
                 awarenessLevel = Mathf.Max(awarenessLevel, 0.0f);
             }
         }
-        public IEnumerator DecreaseAwarenessOverTime() {
-            while (true) {
-                yield return new WaitForSeconds(1f); // Check every second
-
-                if (!PlayerInSight()) { // Implement this method to check if any player is in sight
-                    awarenessLevel -= awarenessDecreaseRate;
-                    awarenessLevel = Mathf.Max(awarenessLevel, 0.0f);
-                }
-
-                // Reset awareness if it goes below a certain threshold or after certain conditions are met
-                if (awarenessLevel <= 0) {
-                    awarenessLevel = 0;
-                }
-            }
-        }
         public bool PlayerInSight() {
             PlayerControllerB[] playerControllerB = StartOfRound.Instance.allPlayerScripts;
             foreach (PlayerControllerB player in playerControllerB) {
@@ -635,34 +621,21 @@ namespace GiantSpecimens.Enemy {
         }
         public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
             base.HitEnemy(force, playerWhoHit, playHitSFX);
-            if (force == 6 && playerWhoHit == null) {
+            if (force == 6) {
                 enemyHP -= 3;
-                TargetClosestRadMech(40f);
-            } else if (force >= 3 && playerWhoHit == null) {
+                RunFarAway();
+            } else if (force >= 3) {
                 enemyHP -= 2;
             } else if (playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
                 enemyHP -= force;
             }
         }
-        public bool TargetClosestRadMech(float range) {
-            EnemyAI closestEnemy = null;
-            float minDistance = float.MaxValue;
-
-            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.enemyName == "RadMech" && !enemy.isEnemyDead && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range)) {
-                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestEnemy = enemy;
-                    }
-                }
+        public void RunFarAway() {
+            try {
+                SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
+            } catch {
+                return;
             }
-            if (closestEnemy != null) {
-                targetEnemy = closestEnemy;
-                targettingEnemy = true;
-                return true;
-            }
-            return false;
         }
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
