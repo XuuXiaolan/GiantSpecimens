@@ -298,12 +298,12 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.EatingPrey:
 					break;
+                case (int)State.PlayingWithPrey:
+                    agent.speed = 0f;
+                    break;
                 case (int)State.Scream:
                     agent.speed = 0f;
                     // Does nothing, on purpose.
-                    break;
-                case (int)State.PlayingWithPrey:
-                    agent.speed = 0f;
                     break;
                 default:
                     LogIfDebugBuild("This Behavior State doesn't exist!");
@@ -368,12 +368,12 @@ namespace GiantSpecimens.Enemy {
            // Also colour the hands a bit red.
         }
         public void PlayRunFootsteps() {
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public void PlayWalkFootsteps() {
-            creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+            // creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
         }
         public IEnumerator ThrowPlayer() {
             RightShoulder.data.target = targetPlayer_.transform;
@@ -610,7 +610,7 @@ namespace GiantSpecimens.Enemy {
             return false;
         }
         public IEnumerator SlashCooldown() {
-            yield return new WaitForSeconds(slashAnimation.length);
+            yield return new WaitForSeconds(2f);
             canSlash = true;
             RightShoulder.data.target = null;
             StopCoroutine(SlashCooldown());
