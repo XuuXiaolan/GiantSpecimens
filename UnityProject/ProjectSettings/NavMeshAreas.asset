@@ -11,16 +11,6 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: PlayerLineOfSight
-    cost: 1
-  - name: PlayerShip
-    cost: 20
-  - name: SmallSpace
-    cost: 4
-  - name: MediumSpace
-    cost: 1
-  - name: Climb
-    cost: 5
   - name: 
     cost: 1
   - name: 
@@ -69,14 +59,24 @@ NavMeshProjectSettings:
     cost: 1
   - name: 
     cost: 1
-  m_LastAgentTypeID: -334000983
+  - name: 
+    cost: 1
+  - name: 
+    cost: 1
+  - name: 
+    cost: 1
+  - name: 
+    cost: 1
+  - name: 
+    cost: 1
+  m_LastAgentTypeID: -887442657
   m_Settings:
-  - serializedVersion: 3
+  - serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 1.5
-    agentHeight: 4
-    agentSlope: 60
-    agentClimb: 0.8
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.75
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
@@ -84,9 +84,7 @@ NavMeshProjectSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    buildHeightMesh: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
+    accuratePlacement: 0
     debug:
       m_Flags: 0
   m_SettingNames:

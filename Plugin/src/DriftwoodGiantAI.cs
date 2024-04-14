@@ -452,7 +452,7 @@ namespace GiantSpecimens.Enemy {
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection, transform.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3f);
                 
-                targetEnemy.HitEnemy(1, null, false);
+                targetEnemy.HitEnemy(1, null, false, -1);
                 if (targetEnemy.enemyHP <= 0) {
                     nextStateIndex = (int)State.EatingPrey;
                     nextAnimationName = "startEating";
@@ -619,8 +619,8 @@ namespace GiantSpecimens.Enemy {
             RightShoulder.data.target = null;
             StopCoroutine(SlashCooldown());
         }
-        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
-            base.HitEnemy(force, playerWhoHit, playHitSFX);
+        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
+            base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
             if (force == 6) {
                 enemyHP -= 3;
                 RunFarAway();

@@ -338,9 +338,9 @@ namespace GiantSpecimens.Enemy {
             }
 
             if (distanceFromEnemy <= 3f) {
-                enemy.HitEnemy(2, null, false);
+                enemy.HitEnemy(2, null, false, -1);
             } else if (distanceFromEnemy <= 10f) {
-                enemy.HitEnemy(1, null, false);
+                enemy.HitEnemy(1, null, false, -1);
             }
             // LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
         }
@@ -526,8 +526,8 @@ namespace GiantSpecimens.Enemy {
             }
             return false;
         }
-        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false) {
-            base.HitEnemy(force, playerWhoHit, playHitSFX);
+        public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
+            base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
             if (force == 6) {
                 enemyHP -= 5;
             } else if (force >= 3) {
