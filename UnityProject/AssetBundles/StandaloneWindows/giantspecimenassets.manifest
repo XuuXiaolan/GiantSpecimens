@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2855294679
+CRC: 1018899062
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7c21acd56c34626fb3de9fcdae0675c8
+    Hash: cbe13ab97009650e57f345d71489cce5
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b1c8890e299e967f0359a88901f3dc13
+    Hash: 93ad652ad0a4d10398b1292ce4b21d59
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 7c21acd56c34626fb3de9fcdae0675c8
+    Hash: cbe13ab97009650e57f345d71489cce5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -103,6 +103,8 @@ SerializeReferenceClassIdentifiers:
   ClassName: CompatibleNoun
 - AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
+- AssemblyName: Assembly-CSharp
+  ClassName: NavSizeLimit
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
