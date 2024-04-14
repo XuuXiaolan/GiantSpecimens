@@ -210,8 +210,8 @@ userFile = f"""<?xml version="1.0" encoding="utf-8"?>
          Condition="!Exists('$(TestDir)$(AssemblyName)-DEV/')"
       />
       <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TestDir)$(AssemblyName)-DEV/"/>
-      <!-- We will copy the asset bundle named "giantspecimenassets" over -->
-      <Copy SourceFiles="../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassets" DestinationFolder="$(TestDir)$(AssemblyName)-DEV/"/>
+      <!-- We will copy the asset bundle named "giantspecimenassetslll" over -->
+      <Copy SourceFiles="../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassetslll" DestinationFolder="$(TestDir)$(AssemblyName)-DEV/"/>
       <Exec Command="echo '[csproj.user] Mod files copied to $(TestDir)$(AssemblyName)-DEV/'" />
    </Target>
 </Project>"""

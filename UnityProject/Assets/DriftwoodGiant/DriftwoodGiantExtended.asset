@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1818284413, guid: fcd3abe3f10d9774d81dea5aa9928fd8, type: 3}
+  m_Name: DriftwoodGiantExtended
+  m_EditorClassIdentifier: 
+  <ContentTags>k__BackingField: []
+  EnemyType: {fileID: 11400000, guid: 1ecb4624c2cb7ba4a83a70b2bf6d0cff, type: 2}
+  enemyDisplayName: Driftwood Giant
+  insideLevelMatchingProperties: {fileID: 0}
+  insideDungeonMatchingProperties: {fileID: 0}
+  outsideLevelMatchingProperties: {fileID: 0}
+  daytimeLevelMatchingProperties: {fileID: 0}
+  infoNodeDescription: "Driftwood Giant\n\nSigurd's danger level: 65%\n\nScientific
+    name: Satyrid-Proceritas \n\nRun, run as soon as you see them, and do not let
+    him leave your vision. This giant is built for speed, these monsters are feared
+    hunters and are the most known apex predators on habitats they reside in. They're
+    usually seen feeding on the corpses of recently captured prey, whether it be
+    other monsters or your own friends. The best way to avoid them is to not stay
+    out for too long, night is not your friend. They are always watching for you.
+    - Sigurd"
+  infoNodeVideoClip: {fileID: 0}

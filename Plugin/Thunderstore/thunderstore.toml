@@ -23,7 +23,7 @@ source = "../bin/Release/netstandard2.1/TheGiantSpecimens.dll"
 target = "plugins/TheGiantSpecimens/"
 
 [[build.copy]]
-source = "../../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassets"
+source = "../../UnityProject/AssetBundles/StandaloneWindows/giantspecimenassetslll"
 target = "plugins/TheGiantSpecimens/"
 
 [[build.copy]]

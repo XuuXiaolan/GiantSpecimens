@@ -2,10 +2,6 @@
 using UnityEngine;
 using BepInEx;
 using HarmonyLib;
-using LethalLib.Modules;
-using static LethalLib.Modules.Levels;
-using static LethalLib.Modules.Enemies;
-using static LethalLib.Modules.Items;
 using BepInEx.Logging;
 using System.IO;
 using System.Collections.Generic;
@@ -15,14 +11,13 @@ using static BepInEx.BepInDependency;
 using GiantSpecimens.Dependency;
 using GiantSpecimens.Configs;
 using GiantSpecimens.Enemy;
+using LethalLevelLoader;
 using GiantSpecimens.Patches;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency(LethalLib.Plugin.ModGUID)] 
     [BepInDependency("BMX.LobbyCompatibility", Flags:BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin {
-        public static Harmony _harmony;
         public static EnemyType PinkGiant;
         public static EnemyType DriftGiant;
         public static Item RedWoodPlushie;
@@ -40,10 +35,11 @@ namespace GiantSpecimens {
             if (LobbyCompatibilityChecker.Enabled) {
                 LobbyCompatibilityChecker.Init();
             }
-            Assets.PopulateAssets();
+            // Assets.PopulateAssets();
 
             ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
             // Whistle Item/Scrap
+            /*
             Whistle = Assets.MainAssetBundle.LoadAsset<Item>("WhistleObj");
             Utilities.FixMixerGroups(Whistle.spawnPrefab);
             NetworkPrefabs.RegisterNetworkPrefab(Whistle.spawnPrefab);
@@ -69,7 +65,7 @@ namespace GiantSpecimens {
             TerminalKeyword dgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("DriftwoodGiantTK");
             NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
-            
+            */
             GiantPatches.Init();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -77,7 +73,7 @@ namespace GiantSpecimens {
             // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
             InitializeNetworkBehaviours();
         }
-        private void RegisterEnemyWithConfig(bool enabled, string configMoonRarity, EnemyType enemy, TerminalNode terminalNode, TerminalKeyword terminalKeyword) {
+        /*private void RegisterEnemyWithConfig(bool enabled, string configMoonRarity, EnemyType enemy, TerminalNode terminalNode, TerminalKeyword terminalKeyword) {
             if (enabled) { 
                 (Dictionary<LevelTypes, int> spawnRateByLevelType, Dictionary<string, int> spawnRateByCustomLevelType) = ConfigParsing(configMoonRarity);
                 RegisterEnemy(enemy, spawnRateByLevelType, spawnRateByCustomLevelType, terminalNode, terminalKeyword);
@@ -137,7 +133,7 @@ namespace GiantSpecimens {
                 }
             }
             return (spawnRateByLevelType, spawnRateByCustomLevelType);
-        }
+        }*/
         private void InitializeNetworkBehaviours() {
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
@@ -159,7 +155,7 @@ namespace GiantSpecimens {
         public static void PopulateAssets() {
             string sAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            MainAssetBundle = AssetBundle.LoadFromFile(Path.Combine(sAssemblyLocation, "giantspecimenassets"));
+            MainAssetBundle = AssetBundle.LoadFromFile(Path.Combine(sAssemblyLocation, "giantspecimenassetslll.lethalbundle"));
             if (MainAssetBundle == null) {
                 Plugin.Logger.LogError("Failed to load custom assets.");
                 return;

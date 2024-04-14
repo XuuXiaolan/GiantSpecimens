@@ -33,7 +33,7 @@ Transform:
   - {fileID: 6615197478373682789}
   - {fileID: 7547944965085891360}
   m_Father: {fileID: 4885673204700232133}
-  m_LocalEulerAnglesHint: {x: -14.656109, y: 4.036192, z: -32.595894}
+  m_LocalEulerAnglesHint: {x: -8.522708, y: 1.1127301, z: -17.987556}
 --- !u!1 &458086781798754352
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ Transform:
   m_Children:
   - {fileID: 6583276988692185909}
   m_Father: {fileID: 5388513299703036147}
-  m_LocalEulerAnglesHint: {x: 10.818396, y: 5.2100153, z: -1.9386345}
+  m_LocalEulerAnglesHint: {x: 1.2599671, y: 0.39083567, z: 32.977615}
 --- !u!1 &964472293399559371
 GameObject:
   m_ObjectHideFlags: 0
@@ -4963,13 +4963,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 1
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -5200,7 +5202,7 @@ Transform:
   - {fileID: 5739508229708049367}
   - {fileID: 5496055609615722155}
   m_Father: {fileID: 7466015449561057137}
-  m_LocalEulerAnglesHint: {x: -13.917331, y: -3.6689577, z: 31.166187}
+  m_LocalEulerAnglesHint: {x: -3.8929408, y: -0.032271523, z: 8.167158}
 --- !u!1 &1899535464472245256
 GameObject:
   m_ObjectHideFlags: 0
@@ -5407,7 +5409,7 @@ Transform:
   - {fileID: 1742052597923188720}
   - {fileID: 5410085867838499284}
   m_Father: {fileID: 8332151319351514720}
-  m_LocalEulerAnglesHint: {x: 0.48657677, y: 92.89434, z: 89.30025}
+  m_LocalEulerAnglesHint: {x: 0.61055535, y: 103.83772, z: 89.40533}
 --- !u!1 &2477117404947962044
 GameObject:
   m_ObjectHideFlags: 0
@@ -5439,7 +5441,7 @@ Transform:
   m_Children:
   - {fileID: 7466015449561057137}
   m_Father: {fileID: 8332151319351514720}
-  m_LocalEulerAnglesHint: {x: -26.197916, y: 0.21599305, z: -0.50211245}
+  m_LocalEulerAnglesHint: {x: -26.197914, y: 0.21599218, z: -0.50211394}
 --- !u!1 &2661754977264930809
 GameObject:
   m_ObjectHideFlags: 0
@@ -5503,7 +5505,7 @@ Transform:
   m_Children:
   - {fileID: 210961864116155587}
   m_Father: {fileID: 5087715495343417723}
-  m_LocalEulerAnglesHint: {x: 8.404763e-15, y: -80.65995, z: -180}
+  m_LocalEulerAnglesHint: {x: 6.923685e-15, y: -80.65995, z: -180}
 --- !u!1 &2985979343833894823
 GameObject:
   m_ObjectHideFlags: 0
@@ -10964,13 +10966,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 1
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -11011,7 +11015,7 @@ Transform:
   m_Children:
   - {fileID: 383018409040936440}
   m_Father: {fileID: 3714952045630393829}
-  m_LocalEulerAnglesHint: {x: -11.328163, y: 4.6235847, z: 0.2930119}
+  m_LocalEulerAnglesHint: {x: -0.08248658, y: -0.27529097, z: 20.627184}
 --- !u!1 &3557904968736990047
 GameObject:
   m_ObjectHideFlags: 0
@@ -11088,7 +11092,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 297488692
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -11189,6 +11194,7 @@ MonoBehaviour:
     boolValue: 0
   currentBehaviourStateIndex: 0
   previousBehaviourStateIndex: 0
+  currentOwnershipOnThisClient: 0
   isInsidePlayerShip: 0
   AIIntervalTime: 0.2
   inSpecialAnimation: 0
@@ -11235,6 +11241,7 @@ MonoBehaviour:
     searchWidth: 0
     searchPrecision: 0
     randomized: 0
+    onlySearchNodesInLOS: 0
   DebugEnemy: 0
   stunnedIndefinitely: 0
   stunNormalizedTimer: 0
@@ -11571,7 +11578,7 @@ Transform:
   m_Children:
   - {fileID: 2483312673777293549}
   m_Father: {fileID: 5691748663651832290}
-  m_LocalEulerAnglesHint: {x: -8.299163, y: -9.156885, z: -91.51851}
+  m_LocalEulerAnglesHint: {x: -0.5563701, y: -0.3695574, z: -129.53822}
 --- !u!1 &4038338161813434279
 GameObject:
   m_ObjectHideFlags: 0
@@ -11909,7 +11916,7 @@ Transform:
   m_Children:
   - {fileID: 669517618886893905}
   m_Father: {fileID: 2483312673777293549}
-  m_LocalEulerAnglesHint: {x: 6.702046, y: 5.8019595, z: -11.566249}
+  m_LocalEulerAnglesHint: {x: 0.55134463, y: -0.21248193, z: -31.115812}
 --- !u!1 &4340162678590735423
 GameObject:
   m_ObjectHideFlags: 0
@@ -11943,7 +11950,7 @@ Transform:
   - {fileID: 7601725715087579780}
   - {fileID: 5856986125744579137}
   m_Father: {fileID: 5087715495343417723}
-  m_LocalEulerAnglesHint: {x: 87.19919, y: 175.80733, z: 86.45608}
+  m_LocalEulerAnglesHint: {x: 3.1957855, y: -0.6983266, z: -89.54875}
 --- !u!1 &4436242559235381337
 GameObject:
   m_ObjectHideFlags: 0
@@ -12175,7 +12182,7 @@ Transform:
   m_Children:
   - {fileID: 459965821497911139}
   m_Father: {fileID: 5087715495343417723}
-  m_LocalEulerAnglesHint: {x: 8.404763e-15, y: -80.65995, z: -180}
+  m_LocalEulerAnglesHint: {x: 6.923685e-15, y: -80.65995, z: -180}
 --- !u!1 &4759125576862044272
 GameObject:
   m_ObjectHideFlags: 0
@@ -12239,7 +12246,7 @@ Transform:
   m_Children:
   - {fileID: 4885673204700232133}
   m_Father: {fileID: 8332151319351514720}
-  m_LocalEulerAnglesHint: {x: 28.267, y: -0.2480247, z: 179.48843}
+  m_LocalEulerAnglesHint: {x: 28.267, y: -0.24802323, z: 179.48843}
 --- !u!1 &5362620738952164911
 GameObject:
   m_ObjectHideFlags: 0
@@ -12357,7 +12364,7 @@ Transform:
   - {fileID: 44940619708929344}
   - {fileID: 336687344845470673}
   m_Father: {fileID: 5856986125744579137}
-  m_LocalEulerAnglesHint: {x: -50.30988, y: -2.3794417, z: -13.361157}
+  m_LocalEulerAnglesHint: {x: -55.372833, y: 0.9756766, z: -7.09973}
 --- !u!114 &1925312714256464198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12443,7 +12450,7 @@ Transform:
   m_Children:
   - {fileID: 5388513299703036147}
   m_Father: {fileID: 5691748663651832290}
-  m_LocalEulerAnglesHint: {x: 2.814667, y: 7.310888, z: 95.906136}
+  m_LocalEulerAnglesHint: {x: 0.44425428, y: -0.5864053, z: 129.16728}
 --- !u!1 &6370364236161624232
 GameObject:
   m_ObjectHideFlags: 0
@@ -12478,7 +12485,7 @@ Transform:
   - {fileID: 9005377484214848080}
   - {fileID: 3608750056693078123}
   m_Father: {fileID: 8214564587693678218}
-  m_LocalEulerAnglesHint: {x: 1.2103262, y: 0.07071864, z: 0.010859803}
+  m_LocalEulerAnglesHint: {x: 2.2637188, y: -0.0000041284807, z: 0.00000018200475}
 --- !u!1 &6516396054887194868
 GameObject:
   m_ObjectHideFlags: 0
@@ -12903,7 +12910,7 @@ Transform:
   - {fileID: 4336853404265314093}
   - {fileID: 6695398378483675176}
   m_Father: {fileID: 7601725715087579780}
-  m_LocalEulerAnglesHint: {x: -50.387173, y: -8.473376, z: 25.352236}
+  m_LocalEulerAnglesHint: {x: -51.42267, y: -15.117324, z: 22.426983}
 --- !u!114 &1090942959471345453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17815,13 +17822,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 1
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -18178,7 +18187,7 @@ Transform:
   m_Children:
   - {fileID: 2677157143305482224}
   m_Father: {fileID: 5087715495343417723}
-  m_LocalEulerAnglesHint: {x: 0.000031583022, y: -90, z: -33.057877}
+  m_LocalEulerAnglesHint: {x: 0.000032443397, y: -90.00001, z: 89.489204}
 --- !u!1 &7387055648064381046
 GameObject:
   m_ObjectHideFlags: 0
@@ -18210,7 +18219,7 @@ Transform:
   m_Children:
   - {fileID: 1216405325864245924}
   m_Father: {fileID: 5087715495343417723}
-  m_LocalEulerAnglesHint: {x: 0.0000139456715, y: 89.99998, z: 26.056227}
+  m_LocalEulerAnglesHint: {x: 0.000008537736, y: 89.999985, z: -89.774994}
 --- !u!1 &7413607098762727321
 GameObject:
   m_ObjectHideFlags: 0
@@ -18347,7 +18356,7 @@ Transform:
   m_Children:
   - {fileID: 4480511858945591018}
   m_Father: {fileID: 9005377484214848080}
-  m_LocalEulerAnglesHint: {x: -10.215709, y: 2.9245856, z: -4.91778}
+  m_LocalEulerAnglesHint: {x: -1.0195187, y: 0.03910006, z: -22.244701}
 --- !u!1 &8060484416684395267
 GameObject:
   m_ObjectHideFlags: 0
@@ -23245,13 +23254,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 1
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -28158,13 +28169,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 1
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
