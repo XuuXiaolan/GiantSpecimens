@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1069258962
+CRC: 28314147
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4d4d4611926a9a93f862bc4dde4a86fd
+    Hash: c9ac1ec53e339a3a01c499a022773582
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3c9dab34028010efe87b52263f25cca8
+    Hash: a6837ae613028af595143ebf0c504afc
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 4d4d4611926a9a93f862bc4dde4a86fd
+    Hash: c9ac1ec53e339a3a01c499a022773582
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -63,6 +63,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: -194780425, guid: fcd3abe3f10d9774d81dea5aa9928fd8, type: 3}
 - Class: 114
+  Script: {fileID: 2024385392, guid: fcd3abe3f10d9774d81dea5aa9928fd8, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d3cecf05b78b173605122a700874719c, type: 3}
@@ -97,18 +99,20 @@ SerializeReferenceClassIdentifiers:
   ClassName: EnemyBehaviourState
 - AssemblyName: Assembly-CSharp
   ClassName: NavSizeLimit
+- AssemblyName: LethalLevelLoader
+  ClassName: LethalLevelLoader.StringWithRarity
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
 Assets:
-- Assets/PinkGiant/Bestiary/PinkGiantTK.asset
-- Assets/DriftwoodGiant/DriftwoodGiantExtended.asset
-- Assets/DriftwoodGiant/TheGiantSpecimensExtendedMod.asset
-- Assets/PinkGiant/PinkGiant1.prefab
-- Assets/PinkGiant/Bestiary/PinkGiantTN.asset
-- Assets/DriftwoodGiant/Bestiary/DriftwoodGiantTK.asset
-- Assets/DriftwoodGiant/DriftwoodGiantObj.asset
-- Assets/PinkGiant/RedwoodGiantExtended.asset
-- Assets/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
-- Assets/DriftwoodGiant/AnimatedDriftwoodV11.prefab
-- Assets/PinkGiant/PinkGiantObj.asset
+- Assets/TheGiantSpecimens/PinkGiant/Bestiary/PinkGiantTK.asset
+- Assets/TheGiantSpecimens/DriftwoodGiant/DriftwoodGiantExtended.asset
+- Assets/TheGiantSpecimens/TheGiantSpecimensExtendedMod.asset
+- Assets/TheGiantSpecimens/PinkGiant/PinkGiant1.prefab
+- Assets/TheGiantSpecimens/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/TheGiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGiantTK.asset
+- Assets/TheGiantSpecimens/DriftwoodGiant/DriftwoodGiantObj.asset
+- Assets/TheGiantSpecimens/PinkGiant/RedwoodGiantExtended.asset
+- Assets/TheGiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
+- Assets/TheGiantSpecimens/DriftwoodGiant/AnimatedDriftwoodV11.prefab
+- Assets/TheGiantSpecimens/PinkGiant/PinkGiantObj.asset
 Dependencies: []
