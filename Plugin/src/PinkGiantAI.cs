@@ -75,7 +75,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public Vector3 midpoint;
         [NonSerialized]
-        public bool testBuild = true; 
+        public bool testBuild = false; 
         [NonSerialized]
         public LineRenderer line;
         [NonSerialized]
@@ -85,7 +85,7 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public float cooldownTime;
         [NonSerialized]
-        public float distanceFromPosition;
+        public Vector3 distanceFromPosition;
         ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
         int IVisibleThreat.SendSpecialBehaviour(int id) {
             return 0; 
@@ -247,7 +247,7 @@ namespace GiantSpecimens.Enemy {
         public void SearchOrChaseTarget() {
             DoAnimationClientRpc("startWalk");
             LogIfDebugBuild("Start Walking Around");
-            SetNewDestination();
+            StartSearch(transform.position);
             SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
         }
         public override void DoAIInterval()
@@ -268,10 +268,11 @@ namespace GiantSpecimens.Enemy {
                     break;
                 case (int)State.SearchingForGiant:
                     agent.speed = walkingSpeed;
-                    if (FindClosestAliveGiantInRange(seeableDistance)){
+                    if (FindClosestAliveGiantInRange(seeableDistance)) {
                         DoAnimationClientRpc("startChase");
                         StartCoroutine(ChaseCoolDown());
                         LogIfDebugBuild("Start Target Giant");
+                        StopSearch(currentSearch);
                         SwitchToBehaviourClientRpc((int)State.RunningToGiant);
                     } // Look for Forest Keeper
                     var closestPlayer = StartOfRound.Instance.allPlayerScripts
@@ -294,7 +295,6 @@ namespace GiantSpecimens.Enemy {
                             closestFoot.data.target = null;
                         }
                     }
-                    SetNewDestination();
                     break;
                 case (int)State.RunningToGiant:
                     agent.speed = walkingSpeed * 4;
@@ -302,7 +302,7 @@ namespace GiantSpecimens.Enemy {
                     if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
                         LogIfDebugBuild("Stop Target Giant");
                         DoAnimationClientRpc("startWalk");
-                        SetNewDestination();
+                        StartSearch(transform.position);
                         SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                         return;
                     }
@@ -543,49 +543,6 @@ namespace GiantSpecimens.Enemy {
             } else if (force >= 1) {
                 enemyHP -= 1;
             }
-        }
-
-        public void SetNewDestination() {
-            if (canMove) {
-                canMove = false;
-                Vector3 newDestination;
-                if (TryGetRandomNavMeshLocation(out newDestination)) {
-                    agent.SetDestination(newDestination);
-                    float distance = Vector3.Distance(transform.position, newDestination);
-                    StartCoroutine(MoveCooldown(distance / walkingSpeed));
-                } else {
-                    StartCoroutine(MoveCooldown(3f)); // Fallback cooldown
-                }
-            }
-        }
-    
-        private bool TryGetRandomNavMeshLocation(out Vector3 result) {
-            Vector3 randomDirection = RandomInsideUnitSphere(destinationRandom) * ((float)destinationRandom.NextDouble() * 31 + 30);
-            randomDirection += transform.position;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomDirection, out hit, 25f, NavMesh.AllAreas)) {
-                result = hit.position;
-                return true;
-            }
-            result = Vector3.zero;
-            return false;
-        }
-        public IEnumerator MoveCooldown(float time) {
-            yield return new WaitForSeconds(time);
-            canMove = true;
-        }
-
-        // Utility method to generate a point inside a unit sphere
-        public Vector3 RandomInsideUnitSphere(System.Random random) {
-            float u = (float)random.NextDouble();
-            float v = (float)random.NextDouble();
-            float theta = 2 * Mathf.PI * u;
-            float phi = Mathf.Acos(2 * v - 1);
-            float r = Mathf.Pow((float)random.NextDouble(), 1.0f/3.0f);
-            float x = r * Mathf.Sin(phi) * Mathf.Cos(theta);
-            float y = r * Mathf.Sin(phi) * Mathf.Sin(theta);
-            float z = r * Mathf.Cos(phi);
-            return new Vector3(x, y, z);
         }
 
         public void EnableDeathColliders() {
