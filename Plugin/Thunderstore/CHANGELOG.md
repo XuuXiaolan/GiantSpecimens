@@ -1,18 +1,20 @@
 ## v 2.0.0 NEW ENEMY UPDATE
 - Added NEW ENEMY, Driftwood Giant.
-- Added achievements.
 - If target enemy to Redwood Giant is Old bird or Driftwood, Switch particle system.
-- Hopefully added a shader to improve particle system by now
+- Added achievements.
 - Ported over to LLL (Lethal Level Loader).
+
+<details>
+  <summary>Older Versions</summary>
+
+## v 1.9.0 V50 UPDATE
+- Hopefully added a shader to improve particle system by now
 - Fixed Whistle and plushie sounds being picked up/dropped being global.
 - Allowed Redwood Giant to target old birds and Driftwood Giants.
 - Fixed bug with Redwood Giant being stuck after eating a corpse of a ForestGiant.
 - Added death animation for Redwood Giant.
 - Compatible with Lethal Haptics
 - You can get crushed by the Redwood Giant while they're falling during the death animation.
-
-<details>
-  <summary>Older Versions</summary>
 
 ## v 1.8.0 *QoL + v50 compat*
 - Added BMX-Lobby Compatibility for public lobbies.
