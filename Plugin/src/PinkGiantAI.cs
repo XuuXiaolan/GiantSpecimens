@@ -478,9 +478,6 @@ namespace GiantSpecimens.Enemy {
             StopCoroutine(PauseDuringIdle());
         }
         IEnumerator EatForestKeeper() {
-            targetEnemy.currentBehaviourStateIndex = 0;
-            targetEnemy.CancelSpecialAnimationWithPlayer();
-            targetEnemy.StopAllCoroutines();
             targetEnemy.SetEnemyStunned(true, 10f);
             targetEnemy.creatureVoice.Stop();
             targetEnemy.creatureSFX.Stop();

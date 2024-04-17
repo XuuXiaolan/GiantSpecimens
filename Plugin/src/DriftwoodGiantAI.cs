@@ -31,6 +31,7 @@ namespace GiantSpecimens.Enemy {
         public AudioClip eatenSound;
         public AudioClip screamSound;
         public AudioClip spawnSound;
+        public AudioClip stunSound;
         #pragma warning restore 0649
         [NonSerialized]
         public string levelName;
@@ -124,6 +125,7 @@ namespace GiantSpecimens.Enemy {
             EatingPrey, // Eating
             PlayingWithPrey, // Playing with a player's body
             Scream, // Screams and damages player
+            Stunned, // Stunned
         }
 
         void LogIfDebugBuild(string text) {
@@ -205,6 +207,15 @@ namespace GiantSpecimens.Enemy {
                 creatureVoice.PlayOneShot(dieSFX);
             }
             base.Update();
+            if (stunNormalizedTimer > 0f && currentBehaviourStateIndex != (int)State.Stunned) {
+                StopSearch(currentSearch);
+                previousStateIndex = currentBehaviourStateIndex;
+                nextStateIndex = (int)State.SearchingForPrey;
+                nextAnimationName = "startWalk";
+                DoAnimationClientRpc("startStunned");
+                StartCoroutine(StunPause());
+                SwitchToBehaviourClientRpc((int)State.Stunned);
+            }
             if (GameNetworkManager.Instance.localPlayerController != null && DWHasLineOfSightToPosition(GameNetworkManager.Instance.localPlayerController.transform.position)) {
                 DriftwoodGiantSeePlayerEffect();
             }
@@ -218,7 +229,7 @@ namespace GiantSpecimens.Enemy {
         public override void DoAIInterval() {
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
                 return;
-            };
+            }
             base.DoAIInterval();
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
@@ -324,6 +335,9 @@ namespace GiantSpecimens.Enemy {
                     agent.speed = 0f;
                     // Does nothing, on purpose.
                     break;
+                case (int)State.Stunned:
+                    agent.speed = 0f;
+                    break;
                 default:
                     LogIfDebugBuild("This Behavior State doesn't exist!");
                     break;
@@ -372,6 +386,14 @@ namespace GiantSpecimens.Enemy {
             }
             SwitchToBehaviourClientRpc(nextStateIndex);
             StopCoroutine(ScreamPause());
+        }
+        public IEnumerator StunPause() {
+            creatureVoice.PlayOneShot(stunSound);
+            yield return new WaitForSeconds(stunNormalizedTimer);
+            StartSearch(transform.position);
+            DoAnimationClientRpc(nextAnimationName);
+            SwitchToBehaviourClientRpc(nextStateIndex);
+            StopCoroutine(StunPause());
         }
         public void DriftwoodScream() { // run this multiple times in one scream animation
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
