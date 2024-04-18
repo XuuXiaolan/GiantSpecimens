@@ -511,7 +511,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if ((enemy.enemyType.enemyName == "MouthDog" || enemy.enemyType.enemyName == "Baboon hawk" || enemy.enemyType.enemyName == "Masked") && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
+                if (enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < minDistance) {
                         minDistance = distance;

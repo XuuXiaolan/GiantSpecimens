@@ -364,7 +364,7 @@ namespace GiantSpecimens.Enemy {
                 }
             }
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
+                if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
                     DealEnemyDamageFromShockwave(enemy, "LeftFoot");
                 }
             }
