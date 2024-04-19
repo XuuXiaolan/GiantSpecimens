@@ -202,7 +202,7 @@ namespace GiantSpecimens.Enemy {
         public override void Update() {
             if (enemyHP <= 0 && !isEnemyDead) {
                 isEnemyDead = true;
-                KillEnemyOnOwnerClient(false);
+                KillEnemy(false);
                 DoAnimationClientRpc("startDeath");
                 creatureVoice.PlayOneShot(dieSFX);
             }
@@ -511,7 +511,7 @@ namespace GiantSpecimens.Enemy {
             float minDistance = float.MaxValue;
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-                if (enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
+                if (enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < minDistance) {
                         minDistance = distance;
@@ -650,7 +650,15 @@ namespace GiantSpecimens.Enemy {
                 enemyHP -= 2;
             } else if (playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
                 enemyHP -= force;
+            } else {
+                enemyHP -= 1;
             }
+            if (enemyHP <= 0) {
+                KillEnemy(false);
+            }
+        }
+        public override void KillEnemy(bool destroy = false) {
+            KillEnemyOnOwnerClient(false);
         }
         public void RunFarAway() {
             try {

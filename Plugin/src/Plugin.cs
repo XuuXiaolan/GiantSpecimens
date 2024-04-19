@@ -16,11 +16,15 @@ using GiantSpecimens.Dependency;
 using GiantSpecimens.Configs;
 using GiantSpecimens.Enemy;
 using GiantSpecimens.Patches;
+using BepInEx.Bootstrap;
+using MoreShipUpgrades;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency(LethalLib.Plugin.ModGUID)] 
     [BepInDependency("BMX.LobbyCompatibility", Flags:BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("MaxWasUnavailable.LethalModDataLib", Flags:BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("malco.Lategame_Upgrades", Flags:BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin {
         public static Harmony _harmony;
         public static EnemyType PinkGiant;
@@ -55,6 +59,12 @@ namespace GiantSpecimens {
             Utilities.FixMixerGroups(RedWoodPlushie.spawnPrefab); 
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
             RegisterScrapWithConfig(ModConfig.ConfigRedwoodPlushieEnabled.Value, ModConfig.ConfigRedwoodPlushieRarity.Value, RedWoodPlushie);
+
+            if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
+                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem()
+            } else {
+                // MyHeartDropRegister();
+            }
 
             // Redwood Giant Enemy
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");

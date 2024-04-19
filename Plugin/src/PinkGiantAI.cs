@@ -53,6 +53,8 @@ namespace GiantSpecimens.Enemy {
         [NonSerialized]
         public string levelName;
         [NonSerialized]
+        public StormyWeather stormyEffects = new StormyWeather(); 
+        [NonSerialized]
         public bool waitAfterChase = false;
         [NonSerialized]
         public bool eatingEnemy = false;
@@ -355,6 +357,7 @@ namespace GiantSpecimens.Enemy {
 
         public void LeftFootStepInteractions() {
             DustParticlesLeft.Play(); // Play the particle system with the updated color
+            stormyEffects.LightningStrike(CollisionFootL.transform.position, false);
             FootSource.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
@@ -369,9 +372,9 @@ namespace GiantSpecimens.Enemy {
                 }
             }
         }
-
         public void RightFootStepInteractions() {
             DustParticlesRight.Play(); // Play the particle system with the updated color
+            stormyEffects.LightningStrike(CollisionFootR.transform.position, false);
             FootSource.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
@@ -432,7 +435,7 @@ namespace GiantSpecimens.Enemy {
 
             foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
                 string enemyName = enemy.enemyType.enemyName;
-                if ((enemyName == "ForestGiant" || enemyName == "DriftWoodGiant" || enemyName == "RadMech") && !enemy.isEnemyDead) {
+                if ((enemyName == "ForestGiant" || enemyName == "DriftWoodGiant") && !enemy.isEnemyDead) {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
                         minDistance = distance;
@@ -540,6 +543,33 @@ namespace GiantSpecimens.Enemy {
             } else if (force >= 1) {
                 enemyHP -= 1;
             }
+            if (enemyHP <= 0) {
+                KillEnemy(false);   
+            }
+        }
+        public override void KillEnemy(bool destroy = false) {
+            base.KillEnemy(destroy);
+            KillEnemyOnOwnerClient();
+        }
+        public bool OverrideTargetEnemy(float range) {
+            EnemyAI closestEnemy = null;
+            float minDistance = float.MaxValue;
+
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                string enemyName = enemy.enemyType.enemyName;
+                if (enemyName == "RadMech" && !enemy.isEnemyDead && targetEnemy == null) {
+                    float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
+                        minDistance = distance;
+                        closestEnemy = enemy;
+                    }
+                }
+            }
+            if (closestEnemy != null) {
+                targetEnemy = closestEnemy;
+                return true;
+            }
+            return false;
         }
 
         public void EnableDeathColliders() {
