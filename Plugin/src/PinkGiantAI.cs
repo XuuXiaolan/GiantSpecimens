@@ -211,15 +211,11 @@ namespace GiantSpecimens.Enemy {
         }
 
         public override void Update() {
-            if (enemyHP <= 0 && !isEnemyDead) {
-                isEnemyDead = true;
-                KillEnemyOnOwnerClient(false);
-                transform.Find("Armature").Find("Bone.008.L.002").Find("Bone.008.L.002_end").Find("CollisionFootL").GetComponent<BoxCollider>().enabled = false;
-                transform.Find("Armature").Find("Bone.008.R.001").Find("Bone.008.R.001_end").Find("CollisionFootR").GetComponent<BoxCollider>().enabled = false;
-                DoAnimationClientRpc("startDeath");
+            base.Update();
+            if(isEnemyDead) {
                 return;
             }
-            base.Update();
+            
             if (currentBehaviourStateIndex == (int)State.EatingGiant && targetEnemy != null) {
                 midpoint = leftBone.transform.position;
                 targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
@@ -543,13 +539,17 @@ namespace GiantSpecimens.Enemy {
             } else if (force >= 1) {
                 enemyHP -= 1;
             }
-            if (enemyHP <= 0) {
-                KillEnemy(false);   
+
+            if(IsOwner && enemyHP <= 0 && !isEnemyDead) {
+                KillEnemyOnOwnerClient();
             }
         }
-        public override void KillEnemy(bool destroy = false) {
+
+        public override void KillEnemy(bool destroy = false) { 
             base.KillEnemy(destroy);
-            KillEnemyOnOwnerClient();
+            transform.Find("Armature").Find("Bone.008.L.002").Find("Bone.008.L.002_end").Find("CollisionFootL").GetComponent<BoxCollider>().enabled = false;
+            transform.Find("Armature").Find("Bone.008.R.001").Find("Bone.008.R.001_end").Find("CollisionFootR").GetComponent<BoxCollider>().enabled = false;
+            DoAnimationClientRpc("startDeath");
         }
         public bool OverrideTargetEnemy(float range) {
             EnemyAI closestEnemy = null;
