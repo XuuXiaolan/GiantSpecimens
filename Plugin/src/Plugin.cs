@@ -61,7 +61,8 @@ namespace GiantSpecimens {
             RegisterScrapWithConfig(ModConfig.ConfigRedwoodPlushieEnabled.Value, ModConfig.ConfigRedwoodPlushieRarity.Value, RedWoodPlushie);
 
             if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
-                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem()
+                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem(RedWoodPlushie, "DriftWoodGiant");
+                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem(Whistle, "RedWoodGiant");
             } else {
                 // MyHeartDropRegister();
             }

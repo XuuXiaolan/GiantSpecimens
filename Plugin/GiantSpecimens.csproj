@@ -49,7 +49,7 @@
     <Reference Include="LCEnumUtils"><HintPath>../dlls/LCEnumUtils.dll</HintPath></Reference>
     <Reference Include="MMHOOK_Assembly-CSharp"><HintPath>../dlls/MMHOOK_Assembly-CSharp.dll</HintPath></Reference>
     <Reference Include="LethalLevelLoader"><HintPath>../dlls/LethalLevelLoader.dll</HintPath></Reference>
-    <Reference Include="MoreShipUpgrades"><HintPath>../dlls/MoreShipUpgrades.dll</HintPath></Reference>
+    <Reference Publicize="true" Include="MoreShipUpgrades"><HintPath>../dlls/MoreShipUpgrades.dll</HintPath></Reference>
   </ItemGroup>  
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />

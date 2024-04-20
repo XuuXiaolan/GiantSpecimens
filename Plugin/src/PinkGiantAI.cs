@@ -540,7 +540,7 @@ namespace GiantSpecimens.Enemy {
                 enemyHP -= 1;
             }
 
-            if(IsOwner && enemyHP <= 0 && !isEnemyDead) {
+            if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
                 KillEnemyOnOwnerClient();
             }
         }

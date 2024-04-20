@@ -5094,6 +5094,7 @@ MonoBehaviour:
   eatenSound: {fileID: 0}
   screamSound: {fileID: 0}
   spawnSound: {fileID: 0}
+  stunSound: {fileID: 0}
 --- !u!65 &8492589892959911901
 BoxCollider:
   m_ObjectHideFlags: 0
