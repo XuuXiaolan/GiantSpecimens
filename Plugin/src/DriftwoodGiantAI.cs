@@ -200,13 +200,8 @@ namespace GiantSpecimens.Enemy {
             SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
         }
         public override void Update() {
-            if (enemyHP <= 0 && !isEnemyDead) {
-                isEnemyDead = true;
-                KillEnemy(false);
-                DoAnimationClientRpc("startDeath");
-                creatureVoice.PlayOneShot(dieSFX);
-            }
             base.Update();
+            if(isEnemyDead) return;
             if (stunNormalizedTimer > 0f && currentBehaviourStateIndex != (int)State.Stunned) {
                 StopSearch(currentSearch);
                 previousStateIndex = currentBehaviourStateIndex;
@@ -227,10 +222,8 @@ namespace GiantSpecimens.Enemy {
             }
         }
         public override void DoAIInterval() {
-            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
-                return;
-            }
             base.DoAIInterval();
+            if (isEnemyDead || StartOfRound.Instance.allPlayersDead) return;
             if (testBuild) { 
                 StartCoroutine(DrawPath(line, agent));
             }
@@ -653,12 +646,14 @@ namespace GiantSpecimens.Enemy {
             } else {
                 enemyHP -= 1;
             }
-            if (enemyHP <= 0) {
-                KillEnemy(false);
+            if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
+                KillEnemyOnOwnerClient();
             }
         }
         public override void KillEnemy(bool destroy = false) {
-            KillEnemyOnOwnerClient(false);
+            base.KillEnemy(destroy);
+            DoAnimationClientRpc("startDeath");
+            creatureVoice.PlayOneShot(dieSFX);
         }
         public void RunFarAway() {
             try {

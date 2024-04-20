@@ -99,11 +99,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useNumberSpawnedFalloff: 1
+  spawnInGroupsOf: 0
+  requireNestObjectsToSpawn: 0
   enemyPrefab: {fileID: 7798126845334396038, guid: 97ee3806b3572a64a915e49f199d14c1,
     type: 3}
   PowerLevel: 1
   MaxCount: 4
   numberSpawned: 0
+  nestsSpawned: 0
   isOutsideEnemy: 1
   isDaytimeEnemy: 0
   normalizedTimeInDayToLeave: 0
@@ -112,11 +115,18 @@ MonoBehaviour:
   stunGameDifficultyMultiplier: 1.6
   canBeStunned: 1
   canDie: 1
-  destroyOnDeath: 1
+  destroyOnDeath: 0
   canSeeThroughFog: 1
+  pushPlayerForce: 0
+  pushPlayerDistance: 0
+  SizeLimit: 0
   timeToPlayAudio: 0
   loudnessMultiplier: 0
   overrideVentSFX: {fileID: 0}
+  nestSpawnPrefab: {fileID: 0}
+  nestSpawnPrefabWidth: 0
+  useMinEnemyThresholdForNest: 0
+  minEnemiesToSpawnNest: 0
   hitBodySFX: {fileID: 0}
   hitEnemyVoiceSFX: {fileID: 0}
   deathSFX: {fileID: 0}
