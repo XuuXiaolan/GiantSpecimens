@@ -16,6 +16,7 @@ using UnityEngine.AI;
 using GiantSpecimens.Colours;
 using System.Reflection;
 using GiantSpecimens.Patches;
+using GiantSpecimens.Scrap;
 
 namespace GiantSpecimens.Enemy {
     class PinkGiantAI : EnemyAI, IVisibleThreat {
@@ -571,6 +572,7 @@ namespace GiantSpecimens.Enemy {
             transform.Find("Armature").Find("Bone.008.L.002").Find("Bone.008.L.002_end").Find("CollisionFootL").GetComponent<BoxCollider>().enabled = false;
             transform.Find("Armature").Find("Bone.008.R.001").Find("Bone.008.R.001_end").Find("CollisionFootR").GetComponent<BoxCollider>().enabled = false;
             DoAnimationClientRpc("startDeath");
+            SpawnHeartOnDeath(transform.position);
         }
         public bool OverrideTargetEnemy(float range) {
             EnemyAI closestEnemy = null;
@@ -611,6 +613,10 @@ namespace GiantSpecimens.Enemy {
             transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<CapsuleCollider>().enabled = false;
             transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = false;
         }
+        public void SpawnHeartOnDeath(Vector3 position) {
+            GameObject go = Instantiate(Plugin.RedWoodHeart.spawnPrefab, position + Vector3.up, Quaternion.identity);
+            go.GetComponent<NetworkObject>().Spawn();
+        } //todo, check the sale value of this, maybe its just the scan node
         [ClientRpc]
         public void DoAnimationClientRpc(string animationName)
         {

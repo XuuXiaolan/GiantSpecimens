@@ -27,51 +27,25 @@ public class RedwoodHeart : GrabbableObject {
 
     public override void ItemActivate(bool used, bool buttonDown = true) {
         base.ItemActivate(used, buttonDown);
+        LogIfDebugBuild("Giant Heart Item Activated");
         StartCoroutine(GlowAnimation());
     }
 
     private IEnumerator GlowAnimation() {
         float initialTime = 0f;
-        float duration1 = 2f; // Time to lerp from EV100 value 1 to 15
-        float duration2 = 1f; // Time to lerp from EV100 value 15 to 10
-        float duration3 = 1f; // Time to lerp from EV100 value 10 to 15
-        float duration4 = 2f; // Time to lerp from EV100 value 15 to 1
+        float duration1 = 2f; // Time for color shift
+        Color startColor = Color.red;
+        Color endColor = Color.blue;
 
-        // Lerp from 1 to 15
         while (initialTime < duration1) {
-            float ev100 = Mathf.Lerp(1f, 15f, initialTime / duration1);
-            heartMaterial.SetFloat("_EmissiveIntensity", ev100);
+            Color currentColor = Color.Lerp(startColor, endColor, initialTime / duration1);
+            heartMaterial.color = currentColor;
             initialTime += Time.deltaTime;
             yield return null;
         }
 
-        // Lerp from 15 to 10
-        initialTime = 0f; // Reset time for next lerp
-        while (initialTime < duration2) {
-            float ev100 = Mathf.Lerp(15f, 10f, initialTime / duration2);
-            heartMaterial.SetFloat("_EmissiveIntensity", ev100);
-            initialTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Lerp from 10 to 15
-        initialTime = 0f; // Reset time for next lerp
-        while (initialTime < duration3) {
-            float ev100 = Mathf.Lerp(10f, 15f, initialTime / duration3);
-            heartMaterial.SetFloat("_EmissiveIntensity", ev100);
-            initialTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Lerp from 15 to 1
-        initialTime = 0f; // Reset time for final lerp
-        while (initialTime < duration4) {
-            float ev100 = Mathf.Lerp(15f, 1f, initialTime / duration4);
-            heartMaterial.SetFloat("_EmissiveIntensity", ev100);
-            initialTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Optionally, reset to initial state or loop, etc.
+        // Optionally, loop or reverse the color shift here
+        heartMaterial.color = startColor; // Reset to initial color
     }
+        // Optionally, reset to initial state or loop, etc.
 }

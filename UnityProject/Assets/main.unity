@@ -418,6 +418,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &941784522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1154874835699883129, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1816792205
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621528103049380706, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_Name
+      value: RedwoodPlush
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.077
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433918399406021080, guid: 9acd1ac00ed11a1429709f4ebfba287d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9acd1ac00ed11a1429709f4ebfba287d, type: 3}
 --- !u!1001 &1074590702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -481,101 +554,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5812031258292550563, guid: d223a64c3004af34c9e685022d59b92c,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2147223206
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 947390078405001957, guid: d223a64c3004af34c9e685022d59b92c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1074590705}
-    - targetCorrespondingSourceObject: {fileID: 947390078405001957, guid: d223a64c3004af34c9e685022d59b92c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1074590704}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d223a64c3004af34c9e685022d59b92c, type: 3}
---- !u!1 &1074590703 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 947390078405001957, guid: d223a64c3004af34c9e685022d59b92c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1074590702}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1074590704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074590703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2606141050
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!114 &1074590705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074590703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2097174394, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grabbable: 0
-  isHeld: 0
-  isHeldByEnemy: 0
-  deactivated: 0
-  parentObject: {fileID: 0}
-  targetFloorPosition: {x: 0, y: 0, z: 0}
-  startFallingPosition: {x: 0, y: 0, z: 0}
-  floorYRot: 0
-  fallTime: 0
-  hasHitGround: 0
-  scrapValue: 0
-  itemUsedUp: 0
-  playerHeldBy: {fileID: 0}
-  isPocketed: 0
-  isBeingUsed: 0
-  isInElevator: 0
-  isInShipRoom: 0
-  isInFactory: 0
-  useCooldown: 0
-  currentUseCooldown: 0
-  itemProperties: {fileID: 0}
-  insertedBattery:
-    empty: 0
-    charge: 0
-  customGrabTooltip: 
-  propBody: {fileID: 0}
-  propColliders: []
-  originalScale: {x: 0, y: 0, z: 0}
-  wasOwnerLastFrame: 0
-  mainObjectRenderer: {fileID: 0}
-  scrapPersistedThroughRounds: 0
-  heldByPlayerOnServer: 0
-  radarIcon: {fileID: 0}
-  reachedFloorTarget: 0
-  grabbableToEnemies: 0
-  hasBeenHeld: 0
-  plushiePlayer: {fileID: 0}
-  plushieSounds: []
-  maxLoudness: 0
-  minLoudness: 0
-  minPitch: 0
-  maxPitch: 0
-  triggerAnimator: {fileID: 0}
 --- !u!1 &1529995706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,3 +1123,4 @@ SceneRoots:
   - {fileID: 349274555}
   - {fileID: 2042056245}
   - {fileID: 1074590702}
+  - {fileID: 941784522}

@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4278751443
+  GlobalObjectIdHash: 3402169272
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -519,8 +519,8 @@ AudioSource:
       inWeight: 0
       outWeight: 0.18806602
     - serializedVersion: 3
-      time: 0.98687667
-      value: 0.09079087
+      time: 1
+      value: 0
       inSlope: -0.09832479
       outSlope: -0.09832479
       tangentMode: 0

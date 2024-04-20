@@ -18,6 +18,7 @@ using GiantSpecimens.Enemy;
 using GiantSpecimens.Patches;
 using BepInEx.Bootstrap;
 using MoreShipUpgrades;
+using GiantSpecimens.Scrap;
 
 namespace GiantSpecimens {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -31,8 +32,9 @@ namespace GiantSpecimens {
         public static EnemyType DriftGiant;
         public static Item RedWoodPlushie;
         public static Item Whistle;
-        public static Item RedwoodHeart;
+        public static Item RedWoodHeart;
         public static Item DriftwoodHeart;
+        public static Item DriftwoodSample;
         public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
         public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
@@ -62,10 +64,6 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
             RegisterScrapWithConfig(ModConfig.ConfigRedwoodPlushieEnabled.Value, ModConfig.ConfigRedwoodPlushieRarity.Value, RedWoodPlushie);
 
-            // Redwood Heart Scrap
-            RedwoodHeart = Assets.MainAssetBundle.LoadAsset<Item>("RedwoodHeartObj");
-            NetworkPrefabs.RegisterNetworkPrefab(RedwoodHeart.spawnPrefab);
-
             // Redwood Giant Enemy
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
             TerminalNode pgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
@@ -80,17 +78,24 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
             
-            if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
-                MoreShipUpgrades.API.HunterSamples.RegisterSample(RedwoodHeart, "DriftWoodGiant", 2);
-                MoreShipUpgrades.API.HunterSamples.RegisterSample(Whistle, "RedWoodGiant", 3);
-            } else {
-                RegisterScrap(RedwoodHeart, 0, LevelTypes.All);
-            } //todo, fix bug with this soft dependency trying to find moreshipupgrades for whatever reason
-            // todo, fix bug with lgu dropping the sample really weirdly
+            // Driftwood Giant Sample
+            DriftwoodSample = Assets.MainAssetBundle.LoadAsset<Item>("DriftWoodGiantSample");
+            Utilities.FixMixerGroups(DriftwoodSample.spawnPrefab);
+            NetworkPrefabs.RegisterNetworkPrefab(DriftwoodSample.spawnPrefab);
+
+            // Redwood Heart Scrap
+            RedWoodHeart = Assets.MainAssetBundle.LoadAsset<Item>("RedwoodHeartObj");
+            Utilities.FixMixerGroups(RedWoodHeart.spawnPrefab);
+            NetworkPrefabs.RegisterNetworkPrefab(RedWoodHeart.spawnPrefab);
+
+            /*if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
+                Logger.LogInfo("Moreshipupgrades found");
+                Destroy(RedWoodHeart.spawnPrefab.GetComponent<RedwoodHeart>());
+                MoreShipUpgrades.API.HunterSamples.RegisterSample(DriftwoodSample, "DriftWoodGiant", 2);
+                MoreShipUpgrades.API.HunterSamples.RegisterSample(RedWoodHeart, "RedWoodGiant", 3);
+            } */
+            //todo, fix bug with this soft dependency trying to find moreshipupgrades for whatever reason
             // todo, fix the left click not working
-            // todo, fix the properties of redwood heart including the name being plushie because of copy paste
-            // todo, idk what's going on here
-            // todo, make it spawn on enemy death if lgu doesnt exist :D
             GiantPatches.Init();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
