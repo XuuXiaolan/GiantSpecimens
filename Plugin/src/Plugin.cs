@@ -31,6 +31,8 @@ namespace GiantSpecimens {
         public static EnemyType DriftGiant;
         public static Item RedWoodPlushie;
         public static Item Whistle;
+        public static Item RedwoodHeart;
+        public static Item DriftwoodHeart;
         public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
         internal static new ManualLogSource Logger;
         public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
@@ -60,12 +62,9 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(RedWoodPlushie.spawnPrefab);
             RegisterScrapWithConfig(ModConfig.ConfigRedwoodPlushieEnabled.Value, ModConfig.ConfigRedwoodPlushieRarity.Value, RedWoodPlushie);
 
-            if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
-                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem(RedWoodPlushie, "DriftWoodGiant");
-                MoreShipUpgrades.API.HunterSamples.RegisterSampleItem(Whistle, "RedWoodGiant");
-            } else {
-                // MyHeartDropRegister();
-            }
+            // Redwood Heart Scrap
+            RedwoodHeart = Assets.MainAssetBundle.LoadAsset<Item>("RedwoodHeartObj");
+            NetworkPrefabs.RegisterNetworkPrefab(RedwoodHeart.spawnPrefab);
 
             // Redwood Giant Enemy
             PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
@@ -81,6 +80,17 @@ namespace GiantSpecimens {
             NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
             RegisterEnemyWithConfig(ModConfig.ConfigDriftWoodEnabled.Value, ModConfig.ConfigDriftWoodRarity.Value, DriftGiant, dgTerminalNode, dgTerminalKeyword);
             
+            if (Chainloader.PluginInfos.ContainsKey("com.malco.lethalcompany.moreshipupgrades")) {
+                MoreShipUpgrades.API.HunterSamples.RegisterSample(RedwoodHeart, "DriftWoodGiant", 2);
+                MoreShipUpgrades.API.HunterSamples.RegisterSample(Whistle, "RedWoodGiant", 3);
+            } else {
+                RegisterScrap(RedwoodHeart, 0, LevelTypes.All);
+            } //todo, fix bug with this soft dependency trying to find moreshipupgrades for whatever reason
+            // todo, fix bug with lgu dropping the sample really weirdly
+            // todo, fix the left click not working
+            // todo, fix the properties of redwood heart including the name being plushie because of copy paste
+            // todo, idk what's going on here
+            // todo, make it spawn on enemy death if lgu doesnt exist :D
             GiantPatches.Init();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

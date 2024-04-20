@@ -22361,8 +22361,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 3.6833334
-    functionName: 
+  - time: 3.6666667
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -22377,6 +22377,13 @@ AnimationClip:
     messageOptions: 0
   - time: 7.5
     functionName: ShakePlayerCamera
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 7.5
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
