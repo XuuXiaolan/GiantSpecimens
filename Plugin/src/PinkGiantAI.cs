@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using UnityEngine.AI;
 using GiantSpecimens.Colours;
 using System.Reflection;
+using GiantSpecimens.Patches;
 
 namespace GiantSpecimens.Enemy {
     class PinkGiantAI : EnemyAI, IVisibleThreat {
@@ -45,6 +46,8 @@ namespace GiantSpecimens.Enemy {
         public GameObject eatingArea;
         #pragma warning restore 0649
         [NonSerialized]
+        public bool lightningDamage = false;
+        [NonSerialized]
         public bool sizeUp = false;
         [NonSerialized]
         public static LevelColorMapper levelColorMapper = new();
@@ -52,8 +55,7 @@ namespace GiantSpecimens.Enemy {
         public Vector3 newScale;
         [NonSerialized]
         public string levelName;
-        [NonSerialized]
-        public StormyWeather stormyEffects = new StormyWeather(); 
+        public GameObject stormyWeatherObject;
         [NonSerialized]
         public bool waitAfterChase = false;
         [NonSerialized]
@@ -144,6 +146,10 @@ namespace GiantSpecimens.Enemy {
             shipBoundaries = StartOfRound.Instance.shipBounds.transform;
             shipBoundaries.localScale *= 1.5f;
             
+            StormyWeather stormyEffects = stormyWeatherObject.GetComponent<StormyWeather>();
+            if (stormyEffects == null) {
+                LogIfDebugBuild("StormyWeather component is not found on the assigned GameObject.");
+            }
             
             Color dustColor = Color.grey; // Default to grey if no color found
             string footstepColourValue = Plugin.ModConfig.ConfigColourHexcode.Value;
@@ -337,23 +343,42 @@ namespace GiantSpecimens.Enemy {
 			}
 		}
         public void DealEnemyDamageFromShockwave(EnemyAI enemy, string foot) {
-            if (foot == "LeftFoot") {
-                distanceFromEnemy = Vector3.Distance(CollisionFootL.transform.position, enemy.transform.position);
-            } else if (foot == "RightFoot") {
-                distanceFromEnemy = Vector3.Distance(CollisionFootR.transform.position, enemy.transform.position);
-            }
+            Transform chosenFoot = (foot == "LeftFoot") ? CollisionFootL.transform : CollisionFootR.transform;
+            float distanceFromEnemy = Vector3.Distance(chosenFoot.position, enemy.transform.position);
 
+            // Apply damage based on distance
             if (distanceFromEnemy <= 3f) {
                 enemy.HitEnemy(2, null, false, -1);
             } else if (distanceFromEnemy <= 10f) {
                 enemy.HitEnemy(1, null, false, -1);
             }
+
+            // Optional: Log the distance and remaining HP for debugging
             // LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
         }
+        public void MayZeusHaveMercy() {
+            // Get the StormyWeather component
+            StormyWeather stormyEffects = stormyWeatherObject.GetComponent<StormyWeather>();
+            // Generate a random offset within a 5-unit radius
+            Vector3 strikePosition = GenerateRandomPositionAround(transform.position, 5, destinationRandom);
+            // Perform the lightning strike at the random position
+            lightningDamage = true;
+            GiantPatches.lightningBeingStruckByRedwood = true;
+            stormyEffects.LightningStrike(strikePosition, false);
+        }
+        private Vector3 GenerateRandomPositionAround(Vector3 center, float radius, System.Random random) {
+            // Generate a random angle between 0 and 360 degrees
+            double angle = random.NextDouble() * Math.PI * 2;
+            // Generate a random distance from the center within the specified radius
+            double distance = Math.Sqrt(random.NextDouble()) * radius;
 
+            float x = center.x + (float)(distance * Math.Cos(angle));
+            float z = center.z + (float)(distance * Math.Sin(angle));
+            // Keep y the same to strike at the ground level
+            return new Vector3(x, center.y, z);
+        }
         public void LeftFootStepInteractions() {
             DustParticlesLeft.Play(); // Play the particle system with the updated color
-            stormyEffects.LightningStrike(CollisionFootL.transform.position, false);
             FootSource.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
@@ -370,7 +395,6 @@ namespace GiantSpecimens.Enemy {
         }
         public void RightFootStepInteractions() {
             DustParticlesRight.Play(); // Play the particle system with the updated color
-            stormyEffects.LightningStrike(CollisionFootR.transform.position, false);
             FootSource.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
             if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
@@ -387,14 +411,9 @@ namespace GiantSpecimens.Enemy {
         }
 
         private Color HexToColor(string hexCode) {
-            Color color;
-
-            if (ColorUtility.TryParseHtmlString(hexCode, out color))
-            {
+            if (ColorUtility.TryParseHtmlString(hexCode, out Color color)) {
                 return color;
-            }
-            else
-            {
+            } else {
                 return Color.white; // Default color if parsing fails
             }
         }
@@ -532,17 +551,19 @@ namespace GiantSpecimens.Enemy {
         }
         public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
             base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
-            if (force == 6) {
+            if (force == 6 && !lightningDamage) {
                 enemyHP -= 5;
-            } else if (force >= 3) {
+            } else if (force >= 3 && !lightningDamage) {
                 enemyHP -= 2;
-            } else if (force >= 1) {
+            } else if (force >= 1 && !lightningDamage) {
                 enemyHP -= 1;
             }
-
             if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
                 KillEnemyOnOwnerClient();
             }
+            lightningDamage = false;
+            GiantPatches.lightningBeingStruckByRedwood = false;
+            LogIfDebugBuild(enemyHP.ToString());
         }
 
         public override void KillEnemy(bool destroy = false) { 

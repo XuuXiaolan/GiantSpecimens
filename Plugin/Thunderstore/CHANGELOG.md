@@ -1,8 +1,8 @@
 ## v 2.0.0 NEW ENEMY UPDATE
-- Added NEW ENEMY, Driftwood Giant.
-- If target enemy to Redwood Giant is Old bird or Driftwood, Switch particle system.
-- Added achievements.
-- Ported over to LLL (Lethal Level Loader).
+- Added Zeus, kinda, just keep an eye out for what the redwood does lmao.
+- Fixed a few bugs that I can't fully remember.
+- Added compatibility with hunter from LateGameUpgrades.
+- The Redwood Giant and Driftwood Giant spawn their heart on death.
 
 <details>
   <summary>Older Versions</summary>

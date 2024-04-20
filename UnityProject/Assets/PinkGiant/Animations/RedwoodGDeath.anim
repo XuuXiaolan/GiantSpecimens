@@ -38634,8 +38634,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 5
-    functionName: RightFootStepInteractions
+  - time: 2.85
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38643,6 +38643,20 @@ AnimationClip:
     messageOptions: 0
   - time: 5
     functionName: ShakePlayerCamera
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 5
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 5
+    functionName: RightFootStepInteractions
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38669,8 +38683,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 10.65
-    functionName: ShakePlayerCamera
+  - time: 9.05
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38683,8 +38697,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 13.35
+  - time: 10.65
     functionName: ShakePlayerCamera
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 10.666667
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.316667
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38699,6 +38727,27 @@ AnimationClip:
     messageOptions: 0
   - time: 13.35
     functionName: LeftFootStepInteractions
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.35
+    functionName: ShakePlayerCamera
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.366667
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.4
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38725,6 +38774,20 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 13.45
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.516666
+    functionName: LeftFootStepInteractions
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 13.516666
     functionName: ShakePlayerCamera
     data: 
@@ -38739,8 +38802,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 13.516666
-    functionName: LeftFootStepInteractions
+  - time: 13.533334
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.533334
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.566667
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38768,14 +38845,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 13.633333
-    functionName: ShakePlayerCamera
+    functionName: RightFootStepInteractions
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 13.633333
-    functionName: RightFootStepInteractions
+    functionName: ShakePlayerCamera
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38788,6 +38865,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 13.65
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 13.683333
     functionName: ShakePlayerCamera
     data: 
@@ -38804,6 +38888,13 @@ AnimationClip:
     messageOptions: 0
   - time: 13.683333
     functionName: LeftFootStepInteractions
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.7
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -38846,6 +38937,34 @@ AnimationClip:
     messageOptions: 0
   - time: 13.766666
     functionName: LeftFootStepInteractions
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.783334
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.816667
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.866667
+    functionName: MayZeusHaveMercy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.916667
+    functionName: MayZeusHaveMercy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

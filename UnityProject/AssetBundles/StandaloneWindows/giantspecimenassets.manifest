@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 675612107
+CRC: 1083986384
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3f099216369feabfabbacb25f54acc87
+    Hash: 4a204a7d1359e1affa59344c3c767f15
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7b9bfe816f837fec573e5c72f3e68dd6
+    Hash: 6fcdd4f69c1d391b5312d93d7eae9916
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 3f099216369feabfabbacb25f54acc87
+    Hash: 4a204a7d1359e1affa59344c3c767f15
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -59,7 +59,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: e00539b1f1199670ceb2cc50b2ca0bc7, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 64f4c618a7729d1e12197deff1191ba5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
 - Class: 114
@@ -102,11 +106,21 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: CompatibleNoun
 - AssemblyName: Assembly-CSharp
+  ClassName: DigitalRuby.ThunderAndLightning.LightningCustomTransformDelegate
+- AssemblyName: Assembly-CSharp
+  ClassName: DigitalRuby.ThunderAndLightning.LightningLightParameters
+- AssemblyName: Assembly-CSharp
+  ClassName: DigitalRuby.ThunderAndLightning.RangeOfFloats
+- AssemblyName: Assembly-CSharp
+  ClassName: DigitalRuby.ThunderAndLightning.RangeOfIntegers
+- AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
 - AssemblyName: Assembly-CSharp
   ClassName: NavSizeLimit
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
 Assets:
 - Assets/Scraps/RedWoodPlushieObj.asset
 - Assets/Scraps/whistleAnimator.controller

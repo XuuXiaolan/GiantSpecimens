@@ -248,7 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 272426229
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -451,6 +452,7 @@ MonoBehaviour:
   radarIcon: {fileID: 0}
   reachedFloorTarget: 0
   grabbableToEnemies: 1
+  hasBeenHeld: 0
   plushiePlayer: {fileID: 2774900614742615112}
   plushieSounds:
   - {fileID: 8300000, guid: f0e872b2af302b34cbcde6b73cdfc801, type: 3}
@@ -489,7 +491,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: -0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0025000002, y: 0.0024999997, z: 0.0025000004}
+  m_LocalScale: {x: 0.01, y: 0.007, z: 0.005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5433918399406021080}
