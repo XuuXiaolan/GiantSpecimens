@@ -2175,7 +2175,9 @@ MonoBehaviour:
   RightShoulder: {fileID: 1365979432437625060}
   MouthVoice: {fileID: 345676096097741202}
   stompSounds:
-  - {fileID: 8300000, guid: 4cfa1720117457545b5f0b5e3f867210, type: 3}
+  - {fileID: 8300000, guid: 7070fa5dd516bf048b6151abd476667a, type: 3}
+  - {fileID: 8300000, guid: c91323996683b464a828c2edb8a5aa2a, type: 3}
+  - {fileID: 8300000, guid: a5ace0d9848ce444a9ffa2818aae8db0, type: 3}
   eatenSound: {fileID: 8300000, guid: 3d10f7141325f834fbf4c45180a2120e, type: 3}
   screamSound: {fileID: 8300000, guid: 75a72a25347da0c42bac7f75b8585bf8, type: 3}
   spawnSound: {fileID: 8300000, guid: 746960f293ec0fa4988084ea52e81b64, type: 3}
@@ -2184,7 +2186,9 @@ MonoBehaviour:
   slashSound: {fileID: 8300000, guid: 154242ae57ca9d04fb27eeda40d17789, type: 3}
   hitSound: {fileID: 8300000, guid: 08cdb457d8304954abc5539dae0276a0, type: 3}
   walkSounds:
-  - {fileID: 8300000, guid: b28b4c9201dc6af438ccc8b87d86d02f, type: 3}
+  - {fileID: 8300000, guid: 43c00d46ba10aa7418952e379383ff14, type: 3}
+  - {fileID: 8300000, guid: 55bc6ba10d343704cb83afedab52055d, type: 3}
+  - {fileID: 8300000, guid: 9b930997dfbfbcf4498ecbd78de3fe70, type: 3}
 --- !u!65 &1654680555638297261
 BoxCollider:
   m_ObjectHideFlags: 0

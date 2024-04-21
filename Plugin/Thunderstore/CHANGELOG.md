@@ -1,3 +1,8 @@
+## v 2.0.2 *bug fixes*
+- Reduced Zeus mode to spawn and death only.
+- Will add a config for Zeus mode later and mess with it to look nice and sound smol.
+- 
+
 ## v 2.0.0 NEW ENEMY UPDATE
 - Added Zeus, kinda, just keep an eye out for what the redwood does lmao.
 - Fixed a few bugs that I can't fully remember.
