@@ -17,6 +17,7 @@ MonoBehaviour:
   spawnPositionTypes: []
   twoHanded: 1
   twoHandedAnimation: 1
+  disableHandsOnWall: 0
   canBeGrabbedBeforeGameStart: 1
   weight: 1.26
   itemIsTrigger: 0
@@ -34,7 +35,7 @@ MonoBehaviour:
   requiresBattery: 0
   batteryUsage: 0
   automaticallySetUsingPower: 0
-  itemIcon: {fileID: 21300000, guid: e7bd102170471bd4eaac2059355c5db0, type: 3}
+  itemIcon: {fileID: 21300000, guid: 124469d1a33314d478b4e69172831d72, type: 3}
   grabAnim: HoldLung
   useAnim: 
   pocketAnim: 

@@ -6014,7 +6014,7 @@ AudioSource:
       outWeight: 0.2830378
     - serializedVersion: 3
       time: 1
-      value: 0.113226324
+      value: 0
       inSlope: -0.12944469
       outSlope: -0.12944469
       tangentMode: 0
@@ -11092,7 +11092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 856874660
+  GlobalObjectIdHash: 1643386653
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -11223,8 +11223,8 @@ MonoBehaviour:
   ventAnimationFinished: 0
   isEnemyDead: 0
   daytimeEnemyLeaving: 0
-  enemyHP: 20
-  openDoorSpeedMultiplier: 0
+  enemyHP: 150
+  openDoorSpeedMultiplier: 0.84
   useSecondaryAudiosOnAnimatedObjects: 0
   currentSearch:
     unsearchedNodes: []
@@ -11274,7 +11274,6 @@ MonoBehaviour:
   rightBone: {fileID: 2985979343833894823}
   leftBone: {fileID: 8353215763054790337}
   eatingArea: {fileID: 7413607098762727321}
-  stormyWeatherObject: {fileID: 0}
 --- !u!65 &8366928787241549832
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18102,7 +18101,7 @@ AudioSource:
       outWeight: 0.2830378
     - serializedVersion: 3
       time: 1
-      value: 0.113226324
+      value: 0
       inSlope: -0.12944469
       outSlope: -0.12944469
       tangentMode: 0

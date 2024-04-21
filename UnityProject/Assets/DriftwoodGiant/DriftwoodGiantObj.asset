@@ -101,7 +101,7 @@ MonoBehaviour:
   useNumberSpawnedFalloff: 1
   spawnInGroupsOf: 0
   requireNestObjectsToSpawn: 0
-  enemyPrefab: {fileID: 7798126845334396038, guid: 97ee3806b3572a64a915e49f199d14c1,
+  enemyPrefab: {fileID: 2658031884180950902, guid: 80bb46904dce39045ac62651da25cf19,
     type: 3}
   PowerLevel: 1
   MaxCount: 4
@@ -111,7 +111,7 @@ MonoBehaviour:
   isDaytimeEnemy: 0
   normalizedTimeInDayToLeave: 0
   stunTimeMultiplier: 1.5
-  doorSpeedMultiplier: 0
+  doorSpeedMultiplier: 1
   stunGameDifficultyMultiplier: 1.6
   canBeStunned: 1
   canDie: 1

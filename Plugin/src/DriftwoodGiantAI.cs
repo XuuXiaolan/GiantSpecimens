@@ -642,16 +642,11 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
         creatureVoice.PlayOneShot(hitSound);
-        if (force == 6) {
-            enemyHP -= 3;
+        if (force == 6) { 
             RunFarAway();
-        } else if (force >= 3) {
-            enemyHP -= 2;
-        } else if (playerWhoHit == GameNetworkManager.Instance.localPlayerController) {
-            enemyHP -= force;
-        } else {
-            enemyHP -= 1;
         }
+        enemyHP -= force;
+        LogIfDebugBuild("Enemy HP: " + enemyHP);
         if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
             KillEnemyOnOwnerClient();
         }

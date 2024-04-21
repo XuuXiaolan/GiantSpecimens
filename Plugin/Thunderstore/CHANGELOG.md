@@ -1,8 +1,11 @@
 ## v 2.0.0 NEW ENEMY UPDATE
 - Added Zeus, kinda, just keep an eye out for what the redwood does lmao.
 - Fixed a few bugs that I can't fully remember.
-- Added compatibility with hunter from LateGameUpgrades.
+- Added compatibility with hunter from LateGameUpgrades. (for their next big update, not this one).
 - The Redwood Giant and Driftwood Giant spawn their heart on death.
+- oh and added the driftwood giant lol.
+- Fixed a few sound bugs.
+- Added a new icon for the redwood plushie (someone come make a driftwood plushie thanks).
 
 <details>
   <summary>Older Versions</summary>

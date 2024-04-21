@@ -91,20 +91,20 @@ public class Plugin : BaseUnityPlugin {
         Utilities.FixMixerGroups(RedWoodHeart.spawnPrefab);
         NetworkPrefabs.RegisterNetworkPrefab(RedWoodHeart.spawnPrefab);
 
-        if (Chainloader.PluginInfos.TryGetValue(Metadata.GUID, out LGU)) {
+        /*if (Chainloader.PluginInfos.TryGetValue(Metadata.GUID, out LGU)) {
                 LGULoaded = true;
                 Logger.LogInfo($"MNC = {LGU}");
                 RegisterLGUSample(DriftwoodSample, "DriftWoodGiant", 2);
                 RegisterLGUSample(RedWoodHeart, "RedWoodGiant", 3);
                 Destroy(RedWoodHeart.spawnPrefab.GetComponent<RedwoodHeart>());
                 Destroy(DriftwoodSample.spawnPrefab.GetComponent<DriftwoodHeart>());
-        } else {
+        } else {*/
             LGULoaded = false;
             RegisterScrap(DriftwoodSample, 0, LevelTypes.All);
             RegisterScrap(RedWoodHeart, 0, LevelTypes.All);
             samplePrefabs.Add("DriftWoodGiant", DriftwoodSample);
             samplePrefabs.Add("RedWoodGiant", RedWoodHeart);
-        }
+        //}
         GiantPatches.Init();
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

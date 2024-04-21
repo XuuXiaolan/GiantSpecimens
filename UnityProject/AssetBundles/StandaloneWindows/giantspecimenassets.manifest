@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3136974577
+CRC: 2625251816
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3a9bccb633162f6340004275f3c2eb7a
+    Hash: fd5fcdd181cb80800450b6f18271a156
   TypeTreeHash:
     serializedVersion: 2
     Hash: c36923afe4e6ce07aaf1a50a973f87b0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 3a9bccb633162f6340004275f3c2eb7a
+    Hash: fd5fcdd181cb80800450b6f18271a156
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -125,9 +125,9 @@ Assets:
 - Assets/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
 - Assets/Scraps/RedwoodPlush.prefab
 - Assets/Scraps/WhistleObj.asset
-- Assets/DriftwoodGiant/AnimatedDriftwoodV11.prefab
 - Assets/PinkGiant/PinkGiantObj.asset
 - Assets/Scraps/RedwoodHeartObj.asset
+- Assets/DriftwoodGiant/AnimatedDriftwoodV11 1.prefab
 - Assets/Scraps/RedwoodHeartAnimator.controller
 - Assets/Scraps/whistle.prefab
 - Assets/Samples/Prefab/SampleDriftWoodGiant.prefab

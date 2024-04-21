@@ -19,6 +19,6 @@ internal static class Utils
         var scanNode = go.gameObject.GetComponentInChildren<ScanNodeProperties>();
         scanNode.scrapValue = value;
         scanNode.subText = $"Value: ${value}";
-        go.GetComponent<RedwoodHeart>().scrapValue = value;
+        go.GetComponent<GrabbableObject>().scrapValue = value;
     }
 }
