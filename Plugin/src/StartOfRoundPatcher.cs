@@ -1,4 +1,4 @@
-﻿using GiantSpecimens.Scrap;
+using GiantSpecimens.Scrap;
 using HarmonyLib;
 using MoreShipUpgrades.Managers;
 using System;

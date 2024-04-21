@@ -33,6 +33,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public AudioClip screamSound;
     public AudioClip spawnSound;
     public AudioClip stunSound;
+    public AudioClip throwSound;
+    public AudioClip slashSound;
+    public AudioClip hitSound;
+    public AudioClip[] walkSounds;
     #pragma warning restore 0649
     [NonSerialized]
     public string levelName;
@@ -66,8 +70,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public string nextAnimationName = "";
     [NonSerialized]
     public bool testBuild = false; 
-    [NonSerialized]
-    private System.Random throwRandom;
     [NonSerialized]
     public float delayedResponse;
     [NonSerialized]
@@ -165,7 +167,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         } else {
             LogIfDebugBuild("Renderer not found");
         }
-        throwRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
         levelName = RoundManager.Instance.currentLevel.name;
         LogIfDebugBuild(levelName);
 
@@ -306,6 +307,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
                     if (distanceToEnemy < slashingRange && canSlash) { // assuming `slashingRange` is defined somewhere as the distance within which slashing can occur
                         // Continue attacking
+                        creatureSFX.PlayOneShot(slashSound);
                         DoAnimationClientRpc("startSlash");
                         RightShoulder.data.target = targetEnemy.transform;
                         canSlash = false;
@@ -403,12 +405,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         // Also colour the hands a bit red.
     }
     public void PlayRunFootsteps() {
-        //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
-        //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
-        //creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+        creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
     }
     public void PlayWalkFootsteps() {
-        // creatureVoice.PlayOneShot(stompSounds[UnityEngine.Random.Range(0, stompSounds.Length)]);
+        creatureVoice.PlayOneShot(walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)]);
     }
     public IEnumerator ThrowPlayer() {
         RightShoulder.data.target = targetPlayer_.transform;
@@ -500,6 +500,9 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         SwitchToBehaviourClientRpc(nextStateIndex);
         DoAnimationClientRpc(nextAnimationName);
     }
+    public void PlayEatSound() {
+        creatureVoice.PlayOneShot(eatenSound);
+    }
     public bool FindClosestTargetEnemyInRange(float range) {
         EnemyAI closestEnemy = null;
         float minDistance = float.MaxValue;
@@ -552,6 +555,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         if (isEnemyDead) return;
         if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
             playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
+            creatureSFX.PlayOneShot(throwSound);
             DoAnimationClientRpc("startThrow");
             SwitchToBehaviourClientRpc((int)State.PlayingWithPrey);
         }
@@ -637,6 +641,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
+        creatureVoice.PlayOneShot(hitSound);
         if (force == 6) {
             enemyHP -= 3;
             RunFarAway();

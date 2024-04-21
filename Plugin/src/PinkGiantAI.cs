@@ -43,8 +43,6 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public GameObject eatingArea;
     #pragma warning restore 0649
     [NonSerialized]
-    public bool lightningDamage = false;
-    [NonSerialized]
     public bool sizeUp = false;
     [NonSerialized]
     public static LevelColorMapper levelColorMapper = new();
@@ -132,39 +130,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         Plugin.Logger.LogInfo(text);
         #endif
     }
-    public void RedwoodEnableStriker() {
-        GameObject timeAndWeather = GameObject.Find("TimeAndWeather");
-        if (timeAndWeather == null) {
-            LogIfDebugBuild("Failed to find TimeAndWeather!");
-            return;
-        }
-        GameObject striker = null;
-        for (int i = 0; i < timeAndWeather.transform.childCount; i++) {
-            GameObject gameObject = timeAndWeather.transform.GetChild(i).gameObject;
-            if (gameObject.name.Equals("Stormy")) {
-                striker = gameObject;
-                break;
-            }
-        }
-        StormyWeather strikerObj = striker.GetComponent<StormyWeather>();
-        striker.SetActive(true);
-    }
     public override void Start() {
         base.Start();
-        GameObject timeAndWeather = GameObject.Find("TimeAndWeather");
-        for (int i = 0; i < timeAndWeather.transform.childCount; i++) {
-            GameObject gameObject = timeAndWeather.transform.GetChild(i).gameObject;
-            if (gameObject.name.Equals("Stormy")) {
-                striker = gameObject;
-            }
-        }
-        if (striker != null) {
-            RedwoodEnableStriker();
-            striker.SetActive(true);
-        } else {
-            LogIfDebugBuild("Failed to find Stormy Weather container (LBolt)!");
-        }
-        
         destinationRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
         levelName = RoundManager.Instance.currentLevel.name;
         
@@ -381,12 +348,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         // Generate a random offset within a 5-unit radius
         Vector3 strikePosition = GenerateRandomPositionAround(transform.position, 5, destinationRandom);
         // Perform the lightning strike at the random position
-        lightningDamage = true;
         GiantPatches.lightningBeingStruckByRedwood = true;
-        if (striker != null) {
-            StormyWeather stormy = striker.GetComponent<StormyWeather>();
-            stormy.LightningStrike(strikePosition, false);
-        }
+        StormScript.StormyWeatherScript.SpawnLightningBolt(strikePosition);
     }
     public Vector3 GenerateRandomPositionAround(Vector3 center, float radius, System.Random random) {
         // Generate a random angle between 0 and 360 degrees
@@ -410,7 +373,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
             }
         }
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
+            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
                 DealEnemyDamageFromShockwave(enemy, "LeftFoot");
             }
         }
@@ -426,7 +389,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
             }
         }
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 1 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "ForestGiant") {
+            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
                 DealEnemyDamageFromShockwave(enemy, "RightFoot");
             }
         }
@@ -573,18 +536,16 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
-        if (force == 6 && !lightningDamage) {
+        if (force == 6) {
             enemyHP -= 5;
-        } else if (force >= 3 && !lightningDamage) {
+        } else if (force >= 3) {
             enemyHP -= 2;
-        } else if (force >= 1 && !lightningDamage) {
+        } else if (force >= 1) {
             enemyHP -= 1;
         }
         if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
             KillEnemyOnOwnerClient();
         }
-        lightningDamage = false;
-        GiantPatches.lightningBeingStruckByRedwood = false;
         LogIfDebugBuild(enemyHP.ToString());
     }
 
