@@ -29,6 +29,8 @@ The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-c
 
 -Redwood Giant animations by shrkiツ
 
+-Redwood Plushie Icon sprite by [@mari0no1](https://thunderstore.io/c/lethal-company/p/Mari0no1/DoorsEscapeMusic/)
+
 -Uh, support me if you'd like on the support button next to Manual Download on thunderstore :p
 
 
