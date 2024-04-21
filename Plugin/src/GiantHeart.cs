@@ -49,3 +49,15 @@ public class RedwoodHeart : GrabbableObject {
     }
         // Optionally, reset to initial state or loop, etc.
 }
+public class DriftwoodHeart : GrabbableObject {
+    public AudioSource heartSound;
+    public AudioClip[] heartBeatClips;
+    void LogIfDebugBuild(string text) {
+        #if DEBUG
+        Plugin.Logger.LogInfo(text);
+        #endif
+    }
+    public override void Start() {
+        base.Start();
+    }
+}

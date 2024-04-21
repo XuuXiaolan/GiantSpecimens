@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1686993471
+CRC: 2972188132
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f53abc0f8986973fe71f0a8829bad1c6
+    Hash: 9e58f50d2a3a805c3215cc80b8076ca5
   TypeTreeHash:
     serializedVersion: 2
-    Hash: efc6db6b0f7893ce3fee10ef538ba8e0
+    Hash: 3828cffb11e89caf5928dbf3f5fc811f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: f53abc0f8986973fe71f0a8829bad1c6
+    Hash: 9e58f50d2a3a805c3215cc80b8076ca5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -61,11 +61,7 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: e00539b1f1199670ceb2cc50b2ca0bc7, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 64f4c618a7729d1e12197deff1191ba5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
 - Class: 114
@@ -76,6 +72,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: d3cecf05b78b173605122a700874719c, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
+- Class: 114
+  Script: {fileID: 532549189, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 135
@@ -108,21 +106,11 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: CompatibleNoun
 - AssemblyName: Assembly-CSharp
-  ClassName: DigitalRuby.ThunderAndLightning.LightningCustomTransformDelegate
-- AssemblyName: Assembly-CSharp
-  ClassName: DigitalRuby.ThunderAndLightning.LightningLightParameters
-- AssemblyName: Assembly-CSharp
-  ClassName: DigitalRuby.ThunderAndLightning.RangeOfFloats
-- AssemblyName: Assembly-CSharp
-  ClassName: DigitalRuby.ThunderAndLightning.RangeOfIntegers
-- AssemblyName: Assembly-CSharp
   ClassName: EnemyBehaviourState
 - AssemblyName: Assembly-CSharp
   ClassName: NavSizeLimit
 - AssemblyName: Unity.Animation.Rigging
   ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentCallGroup
 Assets:
 - Assets/Scraps/RedWoodPlushieObj.asset
 - Assets/Scraps/whistleAnimator.controller
