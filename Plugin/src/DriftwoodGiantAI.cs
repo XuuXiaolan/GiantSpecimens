@@ -508,7 +508,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         float minDistance = float.MaxValue;
 
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead) {
+            if (enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead && enemy.enemyType.canDie) {
                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
                 if (distance < minDistance) {
                     minDistance = distance;

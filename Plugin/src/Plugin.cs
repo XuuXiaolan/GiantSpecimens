@@ -25,8 +25,6 @@ namespace GiantSpecimens;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 [BepInDependency(LethalLib.Plugin.ModGUID)] 
 [BepInDependency("BMX.LobbyCompatibility", Flags:BepInDependency.DependencyFlags.SoftDependency)]
-[BepInDependency("MaxWasUnavailable.LethalModDataLib", Flags:BepInDependency.DependencyFlags.HardDependency)]
-[BepInDependency("malco.Lategame_Upgrades", Flags:BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("MegaPiggy.EnumUtils", Flags:BepInDependency.DependencyFlags.HardDependency)]
 public class Plugin : BaseUnityPlugin {
     public static Harmony _harmony;
