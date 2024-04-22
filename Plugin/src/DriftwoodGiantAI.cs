@@ -304,13 +304,14 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 agent.speed = 0f;
                 if (targettingEnemy) {
                     float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-                    if (distanceToEnemy < slashingRange && canSlash) { // assuming `slashingRange` is defined somewhere as the distance within which slashing can occur
-                        // Continue attacking
-                        creatureSFX.PlayOneShot(slashSound);
-                        DoAnimationClientRpc("startSlash");
-                        RightShoulder.data.target = targetEnemy.transform;
-                        canSlash = false;
-                        StartCoroutine(SlashCooldown());
+                    if (canSlash && distanceToEnemy < slashingRange + 1.0f) {  // Buffer zone
+                        if (distanceToEnemy < slashingRange) {
+                            creatureSFX.PlayOneShot(slashSound);
+                            DoAnimationClientRpc("startSlash");
+                            RightShoulder.data.target = targetEnemy.transform;
+                            canSlash = false;
+                            StartCoroutine(SlashCooldown());
+                        }
                     }
                     else if (distanceToEnemy > slashingRange && distanceToEnemy <= seeableDistance && targetEnemy != null && canSlash) {
                         // Enemy is alive but out of slashing range, reposition

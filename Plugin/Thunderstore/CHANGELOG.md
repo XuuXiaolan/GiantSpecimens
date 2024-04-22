@@ -4,8 +4,9 @@
 - Added more variant sounds for already existing sounds.
 - Redwood fights old birds back again.
 - Upped how easy it is for the driftwood to see you.
-- Hitting the driftwood causes it to target the player.
+- Hitting the driftwood causes it to be much more aware of the player.
 - Fixed a bug with being stunned.
+- Fixed animation with slashes being stutter-y when animation is running away.
 
 ## v 2.0.2 *bug fixes*
 - Reduced Zeus mode to spawn and death only.
