@@ -206,7 +206,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
 
     public override void Update() {
         base.Update();
-        if(isEnemyDead) {
+        if (isEnemyDead) {
             return;
         }
         
@@ -291,7 +291,14 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
             case (int)State.RunningToGiant:
                 agent.speed = walkingSpeed * 4;
                 // Keep targetting closest Giant, unless they are over 20 units away and we can't see them.
-                if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
+                if (targetEnemy == null) {
+                    LogIfDebugBuild("Stop Target Giant");
+                    DoAnimationClientRpc("startWalk");
+                    StartSearch(transform.position);
+                    SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
+                    return;
+                }
+                if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
                     LogIfDebugBuild("Stop Target Giant");
                     DoAnimationClientRpc("startWalk");
                     StartSearch(transform.position);
@@ -538,6 +545,13 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
         if (force == 6) {
             enemyHP -= 5;
+            if (OverrideTargetEnemy(seeableDistance) && currentBehaviourStateIndex == (int)State.SearchingForGiant) {
+                DoAnimationClientRpc("startChase");
+                StartCoroutine(ChaseCoolDown());
+                LogIfDebugBuild("Start Target Giant");
+                StopSearch(currentSearch);
+                SwitchToBehaviourClientRpc((int)State.RunningToGiant);
+            }
         } else if (force >= 3) {
             enemyHP -= 2;
         } else if (force >= 1) {
@@ -562,7 +576,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
 
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
             string enemyName = enemy.enemyType.enemyName;
-            if (enemyName == "RadMech" && !enemy.isEnemyDead && targetEnemy == null) {
+            if (enemyName == "RadMech" && !enemy.isEnemyDead) {
                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
                 if (distance < range && distance < minDistance && Vector3.Distance(enemy.transform.position, shipBoundaries.position) > distanceFromShip) {
                     minDistance = distance;

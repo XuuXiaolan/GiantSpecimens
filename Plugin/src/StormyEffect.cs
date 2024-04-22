@@ -38,7 +38,7 @@ public class StormyWeatherScript {
         // Change the color of the lightning bolt material to green
         if (localLightningBoltPrefabScript.LightningMaterialMesh != null) {
             Color green = new Color(1.0f, 0f, 0.0f, 1.0f);
-            localLightningBoltPrefabScript.LightningMaterialMesh.color = green;
+            localLightningBoltPrefabScript.LightningMaterialMesh.SetColor("_TintColor", green);
         } else {
             LogIfDebugBuild("LightningMaterial not found on prefab");
         }

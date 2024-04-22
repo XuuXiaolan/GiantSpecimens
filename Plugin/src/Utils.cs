@@ -11,8 +11,7 @@ internal static class Utils
 {
     static int seed = StartOfRound.Instance.randomMapSeed;
     static System.Random random = new System.Random(seed + 85);
-    public static void SpawnScrap(Item item, Vector3 position)
-    {
+    public static void SpawnScrap(Item item, Vector3 position) {        
         GameObject go = GameObject.Instantiate(item.spawnPrefab, position + Vector3.up, Quaternion.identity);
         go.GetComponent<NetworkObject>().Spawn();
         int value = random.Next(minValue: item.minValue, maxValue: item.maxValue);

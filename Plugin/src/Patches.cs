@@ -10,6 +10,7 @@ namespace GiantSpecimens.Patches;
 
 public static class GiantPatches {
     public static bool thrownByGiant = false;
+    public static bool grabbedByGiant = false;
     public static bool lightningBeingStruckByRedwood = false;
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
@@ -49,9 +50,13 @@ public static class GiantPatches {
     }*/
 
     private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
-        if (thrownByGiant && self != null && self.fallValueUncapped < -41) {
-            self.fallValueUncapped = -41;
+        if (thrownByGiant && self != null && self.fallValueUncapped < -39) {
+            self.fallValueUncapped = -39;
             thrownByGiant = false;
+        }
+        if (grabbedByGiant && self != null) {
+            self.fallValue = 0;
+            self.fallValueUncapped = 0;
         }
         orig(self);
     }

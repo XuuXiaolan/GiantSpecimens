@@ -41,6 +41,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public string levelName;
     [NonSerialized]
+    public string[] enemyTargetWhitelist;
+    [NonSerialized]
     public EnemyAI targetEnemy;
     [NonSerialized]
     public bool targettingEnemy = false;
@@ -71,8 +73,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public bool testBuild = false; 
     [NonSerialized]
-    public float delayedResponse;
-    [NonSerialized]
     public int numberOfFeedings = 0; // Number of times the giant has dipped its hand inside the giant.
     [NonSerialized]
     public LineRenderer line; // Debug line that shows destination of movement
@@ -81,11 +81,11 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public float maxAwarenessLevel = 100.0f; // Maximum awareness level
     [NonSerialized]
-    public float awarenessDecreaseRate = 2.5f; // Rate of awareness decrease per second when the player is not seen
+    public float awarenessDecreaseRate = 5f; // Rate of awareness decrease per second when the player is not seen
     [NonSerialized]
     public float awarenessIncreaseRate = 15.0f; // Base rate of awareness increase when the player is seen
     [NonSerialized]
-    public float awarenessIncreaseMultiplier = 3.0f; // Multiplier for awareness increase based on proximity
+    public float awarenessIncreaseMultiplier = 6.0f; // Multiplier for awareness increase based on proximity
     [NonSerialized]
     public bool canSlash = true;
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
@@ -146,8 +146,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void Start() {
         base.Start();
-        // TODO: I need the following sounds: DieSFX, TakingDamageSFX (multiple for different variety of damages being taken would be good), SlashSFX, EatSFX, FootstepSFX, HeavierFootstepSFX, ScreamSFX, SpawnSFX, EnemyHurtingSFX (might need multiple for different enemies), ThrowSFX 
-        // Find the renderer for the hands
         SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
         if (handsRenderer != null) {
             Material handsMaterial = null;
@@ -197,6 +195,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             line.widthMultiplier = 0.2f; // reduce width of the line
             #endif
         }
+        enemyTargetWhitelist = ["Baboon hawk", "Butler", "Centipede", "Crawler", "Hoarding bug", "Masked", "Mouthdog", "Nutcracker", "Bunker Spider"];
         creatureVoice.PlayOneShot(spawnSound);
         StartCoroutine(SpawnAnimationCooldown());
         SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
@@ -209,7 +208,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             previousStateIndex = currentBehaviourStateIndex;
             nextStateIndex = (int)State.SearchingForPrey;
             nextAnimationName = "startWalk";
-            DoAnimationClientRpc("startStunned");
+            DoAnimationClientRpc("startStun");
             StartCoroutine(StunPause());
             SwitchToBehaviourClientRpc((int)State.Stunned);
         }
@@ -248,7 +247,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     DoAnimationClientRpc("startScream");
                     SwitchToBehaviourClientRpc((int)State.Scream);
                     targettingEnemy = true;
-                } else if (FindClosestPlayerInRange(rangeOfSight) && awarenessLevel >= 35f) {
+                } else if (FindClosestPlayerInRange(rangeOfSight) && awarenessLevel >= 25f) {
                     // chase the target player.
                     // SCREAM
                     StopSearch(currentSearch);
@@ -281,7 +280,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                 }
                 else if (targettingPlayer) {
-                    if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null) {
+                    if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null || targetPlayer_.isInHangarShipRoom) {
                         LogIfDebugBuild("Stop chasing target player");
                         StartSearch(transform.position);
                         targettingPlayer = false;
@@ -431,6 +430,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         StopCoroutine(ThrowPlayer());
     }
     public void GrabPlayer() {
+        GiantPatches.grabbedByGiant = true;
         currentlyGrabbed = true;
         RightShoulder.data.target = null;
     }
@@ -439,6 +439,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             LogIfDebugBuild("No player to throw, This is a bug, please report this");
             return;
         }
+        GiantPatches.grabbedByGiant = false;
         currentlyGrabbed = false;
         // GameNetworkManager.Instance.localPlayerController.transform.position = playerPositionBeforeGrab;
 
@@ -508,7 +509,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         float minDistance = float.MaxValue;
 
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 45f, (int)range) && !enemy.isEnemyDead && enemy.enemyType.canDie) {
+            if (enemyTargetWhitelist.Contains(enemy.enemyType.enemyName) && enemy.enemyHP > 0 && DWHasLineOfSightToPosition(enemy.transform.position, 75f, (int)range) && !enemy.isEnemyDead) {
                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
                 if (distance < minDistance) {
                     minDistance = distance;
@@ -546,13 +547,15 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy) {
         if (isEnemyDead) return;
-        if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey) {
-            delayedResponse = 0f;
+        if (collidedEnemy == targetEnemy && targetEnemy != null && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingEnemy) {
             SwitchToBehaviourClientRpc((int)State.SlashingPrey);
         }
     }
     public override void OnCollideWithPlayer(Collider other) {
         if (isEnemyDead) return;
+        if (other.GetComponent<PlayerControllerB>()) {
+            awarenessLevel += 10f;
+        }
         if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
             playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
             creatureSFX.PlayOneShot(throwSound);
@@ -576,7 +579,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             }
         }
     }
-    public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 30, float proximityAwareness = 7.5f) {
+    public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 75f, int range = 60, float proximityAwareness = 15f) {
         if (eye == null) {
             _ = transform;
         } else {

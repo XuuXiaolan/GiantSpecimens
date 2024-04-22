@@ -1,7 +1,15 @@
+## v 2.0.4 *bug fixes*
+- Potentially fixing problem with insta death with driftwood and player interactions.
+- SHOULD fix driftwood targetting unkillable enemies because of course it did.
+- Added more variant sounds for already existing sounds.
+- Redwood fights old birds back again.
+- Upped how easy it is for the driftwood to see you.
+- Hitting the driftwood causes it to target the player.
+- Fixed a bug with being stunned.
+
 ## v 2.0.2 *bug fixes*
 - Reduced Zeus mode to spawn and death only.
 - Will add a config for Zeus mode later and mess with it to look nice and sound smol.
-- 
 
 ## v 2.0.0 NEW ENEMY UPDATE
 - Added Zeus, kinda, just keep an eye out for what the redwood does lmao.

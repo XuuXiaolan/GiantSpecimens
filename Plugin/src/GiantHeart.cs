@@ -33,9 +33,9 @@ public class RedwoodHeart : GrabbableObject {
 
     private IEnumerator GlowAnimation() {
         float initialTime = 0f;
-        float duration1 = 2f; // Time for color shift
+        float duration1 = 5f; // Time for color shift
         Color startColor = Color.red;
-        Color endColor = Color.blue;
+        Color endColor = new Color(1f, 0.71f, 1f, 1f);
 
         while (initialTime < duration1) {
             Color currentColor = Color.Lerp(startColor, endColor, initialTime / duration1);
@@ -45,7 +45,7 @@ public class RedwoodHeart : GrabbableObject {
         }
 
         // Optionally, loop or reverse the color shift here
-        heartMaterial.color = startColor; // Reset to initial color
+        // heartMaterial.color = startColor; // Reset to initial color
     }
         // Optionally, reset to initial state or loop, etc.
 }
