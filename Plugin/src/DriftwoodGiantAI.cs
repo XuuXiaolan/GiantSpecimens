@@ -384,7 +384,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             }
     }
     public IEnumerator ScreamPause() {
-        creatureVoice.PlayOneShot(screamSound);
         yield return new WaitForSeconds(screamAnimation.length);
         DoAnimationClientRpc(nextAnimationName);
         if (previousStateIndex == (int)State.PlayingWithPrey) {
@@ -401,16 +400,18 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         SwitchToBehaviourClientRpc(nextStateIndex);
         StopCoroutine(StunPause());
     }
+    public void Screaming() {
+        creatureVoice.PlayOneShot(screamSound);
+    }
     public void DriftwoodScream() { // run this multiple times in one scream animation
         PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
-        creatureVoice.PlayOneShot(screamSound);
         if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
             float distance = Vector3.Distance(transform.position, player.transform.position);
             if (distance <= screamRange && !player.isInHangarShipRoom) {
                 player.DamagePlayer(5, causeOfDeath: Plugin.RupturedEardrums); // make this damage multiple times through the scream animation
             }
         }
-    } 
+    }
     public void ParticlesFromEatingPrey() {
         // Make some like, red, steaming hot particles come out of the enemy corpses.
         // Also colour the hands a bit red.

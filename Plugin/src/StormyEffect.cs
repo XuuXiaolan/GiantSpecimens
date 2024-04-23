@@ -46,7 +46,8 @@ public class StormyWeatherScript {
         localLightningBoltPrefabScript.Destination.transform.position = strikePosition;
         localLightningBoltPrefabScript.AutomaticModeSeconds = 0.2f;
         localLightningBoltPrefabScript.Generations = 8;
-
+        MonoBehaviour host = localLightningBoltPrefabScript as MonoBehaviour;
+        host.StartCoroutine(ChangeLightningColor(localLightningBoltPrefabScript));
         localLightningBoltPrefabScript.CreateLightningBoltsNow();
 
         AudioSource audioSource = Object.Instantiate(stormy.targetedStrikeAudio);
@@ -54,5 +55,19 @@ public class StormyWeatherScript {
         audioSource.enabled = true;
         audioSource.volume /= 4.0f;
         stormy.PlayThunderEffects(strikePosition, audioSource);
+    }
+    private static IEnumerator ChangeLightningColor(LightningBoltPrefabScript boltScript)
+    {
+        float duration = 1.0f; // Duration of the color change in seconds
+        float timer = 0f;
+        while (timer < duration)
+        {
+            float progress = timer / duration;
+            boltScript.GlowTintColor = Color.Lerp(new Color(0.8f, 0f, 0f, 0.25f), Color.blue, progress);
+            boltScript.LightningTintColor = Color.Lerp(new Color(0.7f, 0f, 0f, 0.25f), Color.cyan, progress);
+            boltScript.MainTrunkTintColor = Color.Lerp(new Color(0.6f, 0f, 0f, 0.25f), Color.white, progress);
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 }
