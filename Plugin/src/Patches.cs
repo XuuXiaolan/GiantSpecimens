@@ -11,7 +11,6 @@ namespace GiantSpecimens.Patches;
 public static class GiantPatches {
     public static bool thrownByGiant = false;
     public static bool grabbedByGiant = false;
-    public static bool lightningBeingStruckByRedwood = false;
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
         //On.Landmine.SpawnExplosion += Landmine_SpawnExplosion;

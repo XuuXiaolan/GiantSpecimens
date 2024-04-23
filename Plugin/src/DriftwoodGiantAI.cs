@@ -35,11 +35,13 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public AudioClip stunSound;
     public AudioClip throwSound;
     public AudioClip slashSound;
-    public AudioClip hitSound;
+    public AudioClip[] hitSound;
     public AudioClip[] walkSounds;
     #pragma warning restore 0649
     [NonSerialized]
     public string levelName;
+    [NonSerialized]
+    public float screamRange;
     [NonSerialized]
     public string[] enemyTargetWhitelist;
     [NonSerialized]
@@ -146,6 +148,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void Start() {
         base.Start();
+        screamRange = Plugin.ModConfig.ConfigScreamRange.Value;
         SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
         if (handsRenderer != null) {
             Material handsMaterial = null;
@@ -219,7 +222,14 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             UpdateAwareness();
         }
         if (targetPlayer_ == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
-            GameNetworkManager.Instance.localPlayerController.transform.position = grabArea.transform.position;
+            if (IsHost) {
+                targetPlayer_.transform.position = grabArea.transform.position;
+                targetPlayer_.UpdatePlayerPositionClientRpc(grabArea.transform.position, targetPlayer_.isInElevator, targetPlayer_.isInHangarShipRoom, targetPlayer_.isExhausted, targetPlayer_.isExhausted);
+            }
+            else {
+                targetPlayer_.transform.position = grabArea.transform.position;
+                targetPlayer_.UpdatePlayerPositionServerRpc(grabArea.transform.position, targetPlayer_.isInElevator, targetPlayer_.isInHangarShipRoom, targetPlayer_.isExhausted, targetPlayer_.isExhausted);
+            }
         }
     }
     public override void DoAIInterval() {
@@ -277,7 +287,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         return;
                     }
-                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
+                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: false);
                 }
                 else if (targettingPlayer) {
                     if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null || targetPlayer_.isInHangarShipRoom) {
@@ -292,7 +302,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         return;
                     }
-                    SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: true);
+                    SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: false);
                 } else {
                     LogIfDebugBuild("If you see this, something went wrong.");
                     LogIfDebugBuild("Resettings state to Scream Animation");
@@ -393,9 +403,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public void DriftwoodScream() { // run this multiple times in one scream animation
         PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
+        creatureVoice.PlayOneShot(screamSound);
         if (player.IsSpawned && player.isPlayerControlled && !player.isPlayerDead) {
             float distance = Vector3.Distance(transform.position, player.transform.position);
-            if (distance <= 20f && !player.isInHangarShipRoom) {
+            if (distance <= screamRange && !player.isInHangarShipRoom) {
                 player.DamagePlayer(5, causeOfDeath: Plugin.RupturedEardrums); // make this damage multiple times through the scream animation
             }
         }
@@ -473,6 +484,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             targetEnemy.HitEnemy(1, null, false, -1);
             if (targetEnemy.enemyHP <= 0) {
                 nextStateIndex = (int)State.EatingPrey;
+                creatureVoice.PlayOneShot(eatenSound);
                 nextAnimationName = "startEating";
                 targettingEnemy = false;
                 targetEnemy = null;
@@ -501,9 +513,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         transform.LookAt(enemyPositionBeforeDeath);
         SwitchToBehaviourClientRpc(nextStateIndex);
         DoAnimationClientRpc(nextAnimationName);
-    }
-    public void PlayEatSound() {
-        creatureVoice.PlayOneShot(eatenSound);
     }
     public bool FindClosestTargetEnemyInRange(float range) {
         EnemyAI closestEnemy = null;
@@ -645,7 +654,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
-        creatureVoice.PlayOneShot(hitSound);
+        creatureVoice.PlayOneShot(hitSound[UnityEngine.Random.Range(0, hitSound.Length)]);
         if (force == 6) { 
             RunFarAway();
         }
@@ -669,7 +678,9 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         }
     }
     public void SpawnHeartOnDeath(Vector3 position) {
-        Utils.SpawnScrap(Plugin.DriftwoodSample, position);
+        if (Plugin.ModConfig.ConfigDriftwoodHeartEnabled.Value) {
+            Utils.SpawnScrap(Plugin.DriftwoodSample, position);
+        }
     }
     [ClientRpc]
     public void DoAnimationClientRpc(string animationName)

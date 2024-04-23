@@ -59,5 +59,22 @@ public class DriftwoodHeart : GrabbableObject {
     }
     public override void Start() {
         base.Start();
+        GetComponentInChildren<ParticleSystem>().Stop();
+    }
+    public override void DiscardItem() {
+        base.DiscardItem();
+        GetComponentInChildren<ParticleSystem>().Stop();
+    }
+    public override void PocketItem() {
+        base.PocketItem();
+        GetComponentInChildren<ParticleSystem>().Stop();
+    }
+    public override void GrabItem() {
+        base.GrabItem();
+        GetComponentInChildren<ParticleSystem>().Play();
+    }
+    public override void EquipItem() {
+        base.EquipItem();
+        GetComponentInChildren<ParticleSystem>().Play();
     }
 }

@@ -1,3 +1,15 @@
+## v 2.0.6 *configs*
+- Added some config options
+- Potentially fixed clients not being thrown up in the air.
+- Potentially fixed client desync for scrap spawning after driftwood and redwood death.
+- Fixed driftwood sample particles not stopping.
+- New icon, fixed wrong sound for scream.
+- Dislike how the lightning looks right now, will mess with it later.
+
+## v 2.0.5 *bug fixes*
+- Prettying up the lightning
+- Fixing config not working.
+
 ## v 2.0.4 *bug fixes*
 - Potentially fixing problem with insta death with driftwood and player interactions.
 - SHOULD fix driftwood targetting unkillable enemies because of course it did.

@@ -37,7 +37,9 @@ The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-c
 
 -Redwood Plushie Icon sprite by [@mari0no1](https://thunderstore.io/c/lethal-company/p/Mari0no1/DoorsEscapeMusic/)
 
--LGU compatibility and other scrap spawning on monster death help by [@SnackS](https://thunderstore.io/c/lethal-company/p/malco/Lategame_Upgrades/)
+-LGU compatibility and other scrap spawning on monster death help by [@SnackS]
+
+-Weather stuff like the lightning bolt by [@mrov](https://thunderstore.io/c/lethal-company/p/mrov/WeatherTweaks/)
 
 -Uh, support me if you'd like on the support button next to Manual Download on thunderstore :p
 

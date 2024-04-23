@@ -24,6 +24,9 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public ParticleSystem DustParticlesLeft;
     public ParticleSystem DustParticlesRight;
     public ParticleSystem ForestKeeperParticles;
+    public ParticleSystem DriftwoodGiantParticles;
+    public ParticleSystem OldBirdParticles;
+    public ParticleSystem DeathParticles;
     public Collider CollisionFootR;
     public Collider CollisionFootL;
     public ChainIKConstraint LeftFoot;
@@ -40,6 +43,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public AudioClip roarSound;
     public GameObject rightBone;
     public GameObject leftBone;
+    public GameObject[] lightningSpots;
     public GameObject eatingArea;
     #pragma warning restore 0649
     [NonSerialized]
@@ -67,13 +71,17 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public float distanceFromShip;
     [NonSerialized]
+    public bool eatOldBirds;
+    [NonSerialized]
+    public bool zeusMode;
+    [NonSerialized]
     public float distanceFromEnemy;
     [NonSerialized]
     public Transform shipBoundaries;
     [NonSerialized]
     public Vector3 midpoint;
     [NonSerialized]
-    public bool testBuild = false; 
+    public bool testBuild = true; 
     [NonSerialized]
     public LineRenderer line;
     [NonSerialized]
@@ -188,6 +196,9 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         walkingSpeed = Plugin.ModConfig.ConfigSpeedRedWood.Value;
         distanceFromShip = Plugin.ModConfig.ConfigShipDistanceRedWood.Value;
         seeableDistance = Plugin.ModConfig.ConfigForestDistanceRedWood.Value;
+        zeusMode = Plugin.ModConfig.ConfigZeusMode.Value;
+        eatOldBirds = Plugin.ModConfig.ConfigEatOldBirds.Value;
+
 
         // LogIfDebugBuild(giantEnemyType.rarity.ToString());
         LogIfDebugBuild("Pink Giant Enemy Spawned");
@@ -305,7 +316,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                     SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                     return;
                 }
-                SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
+                SetDestinationToPosition(targetEnemy.transform.position, checkForPath: false);
                 break;
 
             case (int)State.EatingGiant:
@@ -352,11 +363,13 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         // LogIfDebugBuild($"Distance: {distanceFromEnemy} HP: {enemy.enemyHP}");
     }
     public void MayZeusHaveMercy() {
-        // Generate a random offset within a 5-unit radius
-        Vector3 strikePosition = GenerateRandomPositionAround(transform.position, 5, destinationRandom);
-        // Perform the lightning strike at the random position
-        GiantPatches.lightningBeingStruckByRedwood = true;
-        StormScript.StormyWeatherScript.SpawnLightningBolt(strikePosition);
+        if (RoundManager.Instance.currentLevel.currentWeather == LevelWeatherType.Stormy && zeusMode || testBuild) {
+            // Generate a random offset within a 5-unit radius
+            // Vector3 strikePosition = GenerateRandomPositionAround(transform.position, 5, destinationRandom);
+            // Perform the lightning strike at the random position
+            Vector3 strikePosition = lightningSpots[UnityEngine.Random.Range(0, lightningSpots.Length)].transform.position;
+            StormScript.StormyWeatherScript.SpawnLightningBolt(strikePosition);
+        }
     }
     public Vector3 GenerateRandomPositionAround(Vector3 center, float radius, System.Random random) {
         // Generate a random angle between 0 and 360 degrees
@@ -545,7 +558,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
         if (force == 6) {
             enemyHP -= 5;
-            if (OverrideTargetEnemy(seeableDistance) && currentBehaviourStateIndex == (int)State.SearchingForGiant) {
+            
+            if (OverrideTargetEnemy(seeableDistance) && currentBehaviourStateIndex == (int)State.SearchingForGiant && eatOldBirds) {
                 DoAnimationClientRpc("startChase");
                 StartCoroutine(ChaseCoolDown());
                 LogIfDebugBuild("Start Target Giant");
@@ -610,7 +624,9 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = false;
     }
     public void SpawnHeartOnDeath(Vector3 position) {
-        Utils.SpawnScrap(Plugin.RedWoodHeart, position);
+        if (Plugin.ModConfig.ConfigRedwoodHeartEnabled.Value) {
+            Utils.SpawnScrap(Plugin.RedWoodHeart, position);
+        }
     }
     [ClientRpc]
     public void DoAnimationClientRpc(string animationName)
