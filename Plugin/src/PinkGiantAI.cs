@@ -253,14 +253,13 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         StartSearch(transform.position);
         SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
     }
-    public override void DoAIInterval()
-    {
-        if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
-            return;
-        }
-        base.DoAIInterval();
+    public override void DoAIInterval() {
         if (testBuild) { 
             StartCoroutine(DrawPath(line, agent));
+        }
+        base.DoAIInterval();
+        if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
+            return;
         }
         switch(currentBehaviourStateIndex) {
             case (int)State.SpawnAnimation:

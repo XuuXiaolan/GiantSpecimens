@@ -18,6 +18,18 @@ internal static class Utils
         scanNode.scrapValue = value;
         scanNode.subText = $"Value: ${value}";
         go.GetComponent<GrabbableObject>().scrapValue = value;
+        UpdateScanNodeClientRpc(go, value);
+        SpawnNetworkObjectServerRpc(go);
+    }
+    [ServerRpc]
+    public static void SpawnNetworkObjectServerRpc(GameObject go) {
         go.GetComponent<NetworkObject>().Spawn();
+    }
+
+    [ClientRpc]
+    public static void UpdateScanNodeClientRpc(GameObject go, int value) {
+        var scanNode = go.gameObject.GetComponentInChildren<ScanNodeProperties>();
+        scanNode.scrapValue = value;
+        scanNode.subText = $"Value: ${value}";
     }
 }

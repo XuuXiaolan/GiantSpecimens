@@ -30,7 +30,17 @@ namespace GiantSpecimens.Configs {
         public ConfigEntry<float> ConfigScreamRange { get; private set; }
         public ConfigEntry<bool> ConfigDriftwoodHeartEnabled { get; private set; }
         public ConfigEntry<bool> ConfigRedwoodHeartEnabled { get; private set; }
+        public ConfigEntry<float> ConfigRedwoodGiantPower { get; private set; }
+        public ConfigEntry<float> ConfigDriftwoodGiantPower { get; private set; }
         public GiantSpecimensConfig(ConfigFile configFile) {
+            ConfigRedwoodGiantPower = configFile.Bind("Enemy Options",
+                                                "Redwood Giant | Enemy Power",
+                                                1f,
+                                                "Config the enemy power of the Redwood Giant");
+            ConfigDriftwoodGiantPower = configFile.Bind("Enemy Options",
+                                                "DriftWood Giant | Enemy Power",
+                                                1f,
+                                                "Config the enemy power of the Driftwood Giant");
             ConfigDriftwoodHeartEnabled = configFile.Bind("Scrap Options",
                                                 "DriftWood Giant | Heart",
                                                 true,

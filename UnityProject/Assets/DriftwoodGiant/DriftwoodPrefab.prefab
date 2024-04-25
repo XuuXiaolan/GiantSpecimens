@@ -1918,7 +1918,7 @@ GameObject:
   - component: {fileID: 3283338092770109866}
   - component: {fileID: 1654680555638297261}
   m_Layer: 19
-  m_Name: AnimatedDriftwoodV11 1
+  m_Name: DriftwoodPrefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

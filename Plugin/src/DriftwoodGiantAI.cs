@@ -4,16 +4,8 @@ using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.PlayerLoop;
-using System.Threading;
-using Mono.Cecil.Cil;
-using UnityEngine.UIElements.Experimental;
-using System.Collections.Generic;
-using static UnityEngine.ParticleSystem;
 using UnityEngine.Animations.Rigging;
-using System.Text.RegularExpressions;
 using UnityEngine.AI;
-using System.Reflection;
 using GiantSpecimens.Patches;
 using GiantSpecimens.src;
 
@@ -39,6 +31,13 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public AudioClip[] walkSounds;
     #pragma warning restore 0649
     [NonSerialized]
+    private NetworkVariable<NetworkBehaviourReference> _playerNetVar = new();
+    public PlayerControllerB DriftwoodTargetPlayer
+    {
+        get => (PlayerControllerB)_playerNetVar.Value;
+        set => _playerNetVar.Value = value;
+    }
+    [NonSerialized]
     public string levelName;
     [NonSerialized]
     public float screamRange;
@@ -50,8 +49,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public bool targettingEnemy = false;
     [NonSerialized]
     public Material newHandsMaterial;
-    [NonSerialized]
-    public PlayerControllerB targetPlayer_;
     [NonSerialized]
     public bool targettingPlayer = false;
     [NonSerialized]
@@ -90,6 +87,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public float awarenessIncreaseMultiplier = 6.0f; // Multiplier for awareness increase based on proximity
     [NonSerialized]
     public bool canSlash = true;
+    [NonSerialized]
+    public Transform shipBoundaries;
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
     int IVisibleThreat.SendSpecialBehaviour(int id) {
         return 0; 
@@ -148,6 +147,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void Start() {
         base.Start();
+        shipBoundaries = StartOfRound.Instance.shipBounds.transform;
+        shipBoundaries.localScale *= 1.1f;
         screamRange = Plugin.ModConfig.ConfigScreamRange.Value;
         SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
         if (handsRenderer != null) {
@@ -221,15 +222,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         if (currentBehaviourStateIndex == (int)State.SearchingForPrey) {
             UpdateAwareness();
         }
-        if (targetPlayer_ == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
-            if (IsHost) {
-                targetPlayer_.transform.position = grabArea.transform.position;
-                targetPlayer_.UpdatePlayerPositionClientRpc(grabArea.transform.position, targetPlayer_.isInElevator, targetPlayer_.isInHangarShipRoom, targetPlayer_.isExhausted, targetPlayer_.isExhausted);
-            }
-            else {
-                targetPlayer_.transform.position = grabArea.transform.position;
-                targetPlayer_.UpdatePlayerPositionServerRpc(grabArea.transform.position, targetPlayer_.isInElevator, targetPlayer_.isInHangarShipRoom, targetPlayer_.isExhausted, targetPlayer_.isExhausted);
-            }
+        if (DriftwoodTargetPlayer == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
+            DriftwoodTargetPlayer.transform.position = grabArea.transform.position;
         }
     }
     public override void DoAIInterval() {
@@ -287,14 +281,14 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         return;
                     }
-                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: false);
+                    SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                 }
                 else if (targettingPlayer) {
-                    if (Vector3.Distance(transform.position, targetPlayer_.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetPlayer_.transform.position) || targetPlayer_ == null || targetPlayer_.isInHangarShipRoom) {
+                    if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || Vector3.Distance(DriftwoodTargetPlayer.transform.position, shipBoundaries.position) < 11) {
                         LogIfDebugBuild("Stop chasing target player");
                         StartSearch(transform.position);
                         targettingPlayer = false;
-                        targetPlayer_ = null;
+                        DriftwoodTargetPlayer = default;
                         previousStateIndex = currentBehaviourStateIndex;
                         nextStateIndex = (int)State.SearchingForPrey;
                         nextAnimationName = "startWalk";
@@ -302,7 +296,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                         SwitchToBehaviourClientRpc((int)State.Scream);
                         return;
                     }
-                    SetDestinationToPosition(targetPlayer_.transform.position, checkForPath: false);
+                    SetDestinationToPosition(DriftwoodTargetPlayer.transform.position, checkForPath: true);
                 } else {
                     LogIfDebugBuild("If you see this, something went wrong.");
                     LogIfDebugBuild("Resettings state to Scream Animation");
@@ -423,17 +417,17 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         creatureVoice.PlayOneShot(walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)]);
     }
     public IEnumerator ThrowPlayer() {
-        RightShoulder.data.target = targetPlayer_.transform;
+        // RightShoulder.data.target = DriftwoodTargetPlayer.Value.transform;
         yield return new WaitForSeconds(throwAnimation.length+2f);
         try {
             LogIfDebugBuild("Setting Kinematics to true");
-            targetPlayer_.GetComponent<Rigidbody>().isKinematic = true;
+            DriftwoodTargetPlayer.GetComponent<Rigidbody>().isKinematic = true;
         } catch {
             LogIfDebugBuild("Trying to change kinematics of an unknown player.");
         }
         // Reset targeting
         targettingPlayer = false;
-        targetPlayer_ = null;
+        DriftwoodTargetPlayer = default;
         
         previousStateIndex = currentBehaviourStateIndex;
         nextStateIndex = (int)State.SearchingForPrey;
@@ -445,10 +439,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public void GrabPlayer() {
         GiantPatches.grabbedByGiant = true;
         currentlyGrabbed = true;
-        RightShoulder.data.target = null;
+        // RightShoulder.data.target = null;
     }
     public void ThrowingPlayer() {
-        if (targetPlayer_ == null) {
+        if (DriftwoodTargetPlayer == default) {
             LogIfDebugBuild("No player to throw, This is a bug, please report this");
             return;
         }
@@ -467,8 +461,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         // Throw the player
         LogIfDebugBuild("Launching Player");
         GiantPatches.thrownByGiant = true;
-        Rigidbody playerBody = targetPlayer_.GetComponent<Rigidbody>();
-        targetPlayer_.GetComponent<Rigidbody>().isKinematic = false;
+        Rigidbody playerBody = DriftwoodTargetPlayer.GetComponent<Rigidbody>();
+        DriftwoodTargetPlayer.GetComponent<Rigidbody>().isKinematic = false;
         playerBody.velocity = Vector3.zero; // Reset any existing velocity
         playerBody.AddTorque(Vector3.Cross(throwingDirection, transform.up) * throwForceMagnitude, ForceMode.Impulse);
         playerBody.AddForce(throwingDirection * throwForceMagnitude, ForceMode.Impulse);
@@ -550,7 +544,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             }
         }
         if (closestPlayer != null) {
-            targetPlayer_ = closestPlayer;
+            DriftwoodTargetPlayer = closestPlayer;
             targettingPlayer = true;
             return true;
         }
@@ -567,7 +561,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         if (other.GetComponent<PlayerControllerB>()) {
             awarenessLevel += 10f;
         }
-        if (other.GetComponent<PlayerControllerB>() == targetPlayer_ && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
+        if (other.GetComponent<PlayerControllerB>() == DriftwoodTargetPlayer && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
             playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
             creatureSFX.PlayOneShot(throwSound);
             DoAnimationClientRpc("startThrow");
@@ -575,10 +569,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         }
     }
     public void DriftwoodGiantSeePlayerEffect() {
-        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && targetPlayer_ != null && !targettingPlayer) {
+        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && DriftwoodTargetPlayer != default && !targettingPlayer) {
             return;
         }
-        if (currentBehaviourStateIndex == (int)State.RunningToPrey && targetPlayer_ == GameNetworkManager.Instance.localPlayerController) {
+        if (currentBehaviourStateIndex == (int)State.RunningToPrey && DriftwoodTargetPlayer == GameNetworkManager.Instance.localPlayerController) {
             GameNetworkManager.Instance.localPlayerController.IncreaseFearLevelOverTime(1.4f);
             return;
         }
@@ -672,11 +666,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         creatureVoice.PlayOneShot(dieSFX);
     }
     public void RunFarAway() {
-        try {
-            SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
-        } catch {
-            return;
-        }
+        SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
     }
     public void SpawnHeartOnDeath(Vector3 position) {
         if (Plugin.ModConfig.ConfigDriftwoodHeartEnabled.Value) {

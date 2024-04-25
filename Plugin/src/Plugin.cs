@@ -67,6 +67,7 @@ public class Plugin : BaseUnityPlugin {
 
         // Redwood Giant Enemy
         PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
+        PinkGiant.PowerLevel = ModConfig.ConfigRedwoodGiantPower.Value;
         TerminalNode pgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("PinkGiantTN");
         TerminalKeyword pgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("PinkGiantTK");
         NetworkPrefabs.RegisterNetworkPrefab(PinkGiant.enemyPrefab);
@@ -74,6 +75,7 @@ public class Plugin : BaseUnityPlugin {
 
         // Driftwood Giant Enemy
         DriftGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("DriftwoodGiantObj");
+        DriftGiant.PowerLevel = ModConfig.ConfigDriftwoodGiantPower.Value;
         TerminalNode dgTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("DriftwoodGiantTN");
         TerminalKeyword dgTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("DriftwoodGiantTK");
         NetworkPrefabs.RegisterNetworkPrefab(DriftGiant.enemyPrefab);
