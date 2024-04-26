@@ -8,6 +8,7 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.AI;
 using GiantSpecimens.Patches;
 using GiantSpecimens.src;
+using GiantSpecimens.Configs;
 
 namespace GiantSpecimens.Enemy;
 class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
@@ -160,7 +161,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         base.Start();
         shipBoundaries = StartOfRound.Instance.shipBounds.transform;
         shipBoundaries.localScale *= 1.1f;
-        screamRange = Plugin.ModConfig.ConfigScreamRange.Value;
+        screamRange = GiantSpecimensConfig.ConfigScreamRange.Value;
         SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
         if (handsRenderer != null) {
             Material handsMaterial = null;
@@ -674,8 +675,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
     }
     public void SpawnHeartOnDeath(Vector3 position) {
-        if (Plugin.ModConfig.ConfigDriftwoodHeartEnabled.Value) {
-            Utils.SpawnScrap(Plugin.DriftwoodSample, position);
+        if (GiantSpecimensConfig.ConfigDriftwoodHeartEnabled.Value) {
+            Utils.Instance.SpawnScrapServerRpc("DriftWoodGiant", position);
         }
     }
     [ClientRpc]

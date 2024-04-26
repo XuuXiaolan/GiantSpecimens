@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1493648790, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+  m_Name: OrganicTag
+  m_EditorClassIdentifier: 
+  contentTagName: Organic
+  contentTagColor: {r: 0.39607847, g: 0.6627451, b: 0.3137255, a: 0}

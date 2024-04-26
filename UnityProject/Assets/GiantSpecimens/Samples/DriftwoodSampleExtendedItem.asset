@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1787465788, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+  m_Name: DriftwoodSampleExtendedItem
+  m_EditorClassIdentifier: 
+  <ContentTags>k__BackingField:
+  - {fileID: 11400000, guid: b9d3d6df791293942b4e9bb15dbf5e70, type: 2}
+  - {fileID: 11400000, guid: 84ae75bc863c0074e840f5b9fb4e563a, type: 2}
+  - {fileID: 11400000, guid: ecf98934f6bfbf44abf8d59159257929, type: 2}
+  - {fileID: 11400000, guid: 83140654cffe0b74e80099e02fe3673c, type: 2}
+  - {fileID: 11400000, guid: 73e7ee7f3091d764da40223f01fb6178, type: 2}
+  - {fileID: 11400000, guid: cf805f5e3a7ec5640ae545c8d4e88612, type: 2}
+  <Item>k__BackingField: {fileID: 11400000, guid: 5732dd966426b9d4c86b09306839470f,
+    type: 2}
+  <PluralisedItemName>k__BackingField: Driftwood Samples
+  <IsBuyableItem>k__BackingField: 0
+  <LevelMatchingProperties>k__BackingField: {fileID: 11400000, guid: 41a409be37e4a21408ea6b6be054a497,
+    type: 2}
+  <DungeonMatchingProperties>k__BackingField: {fileID: 0}
+  <OverrideInfoNodeDescription>k__BackingField: 
+  <OverrideBuyNodeDescription>k__BackingField: 
+  <OverrideBuyConfirmNodeDescription>k__BackingField: 

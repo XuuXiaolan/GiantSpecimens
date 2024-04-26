@@ -1,0 +1,120 @@
+ManifestFileVersion: 0
+CRC: 2210796923
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4cee6893752175f6d44920656f8ad0e2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 54e093f457e4ace0b8c9c90b7a6dbce9
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 4cee6893752175f6d44920656f8ad0e2
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 65d3fcb39dd67306e9bb17a603308070, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c30496d6ae6d6f907456e10a94e01ec6, type: 3}
+- Class: 114
+  Script: {fileID: 1720121740, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1352902129, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 532549189, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1494188094, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: -1358006793, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: -2097174394, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
+- Class: 114
+  Script: {fileID: 1493648790, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: 1818284413, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: -1787465788, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: -194780425, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: 2024385392, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 195
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 241
+  Script: {instanceID: 0}
+- Class: 243
+  Script: {instanceID: 0}
+- Class: 245
+  Script: {instanceID: 0}
+- Class: 329
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AISearchRoutine
+- AssemblyName: Assembly-CSharp
+  ClassName: Battery
+- AssemblyName: Assembly-CSharp
+  ClassName: EnemyBehaviourState
+- AssemblyName: Assembly-CSharp
+  ClassName: NavSizeLimit
+- AssemblyName: Unity.Animation.Rigging
+  ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
+Assets:
+- Assets/GiantSpecimens/ExtendedMod.asset
+Dependencies: []

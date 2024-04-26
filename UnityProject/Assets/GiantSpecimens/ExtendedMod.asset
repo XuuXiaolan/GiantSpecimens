@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -194780425, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+  m_Name: ExtendedMod
+  m_EditorClassIdentifier: 
+  <ModName>k__BackingField: TheGiantSpecimens
+  <AuthorName>k__BackingField: XuXiaolan
+  <ModMergeSetting>k__BackingField: 0
+  <ExtendedLevels>k__BackingField: []
+  <ExtendedDungeonFlows>k__BackingField: []
+  <ExtendedItems>k__BackingField:
+  - {fileID: 11400000, guid: 9d6b9d004d7f4b04e9543a4d7e6ad9c4, type: 2}
+  - {fileID: 11400000, guid: 9e59835cc6c58a444b31faad838f6cef, type: 2}
+  - {fileID: 11400000, guid: 8a8e553e392f93347b681b5d95065e8d, type: 2}
+  - {fileID: 11400000, guid: 570870c839173a1499b30f8e235da52a, type: 2}
+  <ExtendedEnemyTypes>k__BackingField:
+  - {fileID: 11400000, guid: 71eeeee280a727b4f82df3c9e62d415d, type: 2}
+  - {fileID: 11400000, guid: 9dbc23f589be16e44a1019a1dfd0746d, type: 2}
+  <ExtendedWeatherEffects>k__BackingField: []
+  <ExtendedFootstepSurfaces>k__BackingField: []
+  <ExtendedStoryLogs>k__BackingField: []
