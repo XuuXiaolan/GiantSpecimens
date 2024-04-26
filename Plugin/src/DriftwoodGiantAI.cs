@@ -234,15 +234,15 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             UpdateAwareness();
         }
         if (DriftwoodTargetPlayer == GameNetworkManager.Instance.localPlayerController && currentlyGrabbed) {
-            DriftwoodTargetPlayer.transform.position = grabArea.transform.position;
+            GameNetworkManager.Instance.localPlayerController.transform.position = grabArea.transform.position;
         }
     }
     public override void DoAIInterval() {
-        base.DoAIInterval();
-        if (isEnemyDead || StartOfRound.Instance.allPlayersDead) return;
         if (testBuild) { 
             StartCoroutine(DrawPath(line, agent));
         }
+        base.DoAIInterval();
+        if (isEnemyDead || StartOfRound.Instance.allPlayersDead) return;
         switch(currentBehaviourStateIndex) {
             case (int)State.SpawnAnimation:
                 agent.speed = 0f;
