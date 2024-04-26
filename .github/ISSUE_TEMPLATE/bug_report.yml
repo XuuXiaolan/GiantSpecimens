@@ -51,8 +51,8 @@ body:
       label: Version
       description: What version of the game are you running?
       options:
+        - v50
         - v49
-        - v45
       default: 0
     validations:
       required: true
