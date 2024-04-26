@@ -106,6 +106,7 @@ public class Plugin : BaseUnityPlugin {
                 if (!GiantSpecimensConfig.ConfigDriftWoodPlushieEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
             } else if (extendedItem.name == "Whistle") {
+                if (!GiantSpecimensConfig.ConfigWhistleEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
             }
             extendedItem.LevelMatchingProperties.planetNames.AddRange(planetNames);
