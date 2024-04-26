@@ -36,19 +36,17 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     {
         get
         {
-            return targettingPlayer ? (PlayerControllerB)_playerNetVar.Value : null;
+            return (PlayerControllerB)_playerNetVar.Value;
         }
-        set
+        set 
         {
             if (value == null)
             {
-                targettingPlayer = false;
-                _playerNetVar.Value = new NetworkBehaviourReference(); // Setting to a default/empty reference
+                _playerNetVar.Value = null;
             }
             else
             {
-                targettingPlayer = true;
-                _playerNetVar.Value = value;
+                _playerNetVar.Value = new NetworkBehaviourReference(value);
             }
         }
     }
@@ -64,8 +62,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public bool targettingEnemy = false;
     [NonSerialized]
     public Material newHandsMaterial;
-    [NonSerialized]
-    public bool targettingPlayer = false;
     [NonSerialized]
     public float seeableDistance = 50f;
     [NonSerialized]
@@ -214,7 +210,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             line.widthMultiplier = 0.2f; // reduce width of the line
             #endif
         }
-        enemyTargetWhitelist = ["Baboon hawk", "Butler", "Centipede", "Crawler", "Hoarding bug", "Masked", "Mouthdog", "Nutcracker", "Bunker Spider"];
+        enemyTargetWhitelist = ["Baboon hawk", "Butler", "Centipede", "Crawler", "Hoarding bug", "Masked", "Mouthdog", "Nutcracker"];
         creatureVoice.PlayOneShot(spawnSound);
         StartCoroutine(SpawnAnimationCooldown());
         SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
@@ -275,7 +271,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     nextAnimationName = "startChase";
                     DoAnimationClientRpc("startScream");
                     SwitchToBehaviourClientRpc((int)State.Scream);
-                    targettingPlayer = true;
                     return;
                 }
 
@@ -298,11 +293,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     }
                     SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                 }
-                else if (targettingPlayer) {
+                else if (DriftwoodTargetPlayer != null) {
                     if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance+10f && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || Vector3.Distance(DriftwoodTargetPlayer.transform.position, shipBoundaries.position) < 11) {
                         LogIfDebugBuild("Stop chasing target player");
                         StartSearch(transform.position);
-                        targettingPlayer = false;
                         previousStateIndex = currentBehaviourStateIndex;
                         nextStateIndex = (int)State.SearchingForPrey;
                         nextAnimationName = "startWalk";
@@ -440,7 +434,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             LogIfDebugBuild("Trying to change kinematics of an unknown player.");
         }
         // Reset targeting
-        targettingPlayer = false;
         
         previousStateIndex = currentBehaviourStateIndex;
         nextStateIndex = (int)State.SearchingForPrey;
@@ -558,7 +551,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         }
         if (closestPlayer != null) {
             DriftwoodTargetPlayer = closestPlayer;
-            targettingPlayer = true;
             return true;
         }
         return false;
@@ -574,7 +566,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         if (other.GetComponent<PlayerControllerB>()) {
             awarenessLevel += 10f;
         }
-        if (other.GetComponent<PlayerControllerB>() == DriftwoodTargetPlayer && currentBehaviourStateIndex == (int)State.RunningToPrey && targettingPlayer) {
+        if (other.GetComponent<PlayerControllerB>() == DriftwoodTargetPlayer && currentBehaviourStateIndex == (int)State.RunningToPrey && DriftwoodTargetPlayer != null) {
             playerPositionBeforeGrab = GameNetworkManager.Instance.localPlayerController.transform.position;
             creatureSFX.PlayOneShot(throwSound);
             DoAnimationClientRpc("startThrow");
@@ -582,7 +574,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         }
     }
     public void DriftwoodGiantSeePlayerEffect() {
-        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && DriftwoodTargetPlayer != default && !targettingPlayer) {
+        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead || GameNetworkManager.Instance.localPlayerController.isInsideFactory && DriftwoodTargetPlayer != default && !(DriftwoodTargetPlayer != null)) {
             return;
         }
         if (currentBehaviourStateIndex == (int)State.RunningToPrey && DriftwoodTargetPlayer == GameNetworkManager.Instance.localPlayerController) {
