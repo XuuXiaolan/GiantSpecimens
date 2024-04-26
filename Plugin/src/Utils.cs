@@ -21,7 +21,7 @@ internal static class Utils
         UpdateScanNodeClientRpc(go, value);
         SpawnNetworkObjectServerRpc(go);
     }
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = true)]
     public static void SpawnNetworkObjectServerRpc(GameObject go) {
         go.GetComponent<NetworkObject>().Spawn();
     }

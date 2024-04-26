@@ -44,7 +44,7 @@ namespace GiantSpecimens.Configs {
             ConfigDriftwoodHeartEnabled = configFile.Bind("Scrap Options",
                                                 "DriftWood Giant | Heart",
                                                 true,
-                                                "Enables/Disables the Heart from spawning on death.");
+                                                "Enables/Disables the Heart (Currently looks like an LGU Sample) from spawning on death.");
             ConfigRedwoodHeartEnabled = configFile.Bind("Scrap Options",
                                                 "RedWood Giant | Heart",
                                                 true,

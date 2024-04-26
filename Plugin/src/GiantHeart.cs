@@ -63,18 +63,22 @@ public class DriftwoodHeart : GrabbableObject {
     }
     public override void DiscardItem() {
         base.DiscardItem();
+        LogIfDebugBuild("Driftwood heart discarded");
         GetComponentInChildren<ParticleSystem>().Stop();
     }
     public override void PocketItem() {
         base.PocketItem();
+        LogIfDebugBuild("Driftwood heart pocketed");
         GetComponentInChildren<ParticleSystem>().Stop();
     }
     public override void GrabItem() {
         base.GrabItem();
+        LogIfDebugBuild("Driftwood heart grabbed");
         GetComponentInChildren<ParticleSystem>().Play();
     }
     public override void EquipItem() {
         base.EquipItem();
+        LogIfDebugBuild("Driftwood heart equipped");
         GetComponentInChildren<ParticleSystem>().Play();
     }
 }

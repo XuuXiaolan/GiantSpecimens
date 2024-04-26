@@ -512,6 +512,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         StopCoroutine(EatForestKeeper());
     }
     public void EatingTargetGiant() {
+        if (targetEnemy == null) return;
         targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
         eatingEnemy = false;
         sizeUp = false;

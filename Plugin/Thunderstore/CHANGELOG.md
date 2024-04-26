@@ -5,6 +5,8 @@
 - Fixed driftwood sample particles not stopping.
 - New icon, fixed wrong sound for scream.
 - Dislike how the lightning looks right now, will mess with it later.
+- Missed with range and eyesight, let me know how the new values are like.
+- Ported to LLL.
 
 ## v 2.0.5 *bug fixes*
 - Prettying up the lightning

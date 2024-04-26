@@ -34,8 +34,23 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     private NetworkVariable<NetworkBehaviourReference> _playerNetVar = new();
     public PlayerControllerB DriftwoodTargetPlayer
     {
-        get => (PlayerControllerB)_playerNetVar.Value;
-        set => _playerNetVar.Value = value;
+        get
+        {
+            return targettingPlayer ? (PlayerControllerB)_playerNetVar.Value : null;
+        }
+        set
+        {
+            if (value == null)
+            {
+                targettingPlayer = false;
+                _playerNetVar.Value = new NetworkBehaviourReference(); // Setting to a default/empty reference
+            }
+            else
+            {
+                targettingPlayer = true;
+                _playerNetVar.Value = value;
+            }
+        }
     }
     [NonSerialized]
     public string levelName;
@@ -54,7 +69,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public float seeableDistance = 50f;
     [NonSerialized]
-    public float slashingRange = 7.5f;
+    public float slashingRange = 6f;
     [NonSerialized]
     public Vector3 playerPositionBeforeGrab;
     [NonSerialized]
@@ -80,9 +95,9 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public float maxAwarenessLevel = 100.0f; // Maximum awareness level
     [NonSerialized]
-    public float awarenessDecreaseRate = 5f; // Rate of awareness decrease per second when the player is not seen
+    public float awarenessDecreaseRate = 2.5f; // Rate of awareness decrease per second when the player is not seen
     [NonSerialized]
-    public float awarenessIncreaseRate = 15.0f; // Base rate of awareness increase when the player is seen
+    public float awarenessIncreaseRate = 5.0f; // Base rate of awareness increase when the player is seen
     [NonSerialized]
     public float awarenessIncreaseMultiplier = 6.0f; // Multiplier for awareness increase based on proximity
     [NonSerialized]
@@ -269,7 +284,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 agent.speed = 20;
                 // Keep targetting target enemy, unless they are over 20 units away and we can't see them.
                 if (targettingEnemy) {
-                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
+                    if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance+10f && !DWHasLineOfSightToPosition(targetEnemy.transform.position) || targetEnemy == null) {
                         LogIfDebugBuild("Stop chasing target enemy");
                         StartSearch(transform.position);
                         targettingEnemy = false;
@@ -284,11 +299,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                 }
                 else if (targettingPlayer) {
-                    if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || Vector3.Distance(DriftwoodTargetPlayer.transform.position, shipBoundaries.position) < 11) {
+                    if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance+10f && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || Vector3.Distance(DriftwoodTargetPlayer.transform.position, shipBoundaries.position) < 11) {
                         LogIfDebugBuild("Stop chasing target player");
                         StartSearch(transform.position);
                         targettingPlayer = false;
-                        DriftwoodTargetPlayer = default;
                         previousStateIndex = currentBehaviourStateIndex;
                         nextStateIndex = (int)State.SearchingForPrey;
                         nextAnimationName = "startWalk";
@@ -417,7 +431,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         creatureVoice.PlayOneShot(walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)]);
     }
     public IEnumerator ThrowPlayer() {
-        // RightShoulder.data.target = DriftwoodTargetPlayer.Value.transform;
+        LogIfDebugBuild(DriftwoodTargetPlayer.actualClientId.ToString());
+        // RightShoulder.data.target = DriftwoodTargetPlayer.transform;
         yield return new WaitForSeconds(throwAnimation.length+2f);
         try {
             LogIfDebugBuild("Setting Kinematics to true");
@@ -427,7 +442,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         }
         // Reset targeting
         targettingPlayer = false;
-        DriftwoodTargetPlayer = default;
         
         previousStateIndex = currentBehaviourStateIndex;
         nextStateIndex = (int)State.SearchingForPrey;
@@ -442,7 +456,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         // RightShoulder.data.target = null;
     }
     public void ThrowingPlayer() {
-        if (DriftwoodTargetPlayer == default) {
+        if (DriftwoodTargetPlayer == default || DriftwoodTargetPlayer == null) {
             LogIfDebugBuild("No player to throw, This is a bug, please report this");
             return;
         }
@@ -584,7 +598,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             }
         }
     }
-    public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 75f, int range = 60, float proximityAwareness = 15f) {
+    public bool DWHasLineOfSightToPosition(Vector3 pos, float width = 120f, int range = 50, float proximityAwareness = 10f) {
         if (eye == null) {
             _ = transform;
         } else {
@@ -642,7 +656,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         return false;
     }
     public IEnumerator SlashCooldown() {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         canSlash = true;
         RightShoulder.data.target = null;
         StopCoroutine(SlashCooldown());
