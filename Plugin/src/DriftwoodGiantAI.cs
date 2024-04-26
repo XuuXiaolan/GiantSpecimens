@@ -431,7 +431,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         creatureVoice.PlayOneShot(walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)]);
     }
     public IEnumerator ThrowPlayer() {
-        LogIfDebugBuild(DriftwoodTargetPlayer.actualClientId.ToString());
         // RightShoulder.data.target = DriftwoodTargetPlayer.transform;
         yield return new WaitForSeconds(throwAnimation.length+2f);
         try {
