@@ -426,7 +426,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         creatureVoice.PlayOneShot(walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)]);
     }
     public IEnumerator ThrowPlayer() {
-        // RightShoulder.data.target = DriftwoodTargetPlayer.transform;
+        RightShoulder.data.target = DriftwoodTargetPlayer.transform;
         yield return new WaitForSeconds(throwAnimation.length+2f);
         try {
             LogIfDebugBuild("Setting Kinematics to true");
@@ -446,7 +446,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public void GrabPlayer() {
         GiantPatches.grabbedByGiant = true;
         currentlyGrabbed = true;
-        // RightShoulder.data.target = null;
+        RightShoulder.data.target = null;
     }
     public void ThrowingPlayer() {
         if (DriftwoodTargetPlayer == default || DriftwoodTargetPlayer == null) {
@@ -655,6 +655,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
+        if (isEnemyDead) return;
         creatureVoice.PlayOneShot(hitSound[UnityEngine.Random.Range(0, hitSound.Length)]);
         if (force == 6) { 
             RunFarAway();

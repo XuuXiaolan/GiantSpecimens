@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using DigitalRuby.ThunderAndLightning;
-using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Vector3 = UnityEngine.Vector3;

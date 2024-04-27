@@ -82,17 +82,13 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public Vector3 midpoint;
     [NonSerialized]
-    public bool testBuild = true; 
+    public bool testBuild = false; 
     [NonSerialized]
     public LineRenderer line;
     [NonSerialized]
     public System.Random destinationRandom;
     [NonSerialized]
     public bool canMove = true;
-    [NonSerialized]
-    public float cooldownTime;
-    [NonSerialized]
-    public Vector3 distanceFromPosition;
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
     int IVisibleThreat.SendSpecialBehaviour(int id) {
         return 0; 

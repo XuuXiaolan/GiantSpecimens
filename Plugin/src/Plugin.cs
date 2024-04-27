@@ -89,28 +89,28 @@ public class Plugin : BaseUnityPlugin {
         if (extendedMod == null) return;
         foreach (ExtendedEnemyType extendedEnemyType in extendedMod.ExtendedEnemyTypes) {
             List<StringWithRarity> planetNames = new List<StringWithRarity>();
-            if (extendedEnemyType.name == "Redwood Giant") {
+            if (extendedEnemyType.name == "RedwoodExtendedEnemyType") {
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigRedWoodRarity.Value);
-            } else if (extendedEnemyType.name == "Driftwood Giant") {
+            } else if (extendedEnemyType.name == "DriftwoodExtendedEnemyType") {
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodRarity.Value);
             }
             extendedEnemyType.OutsideLevelMatchingProperties.planetNames.AddRange(planetNames);
-            Plugin.Logger.LogInfo($"Configured {extendedEnemyType.name} with new planet names and rarities: {planetNames}.");
+            Plugin.Logger.LogInfo($"Configured {extendedEnemyType.name} with new planet names and rarities.");
         }
         foreach (ExtendedItem extendedItem in extendedMod.ExtendedItems) {
             List<StringWithRarity> planetNames = new List<StringWithRarity>();
-            if (extendedItem.name == "RedwoodPlush") {
+            if (extendedItem.name == "RedwoodPlushieExtendedItem") {
                 if (!GiantSpecimensConfig.ConfigRedwoodPlushieEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigRedwoodPlushieRarity.Value);
-            } else if (extendedItem.name == "DriftwoodPlush") {
+            } else if (extendedItem.name == "DriftwoodPlushieExtendedItem") {
                 if (!GiantSpecimensConfig.ConfigDriftWoodPlushieEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
-            } else if (extendedItem.name == "Whistle") {
+            } else if (extendedItem.name == "WhistleExtendedItem") {
                 if (!GiantSpecimensConfig.ConfigWhistleEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
             }
             extendedItem.LevelMatchingProperties.planetNames.AddRange(planetNames);
-            Plugin.Logger.LogInfo($"Configured {extendedItem.name} with new planet names and rarities: {planetNames} .");
+            Plugin.Logger.LogInfo($"Configured {extendedItem.name} with new planet names and rarities.");
         }
     }
     internal static void OnLethalBundleLoaded(AssetBundle assetBundle) {
@@ -119,8 +119,8 @@ public class Plugin : BaseUnityPlugin {
     private static List<StringWithRarity> ConfigParsing(string configMoonRarity) {
         List<StringWithRarity> spawnRates = new List<StringWithRarity>();
 
-        foreach (string entry in configMoonRarity.Split(',').Select(s => s.Trim())) {
-            string[] entryParts = entry.Split('@');
+        foreach (string entry in configMoonRarity.Split(ConfigHelper.indexSeperator).Select(s => s.Trim())) {
+            string[] entryParts = entry.Split(ConfigHelper.keyPairSeperator);
             if (entryParts.Length != 2) {
                 continue;
             }
