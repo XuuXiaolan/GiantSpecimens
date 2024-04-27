@@ -28,8 +28,6 @@ public class Plugin : BaseUnityPlugin {
     public static ExtendedEnemyType DriftGiant;
     public static ExtendedItem RedWoodPlushie;
     public static ExtendedItem Whistle;
-    public static ExtendedItem RedWoodHeart;
-    public static ExtendedItem DriftwoodSample;
     public static GiantSpecimensConfig ModConfig { get; private set; } // prevent from accidently overriding the config
     internal static new ManualLogSource Logger;
     public static CauseOfDeath RupturedEardrums = EnumUtils.Create<CauseOfDeath>("RupturedEardrums");
@@ -74,10 +72,8 @@ public class Plugin : BaseUnityPlugin {
         } else {
             LGULoaded = false;
             RegisterScrap(DriftwoodSample, 0, LevelTypes.All);
-            RegisterScrap(RedWoodHeart, 0, LevelTypes.All);
-            samplePrefabs.Add("DriftWoodGiant", DriftwoodSample);
-            samplePrefabs.Add("RedWoodGiant", RedWoodHeart);
-        }*/
+            RegisterScrap(RedWoodHeart, 0, LevelTypes.All);*/
+        //}
         GiantPatches.Init();
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -108,6 +104,12 @@ public class Plugin : BaseUnityPlugin {
             } else if (extendedItem.name == "WhistleExtendedItem") {
                 if (!GiantSpecimensConfig.ConfigWhistleEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
+            } else if (extendedItem.name == "DriftwoodSampleExtendedItem") {
+                samplePrefabs.Add("DriftWoodGiant", extendedItem.Item);
+                Plugin.Logger.LogInfo(extendedItem.Item);
+            } else if (extendedItem.name == "RedwoodHeartExtendedItem") {
+                samplePrefabs.Add("RedWoodGiant", extendedItem.Item);
+                Plugin.Logger.LogInfo(extendedItem.Item);
             }
             extendedItem.LevelMatchingProperties.planetNames.AddRange(planetNames);
             Plugin.Logger.LogInfo($"Configured {extendedItem.name} with new planet names and rarities.");
