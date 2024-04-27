@@ -5,6 +5,11 @@
 ![banner](https://i.imgur.com/K2OS9SB.jpeg)
 
 Mod that adds a variety of giant enemies, part of the forest keeper family, Currently adds 2 brand new enemies.
+
+[Link to the thread of the mod in lethal company modding server](https://discord.com/channels/1168655651455639582/1208964227835109407)
+
+If you're a developer, whether it be by sound design, coding, concept art making, 3d modelling or anything of that sort, please reach out to me on discord!!!
+
 ## Credits
 
 The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-company/p/XuVELD/HotbarRD/).
@@ -15,9 +20,9 @@ The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-c
 
 -Based off of ExampleEnemy from [@Hamunii](https://github.com/Hamunii/LC-ExampleEnemy).
 
--Lots of initial setup help and coding advice also from Hamunii (Actual marriage material).
+-Lots of initial setup help and coding advice also from [@Hamunii] (Actual marriage material).
 
--Model Creation help from TiltedHat.
+-Model Creation help from [@TiltedHat].
 
 -All custom sounds created by [@Moroxide and @Pixel](https://thunderstore.io/c/lethal-company/p/LethalResonance/LETHALRESONANCE/), much love to them, check out their mod, it's small but it'll grow one day.
 
@@ -31,9 +36,9 @@ The Giant Specimens, created by [@Xu Xiaolan](https://thunderstore.io/c/lethal-c
 
 -Plushie Model and animations by [@Sintego](https://thunderstore.io/c/lethal-company/p/Scintesto/Monster_Plushies/).
 
--Driftwood Giant animations by shrkiツ
+-Driftwood Giant animations by [@shrkiツ]
 
--Redwood Giant animations by shrkiツ
+-Redwood Giant animations by [@shrkiツ]
 
 -Redwood Plushie Icon sprite by [@mari0no1](https://thunderstore.io/c/lethal-company/p/Mari0no1/DoorsEscapeMusic/)
 
