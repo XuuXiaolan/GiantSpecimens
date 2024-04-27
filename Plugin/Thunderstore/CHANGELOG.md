@@ -1,3 +1,8 @@
+## v 2.0.7 *bug fixes*
+- Added particle system for driftwood and old bird being eaten.
+- Added particle system for redwood dying and falling properly.
+- Fixed dependencies.
+
 ## v 2.0.6 *configs*
 - Added some config options
 - Potentially fixed clients not being thrown up in the air.

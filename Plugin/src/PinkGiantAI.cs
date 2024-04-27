@@ -245,7 +245,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public void SearchOrChaseTarget() {
         DoAnimationClientRpc("startWalk");
         LogIfDebugBuild("Start Walking Around");
-        StartSearch(transform.position);
+        StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
         SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
     }
     public override void DoAIInterval() {
@@ -292,6 +292,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                         closestFoot.data.target = null;
                     }
                 }
+                
                 break;
             case (int)State.RunningToGiant:
                 agent.speed = walkingSpeed * 4;
@@ -299,14 +300,14 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 if (targetEnemy == null) {
                     LogIfDebugBuild("Stop Target Giant");
                     DoAnimationClientRpc("startWalk");
-                    StartSearch(transform.position);
+                    StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
                     SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                     return;
                 }
                 if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
                     LogIfDebugBuild("Stop Target Giant");
                     DoAnimationClientRpc("startWalk");
-                    StartSearch(transform.position);
+                    StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
                     SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                     return;
                 }
@@ -417,7 +418,15 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         }
     }
     public void ParticlesFromEatingForestKeeper() {
-        ForestKeeperParticles.Play(); // Also make them be affected by the world for proper fog stuff?
+        if (targetEnemy.enemyType.enemyName == "ForestGiant") {
+            ForestKeeperParticles.Play(); // Also make them be affected by the world for proper fog stuff?
+        } else if (targetEnemy.enemyType.enemyName == "DriftWoodGiant") {
+            DriftwoodGiantParticles.Play();
+        } else if (targetEnemy.enemyType.enemyName == "RadMech") {
+            OldBirdParticles.Play();
+        }
+        LogIfDebugBuild(targetEnemy.enemyType.enemyName);
+        targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
     }
     
     public void ShakePlayerCamera() {
@@ -441,7 +450,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                     HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                     HUDManager.Instance.ShakeCamera(ScreenShakeType.Small);
                     break;
-            } 
+            }
     }
     bool FindClosestAliveGiantInRange(float range) {
         EnemyAI closestEnemy = null;
@@ -508,7 +517,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     }
     public void EatingTargetGiant() {
         if (targetEnemy == null) return;
-        targetEnemy.KillEnemyOnOwnerClient(overrideDestroy: true);
+        ParticlesFromEatingForestKeeper();
         eatingEnemy = false;
         sizeUp = false;
         waitAfterChase = false;
@@ -610,6 +619,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = true;
     }
     public void DisableDeathColliders() {
+        DeathParticles.Play();
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone").Find("DeathColliderChest").GetComponent<CapsuleCollider>().enabled = false;
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("DeathColliderLeftHip").GetComponent<CapsuleCollider>().enabled = false;
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.L").Find("Bone.007.L").Find("Bone.008.L").Find("DeathColliderLeftLeg").GetComponent<CapsuleCollider>().enabled = false;

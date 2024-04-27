@@ -38711,6 +38711,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 13.3
+    functionName: DisableDeathColliders
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 13.316667
     functionName: MayZeusHaveMercy
     data: 
@@ -38965,13 +38972,6 @@ AnimationClip:
     messageOptions: 0
   - time: 13.916667
     functionName: MayZeusHaveMercy
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 14.033334
-    functionName: DisableDeathColliders
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

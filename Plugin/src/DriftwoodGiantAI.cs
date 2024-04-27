@@ -672,7 +672,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         DoAnimationClientRpc("startDeath");
         creatureVoice.PlayOneShot(dieSFX);
     }
-    public void RunFarAway() {
+    public void RunFarAway() { // add a new state for running far far away when detecting a nearby redwood.
         SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
     }
     public void SpawnHeartOnDeath(Vector3 position) {
