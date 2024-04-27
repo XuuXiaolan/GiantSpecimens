@@ -1,3 +1,9 @@
+## v 2.0.8 *bug fixes*
+- Fixed mod not loading with LLL.
+
+<details>
+  <summary>Older Versions</summary>
+
 ## v 2.0.7 *bug fixes*
 - Added particle system for driftwood and old bird being eaten.
 - Added particle system for redwood dying and falling properly.
@@ -39,9 +45,6 @@
 - oh and added the driftwood giant lol.
 - Fixed a few sound bugs.
 - Added a new icon for the redwood plushie (someone come make a driftwood plushie thanks).
-
-<details>
-  <summary>Older Versions</summary>
 
 ## v 1.9.0 V50 UPDATE
 - Hopefully added a shader to improve particle system by now
