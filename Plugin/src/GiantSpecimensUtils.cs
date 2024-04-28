@@ -1,37 +1,44 @@
 ﻿﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Profiling;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GiantSpecimens.src;
-internal class Utils : NetworkBehaviour
+internal class GiantSpecimensUtils : NetworkBehaviour
 {
     static int seed = 0;
-    static System.Random random = new System.Random(seed + 85);
-    internal static Utils Instance { get; set; }
+    static System.Random random;
+    internal static GiantSpecimensUtils Instance { get; set; }
 
     void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    [ServerRpc(RequireOwnership = true)]
+    [ServerRpc(RequireOwnership = false)]
     public void SpawnScrapServerRpc(string itemName, Vector3 position) {
         if (StartOfRound.Instance == null)
         {
+            Plugin.Logger.LogInfo("StartOfRound null");
             return;
         }
         if (random == null)
         {
+            Plugin.Logger.LogInfo("Initializing random");
             seed = StartOfRound.Instance.randomMapSeed;
             random = new System.Random(seed + 85);
         }
 
-        if(itemName.Length == 0)
+        if (itemName.Length == 0)
         {
+            Plugin.Logger.LogInfo("itemName is empty");
             return;
         }
-        Plugin.samplePrefabs.TryGetValue(itemName, out var item);
+        Plugin.samplePrefabs.TryGetValue(itemName, out Item item);
         if (item == null)
         {
+            Plugin.Logger.LogInfo($"Could not get Item {itemName}");
             return;
         }
         GameObject go = Instantiate(item.spawnPrefab, position + Vector3.up, Quaternion.identity);

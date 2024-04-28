@@ -16,6 +16,8 @@ using LethalLevelLoader;
 using BepInEx.Bootstrap;
 using GiantSpecimens.Scrap;
 using MoreShipUpgrades.Misc;
+using Unity.Netcode;
+using MoreShipUpgrades.Managers;
 
 namespace GiantSpecimens;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -23,7 +25,7 @@ namespace GiantSpecimens;
 [BepInDependency("MegaPiggy.EnumUtils", Flags:BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency(LethalLevelLoader.Plugin.ModGUID)]
 public class Plugin : BaseUnityPlugin {
-    public static Harmony _harmony;
+    public static Harmony _harmony = new(PluginInfo.PLUGIN_GUID);
     public static ExtendedEnemyType PinkGiant;
     public static ExtendedEnemyType DriftGiant;
     public static ExtendedItem RedWoodPlushie;
@@ -43,11 +45,7 @@ public class Plugin : BaseUnityPlugin {
         if (LobbyCompatibilityChecker.Enabled) {
             LobbyCompatibilityChecker.Init();
         }
-        GameObject gameObject = new("GiantSpecimenUtils")
-        {
-            hideFlags = HideFlags.HideAndDontSave
-        };
-        gameObject.AddComponent<Utils>();
+
         ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
 
         AssetBundleLoader.AddOnExtendedModLoadedListener(OnExtendedModRegistered, "XuXiaolan");
@@ -71,6 +69,7 @@ public class Plugin : BaseUnityPlugin {
 
         // Required by https://github.com/EvaisaDev/UnityNetcodePatcher
         InitializeNetworkBehaviours();
+        _harmony.PatchAll(typeof(StartOfRoundPatcher));
     }
     internal static void OnExtendedModRegistered(ExtendedMod extendedMod) {
         if (extendedMod == null) return;

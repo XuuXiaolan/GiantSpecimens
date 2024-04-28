@@ -630,7 +630,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     }
     public void SpawnHeartOnDeath(Vector3 position) {
         if (GiantSpecimensConfig.ConfigRedwoodHeartEnabled.Value && IsHost) {
-            Utils.Instance.SpawnScrapServerRpc("RedWoodGiant", position);
+            GiantSpecimensUtils.Instance.SpawnScrapServerRpc("RedWoodGiant", position);
         }
     }
     [ClientRpc]
