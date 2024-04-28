@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -194780425, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
-  m_Name: ExtendedMod
+  m_Name: TheGiantSpecimensExtendedMod
   m_EditorClassIdentifier: 
   <ModName>k__BackingField: TheGiantSpecimens
   <AuthorName>k__BackingField: XuXiaolan

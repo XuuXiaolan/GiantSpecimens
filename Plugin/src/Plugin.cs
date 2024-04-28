@@ -43,21 +43,12 @@ public class Plugin : BaseUnityPlugin {
         if (LobbyCompatibilityChecker.Enabled) {
             LobbyCompatibilityChecker.Init();
         }
-        GameObject gameObject = new("Utils")
+        GameObject gameObject = new("GiantSpecimenUtils")
         {
             hideFlags = HideFlags.HideAndDontSave
         };
         gameObject.AddComponent<Utils>();
-        
         ModConfig = new GiantSpecimensConfig(this.Config); // Create the config with the file from here.
-
-        // Redwood Giant Enemy
-        //PinkGiant.EnemyType.PowerLevel = GiantSpecimensConfig.ConfigRedwoodGiantPower.Value;
-
-
-        // Driftwood Giant Enemy
-        //DriftGiant.EnemyType.PowerLevel = GiantSpecimensConfig.ConfigDriftwoodGiantPower.Value;
-        // set up the redwood heart and driftwood sample properly
 
         AssetBundleLoader.AddOnExtendedModLoadedListener(OnExtendedModRegistered, "XuXiaolan");
         AssetBundleLoader.AddOnLethalBundleLoadedListener(OnLethalBundleLoaded, "giantspecimenassets.lethalbundle");
@@ -87,8 +78,10 @@ public class Plugin : BaseUnityPlugin {
             List<StringWithRarity> planetNames = new List<StringWithRarity>();
             if (extendedEnemyType.name == "RedwoodExtendedEnemyType") {
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigRedWoodRarity.Value);
+                extendedEnemyType.EnemyType.PowerLevel = GiantSpecimensConfig.ConfigRedwoodGiantPower.Value;
             } else if (extendedEnemyType.name == "DriftwoodExtendedEnemyType") {
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodRarity.Value);
+                extendedEnemyType.EnemyType.PowerLevel = GiantSpecimensConfig.ConfigDriftwoodGiantPower.Value;
             }
             extendedEnemyType.OutsideLevelMatchingProperties.planetNames.AddRange(planetNames);
             Plugin.Logger.LogInfo($"Configured {extendedEnemyType.name} with new planet names and rarities.");
