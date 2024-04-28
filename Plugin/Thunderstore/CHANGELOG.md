@@ -1,3 +1,9 @@
+## v 2.0.9 *bug fixes*
+- Fixed some config options not working
+- Spawn weights should be proper and set now, please regen your configs!
+- Fixed scrap not spawning on driftwood and redwood death.
+- Fixed driftwood sample particles not disappearing
+
 ## v 2.0.8 *bug fixes*
 - Fixed mod not loading with LLL.
 
