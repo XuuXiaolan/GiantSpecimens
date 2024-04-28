@@ -3,6 +3,7 @@
 - Spawn weights should be proper and set now, please regen your configs!
 - Fixed scrap not spawning on driftwood and redwood death.
 - Fixed driftwood sample particles not disappearing
+- Spawn Weights are current BUGGED because of an issue with LLL, it'll be fixed in LLL 1.2.3
 
 ## v 2.0.8 *bug fixes*
 - Fixed mod not loading with LLL.

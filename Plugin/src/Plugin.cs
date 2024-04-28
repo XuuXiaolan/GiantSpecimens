@@ -88,20 +88,23 @@ public class Plugin : BaseUnityPlugin {
         foreach (ExtendedItem extendedItem in extendedMod.ExtendedItems) {
             List<StringWithRarity> planetNames = new List<StringWithRarity>();
             if (extendedItem.name == "RedwoodPlushieExtendedItem") {
-                if (!GiantSpecimensConfig.ConfigRedwoodPlushieEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigRedwoodPlushieRarity.Value);
+
             } else if (extendedItem.name == "DriftwoodPlushieExtendedItem") {
-                if (!GiantSpecimensConfig.ConfigDriftWoodPlushieEnabled.Value) continue;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
+
             } else if (extendedItem.name == "WhistleExtendedItem") {
-                if (!GiantSpecimensConfig.ConfigWhistleEnabled.Value) continue;
+                extendedItem.IsBuyableItem = GiantSpecimensConfig.ConfigWhistleEnabled.Value;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
+
             } else if (extendedItem.name == "DriftwoodSampleExtendedItem") {
                 samplePrefabs.Add("DriftWoodGiant", extendedItem.Item);
-                Plugin.Logger.LogInfo(extendedItem.Item);
+                extendedItem.LevelMatchingProperties.planetNames.AddRange(ConfigParsing("Vanilla:0,Custom:0")); // I don't think LLL does this for whatever reason
+
             } else if (extendedItem.name == "RedwoodHeartExtendedItem") {
                 samplePrefabs.Add("RedWoodGiant", extendedItem.Item);
-                Plugin.Logger.LogInfo(extendedItem.Item);
+                extendedItem.LevelMatchingProperties.planetNames.AddRange(ConfigParsing("Vanilla:0,Custom:0")); // I don't think LLL does this for whatever reason
+
             }
             extendedItem.LevelMatchingProperties.planetNames.AddRange(planetNames);
             Plugin.Logger.LogInfo($"Configured {extendedItem.name} with new planet names and rarities.");

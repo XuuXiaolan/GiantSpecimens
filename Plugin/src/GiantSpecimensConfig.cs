@@ -75,7 +75,7 @@ namespace GiantSpecimens.Configs {
                                                 "Enables/Disables the spawning of the RedWood Giant (sets rarity to 0 if false on all moons)"); // Description of the option to show in the config file
             ConfigRedWoodRarity = configFile.Bind("Enemy Options", 
                                                 "RedWood Giant | Spawn Weight.",
-                                                "Modded:100,Experimentation:50,Assurance:100,Vow:200,Offense:100,March:200,Rend:200,Dine:100,Titan:200,Adamance:100,Embrion:150,Artifice:200",
+                                                "Custom:100,Experimentation:50,Assurance:100,Vow:200,Offense:100,March:200,Rend:200,Dine:100,Titan:200,Adamance:100,Embrion:150,Artifice:200",
                                                 "Spawn Weight of the RedWood Giant in all moons, Feel free to add to it any moon, just follow the format (also needs LLL installed for LE moons to work with this config).");
             ConfigSpeedRedWood = configFile.Bind("Enemy Options",   
                                                 "RedWood Giant Speed",  
@@ -93,22 +93,14 @@ namespace GiantSpecimens.Configs {
                                                 "RedWood Giant | Footstep Colour",  
                                                 "#808080", 
                                                 "Decides what the default colour of the footsteps is using a hexcode, default is grey (Invalid hexcodes will default to Grey), keep blank to use custom set colours set by me for different moons, don't forget to include the hashtag in config."); 
-            ConfigWhistleScrapEnabled = configFile.Bind("Scrap Options",
-                                                "Whistle Scrap | Enabled",
-                                                true,
-                                                "Enables/Disables the spawning of the scrap (sets rarity to 0 if false on all moons)");
             ConfigWhistleRarity = configFile.Bind("Scrap Options",   
                                                 "Whistle Scrap | Rarity",  
-                                                "Modded:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5", 
-                                                "Rarity of Whistle scrap appearing on every moon");
-            ConfigRedwoodPlushieEnabled = configFile.Bind("Scrap Options",
-                                                "RedWood Giant Scrap | Enabled",
-                                                true,
-                                                "Enables/Disables the spawning of the scrap (sets rarity to 0 if false on all moons)");
+                                                "Custom:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5", 
+                                                "Rarity of Whistle scrap appearing on every moon (set to Custom:0,Vanilla:0 if you'd like for it to not spawn).");
             ConfigRedwoodPlushieRarity = configFile.Bind("Scrap Options",   
                                                 "RedWood Giant Scrap | Rarity",  
-                                                "Modded:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5", 
-                                                "Rarity of redwood plushie appearing on every moon");
+                                                "Custom:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5", 
+                                                "Rarity of redwood plushie appearing on every moon (set to Custom:0,Vanilla:0 if you'd like for it to not spawn).");
             ConfigWhistleEnabled = configFile.Bind("Shop Options",   
                                                 "Whistle Item | Enabled",  
                                                 true, 
@@ -121,18 +113,14 @@ namespace GiantSpecimens.Configs {
                                                     "Driftwood | Enabled",
                                                     true,
                                                     "Enables/Disables the spawning of the driftwood (sets rarity to 0 if false on all moons)");
-            ConfigDriftWoodPlushieEnabled = configFile.Bind("Scrap Options",
-                                                            "Driftwood Scrap | Enabled",
-                                                            true,
-                                                            "Enables/Disables the spawning of the scrap (sets rarity to 0 if false on all moons)");
             ConfigDriftWoodRarity = configFile.Bind("Enemy Options",
                                                     "Driftwood | Rarity",
-                                                    "Modded:100,Experimentation:75,Assurance:50,Vow:150,Offense:50,March:175,Rend:125,Dine:125,Titan:150,Adamance:100,Embrion:150,Artifice:200",
+                                                    "Custom:100,Experimentation:75,Assurance:50,Vow:150,Offense:50,March:175,Rend:125,Dine:125,Titan:150,Adamance:100,Embrion:150,Artifice:200",
                                                     "Rarity of driftwood appearing on every moon");
             ConfigDriftWoodPlushieRarity = configFile.Bind("Scrap Options",
                                                         "Driftwood Scrap | Rarity",
-                                                        "Modded:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5",
-                                                        "Rarity of driftwood plushie appearing on every moon.");
+                                                        "Custom:5,Experimentation:5,Assurance:5,Vow:5,Offense:5,March:5,Rend:5,Dine:5,Titan:5,Adamance:5,Embrion:5,Artifice:5",
+                                                        "Rarity of driftwood plushie appearing on every moon (set to Custom:0,Vanilla:0 if you'd like for it to not spawn).");
             ClearUnusedEntries(configFile);
             Plugin.Logger.LogInfo("Setting up config for Giant Specimen plugin...");
         }
