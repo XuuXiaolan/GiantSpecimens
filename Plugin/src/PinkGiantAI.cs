@@ -513,6 +513,22 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         yield return new WaitForSeconds(eating.length);
         StartCoroutine(PauseDuringIdle());
         SwitchToBehaviourClientRpc((int)State.IdleAnimation);
+
+        foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies)
+        {
+            if (enemy.enemyType.enemyName == "RadMech")
+            {
+                RadMechAI rad = enemy as RadMechAI;
+                targetEnemy.TryGetComponent(out IVisibleThreat threat);
+                if (threat != null && rad.focusedThreatTransform == threat.GetThreatTransform())
+                {
+                    LogIfDebugBuild("Stuff is happening!!");
+                    rad.targetedThreatCollider = null;
+                    rad.CheckSightForThreat();
+                }
+            }
+        }
+
         StopCoroutine(EatForestKeeper());
     }
     public void EatingTargetGiant() {
