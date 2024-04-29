@@ -676,7 +676,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
     }
     public void SpawnHeartOnDeath(Vector3 position) {
-        if (GiantSpecimensConfig.ConfigDriftwoodHeartEnabled.Value && IsHost) {
+        if (GiantSpecimensConfig.ConfigDriftwoodHeartEnabled.Value && IsHost && !Plugin.LGULoaded) {
             GiantSpecimensUtils.Instance.SpawnScrapServerRpc("DriftWoodGiant", position);
         }
     }

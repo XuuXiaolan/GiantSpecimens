@@ -1,3 +1,7 @@
+## v 2.0.10 *LGU COMPAT*
+- Added compatibility with LGU's Hunter plugin, and now if you have LGU you'll need to be a certain hunter level to spawn the items from the giants!
+- Fixed Problem with immersive scrap deleting this mod's configs.
+
 ## v 2.0.9 *bug fixes*
 - Fixed some config options not working
 - Spawn weights should be proper and set now, please regen your configs!
@@ -5,11 +9,11 @@
 - Fixed driftwood sample particles not disappearing
 - Spawn Weights are current BUGGED because of an issue with LLL, it'll be fixed in LLL 1.2.3
 
-## v 2.0.8 *bug fixes*
-- Fixed mod not loading with LLL.
-
 <details>
   <summary>Older Versions</summary>
+
+## v 2.0.8 *bug fixes*
+- Fixed mod not loading with LLL.
 
 ## v 2.0.7 *bug fixes*
 - Added particle system for driftwood and old bird being eaten.
