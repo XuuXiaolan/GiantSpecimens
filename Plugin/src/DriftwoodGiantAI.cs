@@ -101,6 +101,14 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     public bool canSlash = true;
     [NonSerialized]
     public Transform shipBoundaries;
+    [NonSerialized]
+    public bool isScared = false;
+    [NonSerialized]
+    public bool isScaredFromOldBird = false;
+    [NonSerialized]
+    public bool isScaredFromRedwood = false;
+    [NonSerialized]
+    public EnemyAI ScaryThing;
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
     int IVisibleThreat.SendSpecialBehaviour(int id) {
         return 0; 
@@ -142,6 +150,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         PlayingWithPrey, // Playing with a player's body
         Scream, // Screams and damages player
         Stunned, // Stunned
+        RunningAway, // Running away
     }
 
     void LogIfDebugBuild(string text) {
@@ -253,6 +262,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 break;
             case (int)State.SearchingForPrey:
                 agent.speed = 5;
+                DetectScaryThings();
                 if (FindClosestTargetEnemyInRange(rangeOfSight)) {
                     // chase the target enemy.
                     // SCREAM
@@ -274,7 +284,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     SwitchToBehaviourClientRpc((int)State.Scream);
                     return;
                 }
-
                 break;
             case (int)State.RunningToPrey:
                 agent.speed = 20;
@@ -347,10 +356,32 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
             case (int)State.Stunned:
                 agent.speed = 0f;
                 break;
+            case (int)State.RunningAway:
+                agent.speed = 25f;
+                LogIfDebugBuild(isScared.ToString() + isScaredFromRedwood.ToString() + isScaredFromOldBird.ToString());
+                if (!isScared) {
+                    DoAnimationClientRpc("startWalk");
+                    SwitchToBehaviourClientRpc((int)State.SearchingForPrey);
+                    return;
+                }
+                if (isScaredFromOldBird) {
+                    SetDestinationToPosition(ChooseFarthestNodeFromPosition(transform.position, avoidLineOfSight: false).position, true);
+                } else if (isScaredFromRedwood) {
+                    SetDestinationToPosition(ChooseFarthestNodeFromPosition(ScaryThing.transform.position, avoidLineOfSight: false).position, true);
+                }
+                break;
             default:
                 LogIfDebugBuild("This Behavior State doesn't exist!");
                 break;
         }
+    }
+    public IEnumerator ScareCooldown() {
+        isScared = true;
+        yield return new WaitForSeconds(10f);
+        isScared = false;
+        isScaredFromOldBird = false;
+        isScaredFromRedwood = false;
+        StopCoroutine(ScareCooldown());
     }
     public static IEnumerator DrawPath(LineRenderer line, NavMeshAgent agent) {
         if (!agent.enabled) yield break;
@@ -464,7 +495,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         Vector3 throwingDirection = (backDirection + Quaternion.AngleAxis(55, transform.right) * upDirection).normalized;
 
         // Calculate the throwing force
-        float throwForceMagnitude = 100;
+        float throwForceMagnitude = 125;
         // Throw the player
         LogIfDebugBuild("Launching Player");
         GiantPatches.thrownByGiant = true;
@@ -657,7 +688,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
         if (isEnemyDead) return;
         creatureVoice.PlayOneShot(hitSound[UnityEngine.Random.Range(0, hitSound.Length)]);
-        if (force == 6) { 
+        if (force == 6 && !isScaredFromOldBird) {
+            isScaredFromOldBird = true;
             RunFarAway();
         }
         enemyHP -= force;
@@ -672,13 +704,36 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         DoAnimationClientRpc("startDeath");
         creatureVoice.PlayOneShot(dieSFX);
     }
-    public void RunFarAway() { // add a new state for running far far away when detecting a nearby redwood.
-        SetDestinationToPosition(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position, true);
+    public void RunFarAway() {
+        StartCoroutine(ScareCooldown());
+        DoAnimationClientRpc("startChase");
+        SwitchToBehaviourClientRpc((int)State.RunningAway);
     }
     public void SpawnHeartOnDeath(Vector3 position) {
         if (GiantSpecimensConfig.ConfigDriftwoodHeartEnabled.Value && IsHost && !Plugin.LGULoaded) {
             GiantSpecimensUtils.Instance.SpawnScrapServerRpc("DriftWoodGiant", position);
         }
+    }
+    public bool DetectScaryThings() {
+        EnemyAI closestScaryThing = null;
+        float minDistance = float.MaxValue;
+
+        foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+            if (!enemy.isEnemyDead && Vector3.Distance(transform.position, enemy.transform.position) <= 50f && enemy.enemyType.enemyName == "RedWoodGiant") {
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestScaryThing = enemy;
+                }
+            }
+        }
+        if (closestScaryThing != null) {
+            isScaredFromRedwood = true;
+            ScaryThing = closestScaryThing;
+            RunFarAway();
+            return true;
+        }
+        return false;
     }
     [ClientRpc]
     public void DoAnimationClientRpc(string animationName)

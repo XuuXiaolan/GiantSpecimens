@@ -1,3 +1,6 @@
+## v 2.1.0 NEW BEHAVIOUR
+- Gave the driftwood new behaviour to run away when detecting a redwood or when being attacked by old bird
+
 ## v 2.0.10 *LGU COMPAT*
 - Added compatibility with LGU's Hunter plugin, and now if you have LGU you'll need to be a certain hunter level to spawn the items from the giants!
 - Fixed Problem with immersive scrap deleting this mod's configs.
