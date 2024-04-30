@@ -1,6 +1,7 @@
 ## v 2.1.1 *bug fixes*
 - Fixed animation bug with Redwood giant
 - Fixed debug menu not showing my enemy as outside enemy for the people who like testing it.
+- Also stuns work on driftwood now if they didn't before.
 
 ## v 2.1.0 NEW BEHAVIOUR
 - Gave the driftwood new behaviour to run away when detecting a redwood or when being attacked by old bird
