@@ -14,6 +14,7 @@ using GiantSpecimens.Patches;
 using GiantSpecimens.Scrap;
 using GiantSpecimens.src;
 using GiantSpecimens.Configs;
+using System.IO;
 
 namespace GiantSpecimens.Enemy;
 class PinkGiantAI : EnemyAI, IVisibleThreat {
@@ -508,19 +509,23 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         DoAnimationClientRpc("eatForestKeeper");
         SwitchToBehaviourClientRpc((int)State.EatingGiant);
         yield return new WaitForSeconds(eating.length);
-        foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies)
-        {
-            if (enemy.enemyType.enemyName == "RadMech")
+        try {
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies)
             {
-                RadMechAI rad = enemy as RadMechAI;
-                targetEnemy.TryGetComponent(out IVisibleThreat threat);
-                if (threat != null && rad.focusedThreatTransform == threat.GetThreatTransform())
+                if (enemy.enemyType.enemyName == "RadMech")
                 {
-                    LogIfDebugBuild("Stuff is happening!!");
-                    rad.targetedThreatCollider = null;
-                    rad.CheckSightForThreat();
+                    RadMechAI rad = enemy as RadMechAI;
+                    targetEnemy.TryGetComponent(out IVisibleThreat threat);
+                    if (threat != null && rad.focusedThreatTransform == threat.GetThreatTransform())
+                    {
+                        LogIfDebugBuild("Stuff is happening!!");
+                        rad.targetedThreatCollider = null;
+                        rad.CheckSightForThreat();
+                    }
                 }
             }
+        } catch (Exception e) {
+            LogIfDebugBuild("Problem:" + e.ToString());
         }
         DoAnimationClientRpc("startWalk");
         SwitchToBehaviourClientRpc((int)State.SearchingForGiant);

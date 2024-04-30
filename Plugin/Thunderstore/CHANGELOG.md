@@ -1,3 +1,6 @@
+## v 2.1.2 *bug fixes*
+- Fixed config option with whistle price not working.
+
 ## v 2.1.1 *bug fixes*
 - Fixed animation bug with Redwood giant
 - Fixed debug menu not showing my enemy as outside enemy for the people who like testing it.

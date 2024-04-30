@@ -75,7 +75,7 @@ namespace GiantSpecimens.Configs {
                                                 "Enables/Disables the spawning of the RedWood Giant (sets rarity to 0 if false on all moons)"); // Description of the option to show in the config file
             ConfigRedWoodRarity = configFile.Bind("Enemy Options", 
                                                 "RedWood Giant | Spawn Weight.",
-                                                "Custom:100,Experimentation:50,Assurance:100,Vow:200,Offense:100,March:200,Rend:200,Dine:100,Titan:200,Adamance:100,Embrion:150,Artifice:200",
+                                                "Custom:100,Experimentation:50,Assurance:100,Vow:200,Offense:100,March:200,Rend:200,Dine:100,Titan:200,Adamance:100,Embrion:150,Artifice:200,Auralis:150",
                                                 "Spawn Weight of the RedWood Giant in all moons, Feel free to add to it any moon, just follow the format (also needs LLL installed for LE moons to work with this config).");
             ConfigSpeedRedWood = configFile.Bind("Enemy Options",   
                                                 "RedWood Giant Speed",  
@@ -107,7 +107,7 @@ namespace GiantSpecimens.Configs {
                                                 "Enables/Disables the whistle showing up in shop");
             ConfigWhistleCost = configFile.Bind("Shop Options",   
                                                 "Whistle Item | Cost",  
-                                                100, 
+                                                111, 
                                                 "Cost of Whistle");
             ConfigDriftWoodEnabled = configFile.Bind("Enemy Options",
                                                     "Driftwood | Enabled",

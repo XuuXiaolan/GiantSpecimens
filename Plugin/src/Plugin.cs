@@ -83,6 +83,7 @@ public class Plugin : BaseUnityPlugin {
 
             } else if (extendedItem.name == "WhistleExtendedItem") {
                 extendedItem.IsBuyableItem = GiantSpecimensConfig.ConfigWhistleEnabled.Value;
+                extendedItem.Item.creditsWorth = GiantSpecimensConfig.ConfigWhistleCost.Value;
                 planetNames = ConfigParsing(GiantSpecimensConfig.ConfigDriftWoodPlushieRarity.Value);
 
             } else if (extendedItem.name == "DriftwoodSampleExtendedItem") {
