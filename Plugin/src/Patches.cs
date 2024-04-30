@@ -5,14 +5,19 @@ using GameNetcodeStuff;
 using MonoMod.Cil;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Linq;
+using GiantSpecimens.Enemy;
+using LethalLevelLoader;
 
 namespace GiantSpecimens.Patches;
 
 public static class GiantPatches {
     public static bool thrownByGiant = false;
     public static bool grabbedByGiant = false;
+    public static bool addedToDebug = false; // This method of initializing can be changed to your liking.
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
+        On.QuickMenuManager.Start += QuickMenuManager_Start;
         //On.Landmine.SpawnExplosion += Landmine_SpawnExplosion;
         //IL.Landmine.SpawnExplosion += Landmine_SpawnExplosion; im really sad i didnt get this working :<
     }
@@ -59,4 +64,28 @@ public static class GiantPatches {
         }
         orig(self);
     }
+    private static void QuickMenuManager_Start(On.QuickMenuManager.orig_Start orig, QuickMenuManager self)
+    {
+        if (addedToDebug)
+        {
+            orig(self);
+            return;
+        }
+        var testLevel = self.testAllEnemiesLevel;
+        var inside = testLevel.Enemies;
+        var daytime = testLevel.DaytimeEnemies;
+        var outside = testLevel.OutsideEnemies;
+        foreach (SpawnableEnemyWithRarity spawnableEnemy in RoundManager.Instance.currentLevel.OutsideEnemies) {
+            if (spawnableEnemy.enemyType.enemyName == "RedWoodGiant" || spawnableEnemy.enemyType.enemyName == "DriftWoodGiant") {
+                if (!outside.Any(x => x.enemyType == spawnableEnemy.enemyType)) {
+                    outside.Add(spawnableEnemy);
+                    inside.Remove(spawnableEnemy);
+                }
+            }
+            Plugin.Logger.LogInfo($"Added {spawnableEnemy.enemyType.enemyName} to DebugList [{spawnableEnemy.enemyType.isOutsideEnemy}]");
+        }
+        addedToDebug = true;
+        orig(self);
+    }
 }
+

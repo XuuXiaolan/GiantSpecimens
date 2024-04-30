@@ -215,7 +215,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         if (isEnemyDead) {
             return;
         }
-        
+    }
+    public void LateUpdate() {
         if (currentBehaviourStateIndex == (int)State.EatingGiant && targetEnemy != null) {
             midpoint = leftBone.transform.position;
             targetEnemy.transform.position = midpoint + new Vector3(0, -1f, 0);
@@ -240,7 +241,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
             newScale.z *= 0.9995f;
             targetEnemy.transform.localScale = newScale;
             // targetEnemy.transform.position = Vector3.MoveTowards(targetEnemy.transform.position, eatingArea.transform.position, 0.5f);
-        } //Should I have this whole thing be in AIInterval instead?
+        }
     }
     public void SearchOrChaseTarget() {
         DoAnimationClientRpc("startWalk");
@@ -499,21 +500,14 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         }
         StopCoroutine(ScalingUp());
     }
-    IEnumerator PauseDuringIdle() {
-        yield return new WaitForSeconds(idle.length);
-        StopCoroutine(PauseDuringIdle());
-    }
     IEnumerator EatForestKeeper() {
         targetEnemy.SetEnemyStunned(true, 10f);
         targetEnemy.creatureVoice.Stop();
         targetEnemy.creatureSFX.Stop();
         EnemyMouthSource.PlayOneShot(eatenSound, 1);
-        SwitchToBehaviourClientRpc((int)State.EatingGiant);
         DoAnimationClientRpc("eatForestKeeper");
+        SwitchToBehaviourClientRpc((int)State.EatingGiant);
         yield return new WaitForSeconds(eating.length);
-        StartCoroutine(PauseDuringIdle());
-        SwitchToBehaviourClientRpc((int)State.IdleAnimation);
-
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies)
         {
             if (enemy.enemyType.enemyName == "RadMech")
@@ -528,7 +522,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 }
             }
         }
-
+        DoAnimationClientRpc("startWalk");
+        SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
         StopCoroutine(EatForestKeeper());
     }
     public void EatingTargetGiant() {

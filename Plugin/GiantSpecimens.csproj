@@ -42,7 +42,7 @@
   <ItemGroup>
     <Reference Include="UnityEngine"><HintPath>../dlls/UnityEngine.CoreModule.dll</HintPath></Reference>
     <Reference Publicize="true" Include="Assembly-CSharp"><HintPath>../dlls/Assembly-CSharp.dll</HintPath></Reference>
-    <Reference Include="Unity.Netcode.Runtime"><HintPath>../dlls/Unity.Netcode.Runtime.dll</HintPath></Reference>
+    <Reference Publicize="true" Include="Unity.Netcode.Runtime"><HintPath>../dlls/Unity.Netcode.Runtime.dll</HintPath></Reference>
     <Reference Include="Unity.Animation.Rigging"><HintPath>../dlls/Unity.Animation.Rigging.dll</HintPath></Reference>
     <Reference Include="LCEnumUtils"><HintPath>../dlls/LCEnumUtils.dll</HintPath></Reference>
     <Reference Include="MMHOOK_Assembly-CSharp"><HintPath>../dlls/MMHOOK_Assembly-CSharp.dll</HintPath></Reference>

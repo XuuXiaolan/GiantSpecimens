@@ -50,11 +50,10 @@ internal static class StartOfRoundPatcher {
                 };
                 go.AddComponent<GiantSpecimensUtils>();
                 go.AddComponent<NetworkObject>();
+                go.GetComponent<NetworkObject>().GlobalObjectIdHash = 4004522770;
                 go.GetComponent<NetworkObject>().Spawn(false);
                 Plugin.Logger.LogInfo("Created GiantSpecimensUtils.");
-            }
-            else
-            {
+            } else {
                 Plugin.Logger.LogWarning("GiantSpecimensUtils already exists?");
             }
         }
