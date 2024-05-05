@@ -1,0 +1,294 @@
+ManifestFileVersion: 0
+CRC: 1378888679
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 870c205627aeef09fd34f311ac5bcb02
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d30dc9f6a9a5bd5c097d7b2f925de563
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 870c205627aeef09fd34f311ac5bcb02
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 65d3fcb39dd67306e9bb17a603308070, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 04f75356a7e9c978bddc7d568e58a50b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c30496d6ae6d6f907456e10a94e01ec6, type: 3}
+- Class: 114
+  Script: {fileID: 1720121740, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1352902129, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 532549189, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1494188094, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: -1358006793, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: -2097174394, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6d7127b8f98ca8ec9896b384a71d39a2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0e80ae96b3eb9177eea5c8f9dadbcda1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d3cecf05b78b173605122a700874719c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
+- Class: 114
+  Script: {fileID: 1493648790, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: 1818284413, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: -1787465788, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 114
+  Script: {fileID: 2024385392, guid: 5fe4e290dfaa6504bb35f2be5ecd2425, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 195
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 241
+  Script: {instanceID: 0}
+- Class: 243
+  Script: {instanceID: 0}
+- Class: 245
+  Script: {instanceID: 0}
+- Class: 329
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AISearchRoutine
+- AssemblyName: Assembly-CSharp
+  ClassName: Battery
+- AssemblyName: Assembly-CSharp
+  ClassName: CompatibleNoun
+- AssemblyName: Assembly-CSharp
+  ClassName: EnemyBehaviourState
+- AssemblyName: Assembly-CSharp
+  ClassName: NavSizeLimit
+- AssemblyName: Unity.Animation.Rigging
+  ClassName: UnityEngine.Animations.Rigging.ChainIKConstraintData
+Assets:
+- Assets/GiantSpecimens/PinkGiant/Animations/NewRWRoar.anim
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Teeth.mat
+- Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/CancelPurchase.asset
+- Assets/GiantSpecimens/DriftwoodGiant/DriftwoodPrefab.prefab
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantEyeball.png
+- Assets/GiantSpecimens/PinkGiant/Audio/PinkGiantSpawning.wav
+- Assets/GiantSpecimens/Scraps/whistleAnimator.controller
+- Assets/GiantSpecimens/Scraps/RedwoodPlushieLevelMatching.asset
+- Assets/GiantSpecimens/Samples/Material/driftWoodGiantMat.mat
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/WoodPlanksNormal.png
+- Assets/GiantSpecimens/ContentTags/MonsterTags/LargeTag.asset
+- Assets/GiantSpecimens/PinkGiant/Materials/Material.004_Base_color.png
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Material #30.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/MapDotRed.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Feet.mat
+- Assets/GiantSpecimens/PinkGiant/Materials/WoodSplinters.tga
+- Assets/GiantSpecimens/DriftwoodGiant/DriftwoodLevelMatching.asset
+- Assets/GiantSpecimens/ContentTags/MonsterTags/KillTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGScream.anim
+- Assets/GiantSpecimens/Models/Love.fbx
+- Assets/GiantSpecimens/Samples/Prefab/SampleDriftWoodGiant.prefab
+- Assets/GiantSpecimens/Samples/DriftwoodSampleExtendedItem.asset
+- Assets/GiantSpecimens/Scraps/ScrapAudio/PocketWhistle.ogg
+- Assets/GiantSpecimens/DriftwoodGiant/DriftwoodExtendedEnemyType.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGRun.anim
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantBranch.png
+- Assets/GiantSpecimens/PinkGiant/Audio/ClosePinkGiantStomp2.wav
+- Assets/GiantSpecimens/Scraps/WhistleExtendedItem.asset
+- Assets/GiantSpecimens/Samples/DriftwoodSampleLevelMatching.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGiantTK.asset
+- Assets/GiantSpecimens/DriftwoodGiant/DriftwoodGiantObj.asset
+- Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/wlTerminalNode.asset
+- Assets/GiantSpecimens/PinkGiant/Materials/OLDMaterial Base Color.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWDie.wav
+- Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/buyWhistle.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGIdle.anim
+- Assets/GiantSpecimens/PinkGiant/Audio/CrunchySquish.wav
+- Assets/GiantSpecimens/PinkGiant/Bestiary/PinkGiantSpin_1 (1) (1).mp4
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWSlash.wav
+- Assets/GiantSpecimens/PinkGiant/PinkGiantAnimator.controller
+- Assets/GiantSpecimens/PinkGiant/Materials/Material.001.mat
+- Assets/GiantSpecimens/Models/RedwoodPlush.fbx
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Teeth.mat
+- Assets/GiantSpecimens/PinkGiant/Animations/RedwoodGEmerge.anim
+- Assets/GiantSpecimens/Scraps/ScrapAudio/SqueakyPlushie.wav
+- Assets/GiantSpecimens/PinkGiant/Materials/OLDMaterial.004 Base Color.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Giant_Gets_His_Wood_Hit_Variant_1.wav
+- Assets/GiantSpecimens/Scraps/ScrapAudio/MetalPickup.ogg
+- Assets/GiantSpecimens/ContentTags/ScrapTags/MediumvalueTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGSpawn.anim
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Horns.mat
+- Assets/GiantSpecimens/PinkGiant/Audio/FarPinkGiantStomp1.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Crispy_stompie_Variant_2.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWEat.wav
+- Assets/GiantSpecimens/PinkGiant/Materials/V1TeethMaterial.mat
+- Assets/GiantSpecimens/Scraps/RedwoodHeartObj.asset
+- Assets/GiantSpecimens/PinkGiant/Animations/NewRWEat.anim
+- Assets/GiantSpecimens/ContentTags/ScrapTags/MediumweightTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGEating.anim
+- Assets/GiantSpecimens/Scraps/RedwoodHeartAnimator.controller
+- Assets/GiantSpecimens/PinkGiant/Materials/DefaultRedwood giant_low_DefaultMaterial_MaskMap.png
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/SconeyTextures.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWRun.wav
+- Assets/GiantSpecimens/Scraps/RedwoodPlushieAnimator.controller
+- Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/Confirm.asset
+- Assets/GiantSpecimens/ContentTags/MonsterTags/HostileTag.asset
+- Assets/GiantSpecimens/PinkGiant/Materials/WispySmoke03b_8x8.tga
+- Assets/GiantSpecimens/Scraps/ScrapAudio/DropWhistle.ogg
+- Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/Deny.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGWalk.anim
+- Assets/GiantSpecimens/PinkGiant/RedwoodExtendedEnemyType.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Mouth.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantBody.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Walkie_stompie_Variant2.wav
+- Assets/GiantSpecimens/Scraps/ScrapAudio/SlamGround.ogg
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Crispy_Stompies.wav
+- Assets/GiantSpecimens/Models/SampleDriftWoodGiant.fbx
+- Assets/GiantSpecimens/Scraps/sickplushie.png
+- Assets/GiantSpecimens/Scraps/WhistleObj.asset
+- Assets/GiantSpecimens/Scraps/ScrapAudio/WhistleSound1.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWSpawn.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGBestiary.anim
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Crispy_stompie_Variant_3.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWThrow.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantInnerEye.png
+- Assets/GiantSpecimens/ContentTags/ScrapTags/ConductiveTag.asset
+- Assets/GiantSpecimens/PinkGiant/Materials/Material.002_Base_color.png
+- Assets/GiantSpecimens/Models/whistle.fbx
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Logo.mat
+- Assets/GiantSpecimens/Scraps/RedWoodPlushieObj.asset
+- Assets/GiantSpecimens/PinkGiant/Bestiary/PinkGiantTK.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWHit.wav
+- Assets/GiantSpecimens/PinkGiant/Materials/V1HornMaterial.mat
+- Assets/GiantSpecimens/PinkGiant/Bestiary/PinkGiantTN.asset
+- Assets/GiantSpecimens/Samples/Icon/SampleDriftWoodGiant.png
+- Assets/GiantSpecimens/Scraps/ScrapAudio/WhistleSound3.wav
+- Assets/GiantSpecimens/ContentTags/ScrapTags/BeastByproductTag.asset
+- Assets/GiantSpecimens/Models/PinkGiant1.fbx
+- Assets/GiantSpecimens/ContentTags/ScrapTags/ToolTag.asset
+- Assets/GiantSpecimens/PinkGiant/Materials/Material_Base_color.png
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/RedGiantSubstance.png
+- Assets/GiantSpecimens/PinkGiant/RedwoodLevelMatching.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGDeath.anim
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWWalk.wav
+- Assets/GiantSpecimens/PinkGiant/Materials/V1BodyMaterial.mat
+- Assets/GiantSpecimens/Samples/Material/TapeDriftWoodGiant.png
+- Assets/GiantSpecimens/PinkGiant/Animations/NewRWIdle.anim
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/testTriggerRed.mat
+- Assets/GiantSpecimens/ContentTags/ScrapTags/OneHandedTag.asset
+- Assets/GiantSpecimens/Scraps/RedwoodHeart.prefab
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/testerial body.mat
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Red.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantTeeth.png
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Branches.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantFeet.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/DWScream.wav
+- Assets/GiantSpecimens/ContentTags/ScrapTags/LightweightTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantHands.png
+- Assets/GiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
+- Assets/GiantSpecimens/PinkGiant/Animations/NewRWWalking.anim
+- Assets/GiantSpecimens/PinkGiant/Audio/RedwoodGiantRoar.WAV
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Eyeball.mat
+- Assets/GiantSpecimens/PinkGiant/Materials/MapDotRed.mat
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/Material.001.mat
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/eyes.mat
+- Assets/GiantSpecimens/PinkGiant/Materials/DefaultMaterial_Normal.png
+- Assets/GiantSpecimens/PinkGiant/Materials/MAT_DustParticles.mat
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Walkie_stompie_Variant3.wav
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/whistleSprite.png
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Giant_Gets_His_Wood_Hit_Variant_3.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-InnerEye.mat
+- Assets/GiantSpecimens/Scraps/ScrapAudio/PinkGiantSpawningPlushie.wav
+- Assets/GiantSpecimens/PinkGiant/Materials/DefaultMaterial_BaseColor.png
+- Assets/GiantSpecimens/PinkGiant/Audio/ClosePinkGiantStomp1.wav
+- Assets/GiantSpecimens/Scraps/RedwoodHeartLevelMatching.asset
+- Assets/GiantSpecimens/ContentTags/ScrapTags/MetalTag.asset
+- Assets/GiantSpecimens/ContentTags/ScrapTags/InteractableTag.asset
+- Assets/GiantSpecimens/Models/AnimatedDriftwoodV11.fbx
+- Assets/GiantSpecimens/PinkGiant/Audio/PinkGiantMoroxideStep.wav
+- Assets/GiantSpecimens/Scraps/ScrapAudio/WhistleSound2.wav
+- Assets/GiantSpecimens/ContentTags/ScrapTags/BuyableTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Hands.mat
+- Assets/GiantSpecimens/PinkGiant/Audio/ClosePinkGiantStomp3.wav
+- Assets/GiantSpecimens/Samples/Item/DriftWoodGiantSample.asset
+- Assets/GiantSpecimens/Scraps/RedwoodPlush.prefab
+- Assets/GiantSpecimens/ContentTags/ScrapTags/ScrapTag.asset
+- Assets/GiantSpecimens/PinkGiant/Audio/ForestKeeperScream.wav
+- Assets/GiantSpecimens/PinkGiant/Audio/FarPinkGiantStomp3.wav
+- Assets/GiantSpecimens/ContentTags/MonsterTags/QuadrupedTag.asset
+- Assets/GiantSpecimens/Scraps/whistle.prefab
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/Giant_Gets_His_Wood_Hit_Variant_2.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Audio/walkie_Stompie.wav
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantMouth.png
+- Assets/GiantSpecimens/ContentTags/MonsterTags/BipedTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGAttack.anim
+- Assets/GiantSpecimens/PinkGiant/Materials/OLDMaterial.002 Base Color.png
+- Assets/GiantSpecimens/Scraps/WhistleLevelMatching.asset
+- Assets/GiantSpecimens/ContentTags/ScrapTags/TwoHandedTag.asset
+- Assets/GiantSpecimens/PinkGiant/Animations/RedwoodGDeath.anim
+- Assets/GiantSpecimens/Scraps/RedwoodHeartExtendedItem.asset
+- Assets/GiantSpecimens/PinkGiant/PinkGiant1.prefab
+- Assets/GiantSpecimens/ContentTags/MonsterTags/NeutralTag.asset
+- Assets/GiantSpecimens/PinkGiant/Audio/FarPinkGiantStomp2.wav
+- Assets/GiantSpecimens/DriftwoodGiant/DriftwoodGiantAnimator.controller
+- Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Body.mat
+- Assets/GiantSpecimens/PinkGiant/PinkGiantObj.asset
+- Assets/GiantSpecimens/Scraps/ScrapMaterials/woodPlanksAlbedo.png
+- Assets/GiantSpecimens/PinkGiant/Materials/MAT_KeeperParticles.mat
+- Assets/GiantSpecimens/ContentTags/MonsterTags/OrganicTag.asset
+- Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGThrow.anim
+- Assets/GiantSpecimens/Scraps/RedwoodPlushieExtendedItem.asset
+Dependencies: []

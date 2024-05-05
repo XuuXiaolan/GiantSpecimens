@@ -1,5 +1,6 @@
 ## v 2.1.2 *bug fixes*
 - Fixed config option with whistle price not working.
+- Downgraded mod back to LL for important bug fixes, please let me know if anything doesn't work.
 
 ## v 2.1.1 *bug fixes*
 - Fixed animation bug with Redwood giant
