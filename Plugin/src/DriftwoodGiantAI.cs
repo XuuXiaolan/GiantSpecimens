@@ -262,7 +262,10 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 break;
             case (int)State.SearchingForPrey:
                 agent.speed = 5;
-                DetectScaryThings();
+                if (DetectScaryThings()) {
+                    RunFarAway();
+
+                }
                 if (FindClosestTargetEnemyInRange(rangeOfSight)) {
                     // chase the target enemy.
                     // SCREAM
@@ -595,6 +598,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void OnCollideWithPlayer(Collider other) {
         if (isEnemyDead) return;
+        if (DriftwoodTargetPlayer == null) return;
+
         if (other.GetComponent<PlayerControllerB>()) {
             awarenessLevel += 10f;
         }
@@ -730,7 +735,6 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         if (closestScaryThing != null) {
             isScaredFromRedwood = true;
             ScaryThing = closestScaryThing;
-            RunFarAway();
             return true;
         }
         return false;

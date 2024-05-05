@@ -48,7 +48,7 @@ internal class GiantSpecimensUtils : NetworkBehaviour
         scanNode.subText = $"Value: ${value}";
         go.GetComponent<GrabbableObject>().scrapValue = value;
         go.GetComponent<NetworkObject>().Spawn(false);
-        UpdateScanNodeClientRpc(new NetworkObjectReference(go), value);
+        UpdateScanNodeClientRpc(go.GetComponent<NetworkObject>(), value);
     }
 
     [ClientRpc]
