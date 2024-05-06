@@ -279,7 +279,7 @@ class StellarSovereignAI : EnemyAI {
                 DealEnemyDamageFromShockwave(enemy, "RightFoot");
             }
         }
-    }
+    } // todo: adding the crying animation and particles, fix how far it can move by maybe using furthest node.
 
     private Color HexToColor(string hexCode) {
         if (ColorUtility.TryParseHtmlString(hexCode, out Color color)) {
