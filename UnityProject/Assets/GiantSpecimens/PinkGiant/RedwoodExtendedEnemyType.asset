@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d88e1972ee664d1498973e2741c056d8, type: 2}
   <EnemyType>k__BackingField: {fileID: 11400000, guid: d3a8a7be05ce94244bf588b4e8b8b689,
     type: 2}
-  <EnemyDisplayName>k__BackingField: Redwood Giant
+  <EnemyDisplayName>k__BackingField: Redwood Titan
   <OutsideLevelMatchingProperties>k__BackingField: {fileID: 11400000, guid: e2e79cfecc274344990a1fea4678a871,
     type: 2}
   <DaytimeLevelMatchingProperties>k__BackingField: {fileID: 0}

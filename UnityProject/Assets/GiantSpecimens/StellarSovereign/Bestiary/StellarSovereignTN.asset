@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e80ae96b3eb9177eea5c8f9dadbcda1, type: 3}
+  m_Name: StellarSovereignTN
+  m_EditorClassIdentifier: 
+  displayText: "Stellar Sovereign\n\nSigurd's danger level: 20%\n\nScientific name:
+    Satyrid-Stella \n\nStellar Sovereigns get their name from their silhouettes blocking
+    out the stars.\nDespite their large size, their hearts are said to be even bigger,
+    the phrase, Heart of Gold comes to mind.\nThey do not attack, they do not eat,
+    they have long since abandoned traditional methods for consumption.\nThey love
+    their own kind more than anything, and will flood the world with their tears
+    if they sense a loss of another.\nTheir compassion is second to none, they've
+    been seen averting natural disasters on rare occasions, the true guardian of
+    the planet in which they reside in."
+  terminalEvent: 
+  clearPreviousText: 1
+  maxCharactersToType: 35
+  buyItemIndex: -1
+  isConfirmationNode: 0
+  buyRerouteToMoon: -1
+  displayPlanetInfo: -1
+  lockedInDemo: 0
+  shipUnlockableID: -1
+  buyUnlockable: 0
+  returnFromStorage: 0
+  itemCost: 0
+  creatureFileID: 7014
+  creatureName: Stellar Sovereign
+  storyLogFileID: -1
+  overrideOptions: 0
+  acceptAnything: 0
+  terminalOptions: []
+  playClip: {fileID: 0}
+  playSyncedClip: 2
+  displayTexture: {fileID: 0}
+  displayVideo: {fileID: 0}
+  loadImageSlowly: 1
+  persistentImage: 0

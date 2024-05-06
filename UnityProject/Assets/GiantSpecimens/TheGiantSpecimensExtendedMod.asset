@@ -25,6 +25,7 @@ MonoBehaviour:
   <ExtendedEnemyTypes>k__BackingField:
   - {fileID: 11400000, guid: 71eeeee280a727b4f82df3c9e62d415d, type: 2}
   - {fileID: 11400000, guid: 9dbc23f589be16e44a1019a1dfd0746d, type: 2}
+  - {fileID: 11400000, guid: 72330d756caabc74584ac49d7c7aa3a0, type: 2}
   <ExtendedWeatherEffects>k__BackingField: []
   <ExtendedFootstepSurfaces>k__BackingField: []
   <ExtendedStoryLogs>k__BackingField: []

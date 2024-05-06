@@ -29,6 +29,7 @@ namespace GiantSpecimens;
 public class Plugin : BaseUnityPlugin {
     public static Harmony _harmony = new(PluginInfo.PLUGIN_GUID);
     public static EnemyType PinkGiant;
+    public static EnemyType StellarSovereign;
     public static EnemyType DriftGiant;
     public static Item RedWoodPlushie;
     public static Item Whistle;
@@ -90,6 +91,14 @@ public class Plugin : BaseUnityPlugin {
 
     }
     internal static void GiantSpecimensEnemies() {
+        // Stellar Sovereign Enemy
+        StellarSovereign = Assets.MainAssetBundle.LoadAsset<EnemyType>("StellarSovereignObj");
+        // StellarSovereign.PowerLevel = GiantSpecimensConfig.ConfigStellarSovereignPower.Value;
+        TerminalNode ssTerminalNode = Assets.MainAssetBundle.LoadAsset<TerminalNode>("StellarSovereignTN");
+        TerminalKeyword ssTerminalKeyword = Assets.MainAssetBundle.LoadAsset<TerminalKeyword>("StellarSovereignTK");
+        NetworkPrefabs.RegisterNetworkPrefab(StellarSovereign.enemyPrefab);
+        RegisterEnemyWithConfig(true, "All:9999", StellarSovereign, ssTerminalNode, ssTerminalKeyword);
+
         // Redwood Giant Enemy
         PinkGiant = Assets.MainAssetBundle.LoadAsset<EnemyType>("PinkGiantObj");
         PinkGiant.PowerLevel = GiantSpecimensConfig.ConfigRedwoodGiantPower.Value;

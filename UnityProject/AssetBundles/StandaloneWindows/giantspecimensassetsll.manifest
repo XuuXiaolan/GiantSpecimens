@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1378888679
+CRC: 164969841
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 870c205627aeef09fd34f311ac5bcb02
+    Hash: 6b107fdb152f1feecc9538d289d5afca
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d30dc9f6a9a5bd5c097d7b2f925de563
+    Hash: fc7e99fc284d82813982503e772d0533
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 870c205627aeef09fd34f311ac5bcb02
+    Hash: 6b107fdb152f1feecc9538d289d5afca
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -60,6 +60,8 @@ ClassTypes:
   Script: {fileID: -1358006793, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
   Script: {fileID: -2097174394, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
+- Class: 114
+  Script: {fileID: -9300895, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
   Script: {fileID: 1404812377, guid: 7536d508a4d8375458217e6cb1419c6a, type: 3}
 - Class: 114
@@ -136,12 +138,14 @@ Assets:
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/MapDotRed.mat
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Feet.mat
 - Assets/GiantSpecimens/PinkGiant/Materials/WoodSplinters.tga
+- Assets/GiantSpecimens/StellarSovereign/Bestiary/StellarSovereignTN.asset
 - Assets/GiantSpecimens/DriftwoodGiant/DriftwoodLevelMatching.asset
 - Assets/GiantSpecimens/ContentTags/MonsterTags/KillTag.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGScream.anim
 - Assets/GiantSpecimens/Models/Love.fbx
 - Assets/GiantSpecimens/Samples/Prefab/SampleDriftWoodGiant.prefab
 - Assets/GiantSpecimens/Samples/DriftwoodSampleExtendedItem.asset
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantHorns_BaseMap.png
 - Assets/GiantSpecimens/Scraps/ScrapAudio/PocketWhistle.ogg
 - Assets/GiantSpecimens/DriftwoodGiant/DriftwoodExtendedEnemyType.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGRun.anim
@@ -158,13 +162,17 @@ Assets:
 - Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGIdle.anim
 - Assets/GiantSpecimens/PinkGiant/Audio/CrunchySquish.wav
 - Assets/GiantSpecimens/PinkGiant/Bestiary/PinkGiantSpin_1 (1) (1).mp4
+- Assets/GiantSpecimens/StellarSovereign/Bestiary/StellarSovereignTK.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/DWSlash.wav
 - Assets/GiantSpecimens/PinkGiant/PinkGiantAnimator.controller
 - Assets/GiantSpecimens/PinkGiant/Materials/Material.001.mat
 - Assets/GiantSpecimens/Models/RedwoodPlush.fbx
+- Assets/GiantSpecimens/StellarSovereign/StellarSovereignExtendedEnemyType.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Teeth.mat
 - Assets/GiantSpecimens/PinkGiant/Animations/RedwoodGEmerge.anim
 - Assets/GiantSpecimens/Scraps/ScrapAudio/SqueakyPlushie.wav
+- Assets/GiantSpecimens/StellarSovereign/StellarSovereign.prefab
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantBody_Emissive.png
 - Assets/GiantSpecimens/PinkGiant/Materials/OLDMaterial.004 Base Color.png
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/Giant_Gets_His_Wood_Hit_Variant_1.wav
 - Assets/GiantSpecimens/Scraps/ScrapAudio/MetalPickup.ogg
@@ -173,6 +181,7 @@ Assets:
 - Assets/GiantSpecimens/Scraps/ScrapMaterials/Horns.mat
 - Assets/GiantSpecimens/PinkGiant/Audio/FarPinkGiantStomp1.wav
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/Crispy_stompie_Variant_2.wav
+- Assets/GiantSpecimens/StellarSovereign/Materials/SSBody.mat
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/DWEat.wav
 - Assets/GiantSpecimens/PinkGiant/Materials/V1TeethMaterial.mat
 - Assets/GiantSpecimens/Scraps/RedwoodHeartObj.asset
@@ -188,6 +197,7 @@ Assets:
 - Assets/GiantSpecimens/ContentTags/MonsterTags/HostileTag.asset
 - Assets/GiantSpecimens/PinkGiant/Materials/WispySmoke03b_8x8.tga
 - Assets/GiantSpecimens/Scraps/ScrapAudio/DropWhistle.ogg
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantHorns_Normal.png
 - Assets/GiantSpecimens/Scraps/ScrapTerminalNodes/Deny.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Animations/DriftwoodGWalk.anim
 - Assets/GiantSpecimens/PinkGiant/RedwoodExtendedEnemyType.asset
@@ -210,6 +220,8 @@ Assets:
 - Assets/GiantSpecimens/Models/whistle.fbx
 - Assets/GiantSpecimens/Scraps/ScrapMaterials/Logo.mat
 - Assets/GiantSpecimens/Scraps/RedWoodPlushieObj.asset
+- Assets/GiantSpecimens/StellarSovereign/StellarSovereignObj.asset
+- Assets/GiantSpecimens/StellarSovereign/StellarSovereignAnimator.controller
 - Assets/GiantSpecimens/PinkGiant/Bestiary/PinkGiantTK.asset
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/DWHit.wav
 - Assets/GiantSpecimens/PinkGiant/Materials/V1HornMaterial.mat
@@ -218,6 +230,8 @@ Assets:
 - Assets/GiantSpecimens/Scraps/ScrapAudio/WhistleSound3.wav
 - Assets/GiantSpecimens/ContentTags/ScrapTags/BeastByproductTag.asset
 - Assets/GiantSpecimens/Models/PinkGiant1.fbx
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantBody_Normal.png
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantTeeth_BaseMap.png
 - Assets/GiantSpecimens/ContentTags/ScrapTags/ToolTag.asset
 - Assets/GiantSpecimens/PinkGiant/Materials/Material_Base_color.png
 - Assets/GiantSpecimens/Scraps/ScrapMaterials/RedGiantSubstance.png
@@ -237,6 +251,7 @@ Assets:
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantFeet.png
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/DWScream.wav
 - Assets/GiantSpecimens/ContentTags/ScrapTags/LightweightTag.asset
+- Assets/GiantSpecimens/StellarSovereign/Materials/SSTeeth.mat
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/NewDriftwoodGiantHands.png
 - Assets/GiantSpecimens/DriftwoodGiant/Bestiary/DriftwoodGiantTN.asset
 - Assets/GiantSpecimens/PinkGiant/Animations/NewRWWalking.anim
@@ -251,8 +266,10 @@ Assets:
 - Assets/GiantSpecimens/Scraps/ScrapMaterials/whistleSprite.png
 - Assets/GiantSpecimens/DriftwoodGiant/Audio/Giant_Gets_His_Wood_Hit_Variant_3.wav
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-InnerEye.mat
+- Assets/GiantSpecimens/StellarSovereign/Materials/GiantBody_BaseMap.png
 - Assets/GiantSpecimens/Scraps/ScrapAudio/PinkGiantSpawningPlushie.wav
 - Assets/GiantSpecimens/PinkGiant/Materials/DefaultMaterial_BaseColor.png
+- Assets/GiantSpecimens/StellarSovereign/StellarSovereignLevelMatching.asset
 - Assets/GiantSpecimens/PinkGiant/Audio/ClosePinkGiantStomp1.wav
 - Assets/GiantSpecimens/Scraps/RedwoodHeartLevelMatching.asset
 - Assets/GiantSpecimens/ContentTags/ScrapTags/MetalTag.asset
@@ -261,6 +278,7 @@ Assets:
 - Assets/GiantSpecimens/PinkGiant/Audio/PinkGiantMoroxideStep.wav
 - Assets/GiantSpecimens/Scraps/ScrapAudio/WhistleSound2.wav
 - Assets/GiantSpecimens/ContentTags/ScrapTags/BuyableTag.asset
+- Assets/GiantSpecimens/StellarSovereign/Materials/SSHorns.mat
 - Assets/GiantSpecimens/DriftwoodGiant/Materials/DW-Hands.mat
 - Assets/GiantSpecimens/PinkGiant/Audio/ClosePinkGiantStomp3.wav
 - Assets/GiantSpecimens/Samples/Item/DriftWoodGiantSample.asset

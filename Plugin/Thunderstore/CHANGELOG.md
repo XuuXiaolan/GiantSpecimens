@@ -1,10 +1,7 @@
-## v 2.1.3 *bug fixes*
-- Ported back to LL
-- Fixed a few bugs with Driftwood Lag
-
 ## v 2.1.2 *bug fixes*
 - Fixed config option with whistle price not working.
 - Downgraded mod back to LL for important bug fixes, please let me know if anything doesn't work.
+- Fixed a few bugs with Driftwood Lag
 
 ## v 2.1.1 *bug fixes*
 - Fixed animation bug with Redwood giant
