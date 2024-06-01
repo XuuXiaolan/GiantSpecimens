@@ -136,6 +136,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StellarSovereign
       objectReference: {fileID: 0}
+    - target: {fileID: 3836968317997771202, guid: 47adcb8ce2193c6489c616d65299d340,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3456452016
+      objectReference: {fileID: 0}
     - target: {fileID: 4191697983304776165, guid: 47adcb8ce2193c6489c616d65299d340,
         type: 3}
       propertyPath: m_LocalPosition.x

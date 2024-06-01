@@ -87,8 +87,6 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public LineRenderer line;
     [NonSerialized]
-    public System.Random destinationRandom;
-    [NonSerialized]
     public bool canMove = true;
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
     int IVisibleThreat.SendSpecialBehaviour(int id) {
@@ -135,8 +133,6 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         #endif
     }
     public override void Start() {
-        base.Start();
-        destinationRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 85);
         levelName = RoundManager.Instance.currentLevel.name;
         
         LogIfDebugBuild(levelName);
@@ -167,12 +163,12 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         LogIfDebugBuild(dustColor.ToString());
 
         SpawnableEnemyWithRarity giantEnemyType = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("ForestGiant"));
-        if (giantEnemyType != null && GiantSpecimensConfig.ConfigMultiplierForestkeeper.Value >= 0) {
-            giantEnemyType.rarity *= GiantSpecimensConfig.ConfigMultiplierForestkeeper.Value;                
+        if (giantEnemyType != null && GiantSpecimensConfig.ConfigMultiplierForestkeeper.Value > 0) {
+            giantEnemyType.rarity *= Mathf.Clamp(GiantSpecimensConfig.ConfigMultiplierForestkeeper.Value, 0, 9999);                
         }
         SpawnableEnemyWithRarity DriftWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("DriftWoodGiant"));
-        if (DriftWoodGiant != null && GiantSpecimensConfig.ConfigMultiplierDriftwood.Value >= 0) {
-            DriftWoodGiant.rarity *= GiantSpecimensConfig.ConfigMultiplierDriftwood.Value;
+        if (DriftWoodGiant != null && GiantSpecimensConfig.ConfigMultiplierDriftwood.Value > 0) {
+            DriftWoodGiant.rarity *= Mathf.Clamp(GiantSpecimensConfig.ConfigMultiplierDriftwood.Value, 0, 9999);
         }
         SpawnableEnemyWithRarity RedWoodGiant = RoundManager.Instance.currentLevel.OutsideEnemies.Find(x => x.enemyType.enemyName.Equals("RedWoodGiant"));
         if (RedWoodGiant != null) {
@@ -362,7 +358,6 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public void MayZeusHaveMercy() {
         if (RoundManager.Instance.currentLevel.currentWeather == LevelWeatherType.Stormy && zeusMode || testBuild) {
             // Generate a random offset within a 5-unit radius
-            // Vector3 strikePosition = GenerateRandomPositionAround(transform.position, 5, destinationRandom);
             // Perform the lightning strike at the random position
             Vector3 strikePosition = lightningSpots[UnityEngine.Random.Range(0, lightningSpots.Length)].transform.position;
             StormScript.StormyWeatherScript.SpawnLightningBolt(strikePosition);

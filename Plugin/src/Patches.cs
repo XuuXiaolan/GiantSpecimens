@@ -56,6 +56,7 @@ public static class GiantPatches {
         if (thrownByGiant && self != null && self.fallValueUncapped < -39) {
             self.fallValueUncapped = -39;
             thrownByGiant = false;
+            self.GetComponent<Rigidbody>().isKinematic = true;
         }
         if (grabbedByGiant && self != null) {
             self.fallValue = 0;

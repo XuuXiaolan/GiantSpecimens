@@ -33,7 +33,7 @@ public class RedwoodPlushieScrap : GrabbableObject {
     PlayPlushiePlayer(loudness);
 
     if (playerHeldBy != null) {
-      triggerAnimator?.SetTrigger("playAnim");
+      triggerAnimator?.SetTrigger("startSqueeze");
     }
   }
   public void PlayPlushiePlayer(float volume) {

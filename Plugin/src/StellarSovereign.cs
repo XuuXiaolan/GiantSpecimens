@@ -25,31 +25,16 @@ class StellarSovereignAI : EnemyAI {
     public Collider AttackArea;
     public ParticleSystem DustParticlesLeft;
     public ParticleSystem DustParticlesRight;
-    public ParticleSystem ForestKeeperParticles;
-    public ParticleSystem DriftwoodGiantParticles;
-    public ParticleSystem OldBirdParticles;
     public ParticleSystem DeathParticles;
     public Collider CollisionFootR;
     public Collider CollisionFootL;
-    public ChainIKConstraint LeftFoot;
-    public ChainIKConstraint RightFoot;
     public AudioSource FootSource;
     public AudioSource EnemyMouthSource;
-    public AnimationClip idle;
-    public AnimationClip walking;
-    public AnimationClip eating;
-    public AnimationClip roaring;
     public AudioClip[] stompSounds;
-    public AudioClip eatenSound;
     public AudioClip spawnSound;
     public AudioClip roarSound;
-    public GameObject rightBone;
-    public GameObject leftBone;
     public GameObject[] lightningSpots;
-    public GameObject eatingArea;
     #pragma warning restore 0649
-    [NonSerialized]
-    public bool sizeUp = false;
     [NonSerialized]
     public static LevelColorMapper levelColorMapper = new();
     [NonSerialized]
@@ -57,46 +42,21 @@ class StellarSovereignAI : EnemyAI {
     [NonSerialized]
     public string levelName;
     [NonSerialized]
-    public bool waitAfterChase = false;
-    [NonSerialized]
-    public bool eatingEnemy = false;
-    [NonSerialized]
     public string footstepColour;
-    [NonSerialized]
-    public EnemyAI targetEnemy;
-    [NonSerialized]
-    public bool idleGiant = true;
     [NonSerialized]
     public float walkingSpeed;
     [NonSerialized]
-    public float seeableDistance;
-    [NonSerialized]
-    public float distanceFromShip;
-    [NonSerialized]
-    public bool eatOldBirds;
-    [NonSerialized]
-    public bool zeusMode;
-    [NonSerialized]
-    public float distanceFromEnemy;
-    [NonSerialized]
     public Transform shipBoundaries;
     [NonSerialized]
-    public Vector3 midpoint;
-    [NonSerialized]
-    public bool testBuild = false; 
-    [NonSerialized]
-    public LineRenderer line;
-    [NonSerialized]
-    public System.Random destinationRandom;
-    [NonSerialized]
     public bool canMove = true;
+    [NonSerialized]
+    public Vector3 centralPosition;
 
     enum State {
         SpawnAnimation, // Roaring
         IdleAnimation, // Idling
         Wandering, // Wandering
         AtlasMode,
-        Exhausted,
         Crying,
     }
 
@@ -107,7 +67,6 @@ class StellarSovereignAI : EnemyAI {
     }
     public override void Start() {
         base.Start();
-        destinationRandom = new System.Random(StartOfRound.Instance.randomMapSeed + 22);
         levelName = RoundManager.Instance.currentLevel.name;
         
         LogIfDebugBuild(levelName);
@@ -155,83 +114,78 @@ class StellarSovereignAI : EnemyAI {
 
         // LogIfDebugBuild(giantEnemyType.rarity.ToString());
         LogIfDebugBuild("The Stellar Sovereign has descended from above...");
-        if (testBuild) {
-            #if DEBUG
-            line = gameObject.AddComponent<LineRenderer>();
-            line.widthMultiplier = 0.2f; // reduce width of the line
-            #endif
-        }
         FootSource.pitch *= 0.5f;
         EnemyMouthSource.pitch *= 0.5f;
 
         FootSource.PlayOneShot(spawnSound);
         EnemyMouthSource.PlayOneShot(roarSound);
         StartCoroutine(ScalingUp());
-        SwitchToBehaviourClientRpc((int)State.SpawnAnimation);
+        centralPosition = CalculateAverageLandNodePosition(RoundManager.Instance.outsideAINodes.ToList());
+        StateSpeedAnimationUpdate((int)State.SpawnAnimation, 0, "startSpawn", false);
     }
 
     public override void Update() {
         base.Update();
-        if (isEnemyDead) {
-            return;
-        }
+        if (!IsHost || isEnemyDead) return;
     }
-    public void SearchOrChaseTarget() {
-        DoAnimationClientRpc("startWalk");
+    public Vector3 CalculateAverageLandNodePosition(List<GameObject> nodes)
+    {
+        Vector3 sumPosition = Vector3.zero;
+        int count = 0;
+
+        foreach (GameObject node in nodes)
+        {
+            sumPosition += node.transform.position;
+            count++;
+        }
+
+        return count > 0 ? sumPosition / count : Vector3.zero;
+    }
+    public void StateSpeedAnimationUpdate(int newState, int newSpeed, string newAnimation, bool newSearch) {
+        DoAnimationClientRpc(newAnimation);
         LogIfDebugBuild("Start Walking Around");
-        StartSearch(transform.position);
-        SwitchToBehaviourClientRpc((int)State.Wandering);
+        if (newSearch) StartSearch(transform.position);
+        else StopSearch(currentSearch);
+        SwitchToBehaviourClientRpc(newState);
+        agent.speed = newSpeed;
     }
+    public void DoIdle() {
+    }
+    public void DoWandering() {
+        if (!SetDestinationToPosition(centralPosition, true)) {
+            LogIfDebugBuild("The Stellar Sovereign has vanished from the scene...");
+            KillEnemyOnOwnerClient();
+        }
+        if (Vector3.Distance(transform.position, centralPosition) < 3f) { 
+            StateSpeedAnimationUpdate((int)State.IdleAnimation, 0, "startIdle", false);
+        }
+    }
+
     public override void DoAIInterval() {
-        if (testBuild) { 
-            StartCoroutine(DrawPath(line, agent));
-        }
         base.DoAIInterval();
-        if (isEnemyDead || StartOfRound.Instance.allPlayersDead) {
-            return;
-        }
+        if (!IsHost ||isEnemyDead || StartOfRound.Instance.allPlayersDead) return;
+
         switch(currentBehaviourStateIndex) {
             case (int)State.SpawnAnimation:
-                agent.speed = 0f;
                 break;
             case (int)State.IdleAnimation:
-                agent.speed = 0f;
+                DoIdle();
                 break;
             case (int)State.Wandering:
-                agent.speed = 6f;
+                DoWandering();
                 if (false) {
-                    DoAnimationClientRpc("startChase");
+                    StateSpeedAnimationUpdate((int)State.AtlasMode, 0, "startStandby", false);
                     LogIfDebugBuild("Prepare to stop the meteorite...");
-                    StopSearch(currentSearch);
-                    SwitchToBehaviourClientRpc((int)State.AtlasMode);
-                } // Look for Forest Keeper
+                }
                 break;
             case (int)State.AtlasMode:
-                agent.speed = 0f;
                 // condition that checks if the giant is in the right place, switch animation, and wait until the meteor is gone.
                 break;
-
-            case (int)State.Exhausted:
-                agent.speed = 0f;
-                // state after atlas mode.
-                break;
             case (int)State.Crying:
-                agent.speed = 0f;
                 break;
             default:
                 LogIfDebugBuild("This Behavior State doesn't exist!");
                 break;
-        }
-    }
-    public static IEnumerator DrawPath(LineRenderer line, NavMeshAgent agent) {
-        if (!agent.enabled) yield break;
-        yield return new WaitForEndOfFrame();
-        line.SetPosition(0, agent.transform.position); //set the line's origin
-
-        line.positionCount = agent.path.corners.Length; //set the array of positions to the amount of corners
-        for (var i = 1; i < agent.path.corners.Length; i++)
-        {
-            line.SetPosition(i, agent.path.corners[i]); //go through each corner and set that to the line renderer's position
         }
     }
     public void DealEnemyDamageFromShockwave(EnemyAI enemy, string foot) {
@@ -239,7 +193,7 @@ class StellarSovereignAI : EnemyAI {
         float distanceFromEnemy = Vector3.Distance(chosenFoot.position, enemy.transform.position);
 
         // Apply damage based on distance
-        if (distanceFromEnemy <= 3f) {
+        if (distanceFromEnemy <= 10f) {
             enemy.HitEnemy(4, null, false, -1);
         } else if (distanceFromEnemy <= 10f) {
             enemy.HitEnemy(2, null, false, -1);
@@ -259,7 +213,8 @@ class StellarSovereignAI : EnemyAI {
             }
         }
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
+            string enemyName = enemy.enemyType.enemyName;
+            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemyName != "RedWoodGiant" && enemyName != "DriftWoodGiant" && enemyName != "ForestGiant") {
                 DealEnemyDamageFromShockwave(enemy, "LeftFoot");
             }
         }
@@ -275,7 +230,8 @@ class StellarSovereignAI : EnemyAI {
             }
         }
         foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
+            string enemyName = enemy.enemyType.enemyName;
+            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemyName != "RedWoodGiant" && enemyName != "DriftWoodGiant" && enemyName != "ForestGiant") {
                 DealEnemyDamageFromShockwave(enemy, "RightFoot");
             }
         }
@@ -343,6 +299,7 @@ class StellarSovereignAI : EnemyAI {
 
             transform.localScale = new Vector3(currentXScale, currentYScale, currentZScale);
         }
+        StateSpeedAnimationUpdate((int)State.Wandering, 5, "startWalk", false);
     }
 
     public bool SSHasLineOfSightToPosition(Vector3 pos, float width = 45f, int range = 60, float proximityAwareness = -1f) {
@@ -372,7 +329,6 @@ class StellarSovereignAI : EnemyAI {
         transform.Find("Armature").Find("Bone.008.L.002").Find("Bone.008.L.002_end").Find("CollisionFootL").GetComponent<BoxCollider>().enabled = false;
         transform.Find("Armature").Find("Bone.008.R.001").Find("Bone.008.R.001_end").Find("CollisionFootR").GetComponent<BoxCollider>().enabled = false;
         DoAnimationClientRpc("startDeath");
-        SpawnHeartOnDeath(transform.position);
     }
 
     public void EnableDeathColliders() {
@@ -393,11 +349,6 @@ class StellarSovereignAI : EnemyAI {
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("DeathColliderRightHip").GetComponent<CapsuleCollider>().enabled = false;
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<CapsuleCollider>().enabled = false;
         transform.Find("Armature").Find("Bone.006.L.001").Find("Bone.006.R").Find("Bone.007.R").Find("Bone.008.R").Find("DeathColliderRightLeg").GetComponent<BoxCollider>().enabled = false;
-    }
-    public void SpawnHeartOnDeath(Vector3 position) {
-        if (GiantSpecimensConfig.ConfigRedwoodHeartEnabled.Value && IsHost && !Plugin.LGULoaded) {
-            GiantSpecimensUtils.Instance.SpawnScrapServerRpc("RedWoodGiant", position);
-        }
     }
     [ClientRpc]
     public void DoAnimationClientRpc(string animationName)
