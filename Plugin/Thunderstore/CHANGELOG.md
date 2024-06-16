@@ -1,7 +1,11 @@
+
+## v 2.1.4
+- Attempts to fix some redwood bug with movement.
+
 ## v 2.1.3
 - Fixed bug with driftwood throwing people off the map.
 - Fixed some animation desyncs/bugs with driftwood and redwood.
-- Added Stellar Sovereign (doesn't currently do anything).
+- Almost done working on Stellar Sovereign and CactusWoodGiant, just gonna start transferring stuff over to [coderebirth]() and upload there instead of this mod from now on.
 
 ## v 2.1.2 *bug fixes*
 - Fixed config option with whistle price not working.

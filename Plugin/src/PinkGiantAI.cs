@@ -133,11 +133,12 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         #endif
     }
     public override void Start() {
+        base.Start();
         levelName = RoundManager.Instance.currentLevel.name;
         
         LogIfDebugBuild(levelName);
         shipBoundaries = StartOfRound.Instance.shipBounds.transform;
-        shipBoundaries.localScale *= 1.5f;
+        // shipBoundaries.localScale *= 1.5f;
         
         Color dustColor = Color.grey; // Default to grey if no color found
         string footstepColourValue = GiantSpecimensConfig.ConfigColourHexcode.Value;
@@ -213,6 +214,9 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
             return;
         }
     }
+    public override void EnableEnemyMesh(bool enable, bool overrideDoNotSet = false) {
+        base.EnableEnemyMesh(enable);
+    }
     public void LateUpdate() {
         if (currentBehaviourStateIndex == (int)State.EatingGiant && targetEnemy != null) {
             midpoint = leftBone.transform.position;
@@ -243,7 +247,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public void SearchOrChaseTarget() {
         DoAnimationClientRpc("startWalk");
         LogIfDebugBuild("Start Walking Around");
-        StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
+        StartSearch(this.transform.position);
         SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
     }
     public override void DoAIInterval() {
@@ -263,7 +267,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 break;
             case (int)State.SearchingForGiant:
                 agent.speed = walkingSpeed;
-                if (FindClosestAliveGiantInRange(seeableDistance)) {
+                if (FindClosestAliveGiantInRange(seeableDistance+40)) {
                     DoAnimationClientRpc("startChase");
                     StartCoroutine(ChaseCoolDown());
                     LogIfDebugBuild("Start Target Giant");
@@ -298,14 +302,14 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 if (targetEnemy == null) {
                     LogIfDebugBuild("Stop Target Giant");
                     DoAnimationClientRpc("startWalk");
-                    StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
+                    StartSearch(this.transform.position);
                     SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                     return;
                 }
-                if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
+                if (Vector3.Distance(transform.position, targetEnemy.transform.position) > seeableDistance+40 && !RWHasLineOfSightToPosition(targetEnemy.transform.position) || Vector3.Distance(targetEnemy.transform.position, shipBoundaries.position) <= distanceFromShip) {
                     LogIfDebugBuild("Stop Target Giant");
                     DoAnimationClientRpc("startWalk");
-                    StartSearch(ChooseFarthestNodeFromPosition(this.transform.position, avoidLineOfSight: false).position);
+                    StartSearch(this.transform.position);
                     SwitchToBehaviourClientRpc((int)State.SearchingForGiant);
                     return;
                 }
@@ -574,7 +578,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         if (force == 6) {
             enemyHP -= 5;
             
-            if (OverrideTargetEnemy(seeableDistance) && currentBehaviourStateIndex == (int)State.SearchingForGiant && eatOldBirds) {
+            if (OverrideTargetEnemy(seeableDistance+40) && currentBehaviourStateIndex == (int)State.SearchingForGiant && eatOldBirds) {
                 DoAnimationClientRpc("startChase");
                 StartCoroutine(ChaseCoolDown());
                 LogIfDebugBuild("Start Target Giant");

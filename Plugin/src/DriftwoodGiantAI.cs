@@ -100,7 +100,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     [NonSerialized]
     public bool canSlash = true;
     [NonSerialized]
-    public Transform shipBoundaries;
+    public Collider shipBoundaries;
     [NonSerialized]
     public bool isScared = false;
     [NonSerialized]
@@ -168,8 +168,8 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public override void Start() {
         base.Start();
-        shipBoundaries = StartOfRound.Instance.shipBounds.transform;
-        shipBoundaries.localScale *= 1.1f;
+        shipBoundaries = StartOfRound.Instance.shipBounds;
+        //shipBoundaries.localScale *= 1.1f;
         screamRange = GiantSpecimensConfig.ConfigScreamRange.Value;
         SkinnedMeshRenderer handsRenderer = transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
         if (handsRenderer != null) {
@@ -261,7 +261,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 agent.speed = 0f;
                 break;
             case (int)State.SearchingForPrey:
-                agent.speed = 5;
+                agent.speed = 7;
                 if (DetectScaryThings()) {
                     RunFarAway();
 
@@ -307,7 +307,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                     SetDestinationToPosition(targetEnemy.transform.position, checkForPath: true);
                 }
                 else if (DriftwoodTargetPlayer != null) {
-                    if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance+10f && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || Vector3.Distance(DriftwoodTargetPlayer.transform.position, shipBoundaries.position) < 11) {
+                    if (Vector3.Distance(transform.position, DriftwoodTargetPlayer.transform.position) > seeableDistance+10f && !DWHasLineOfSightToPosition(DriftwoodTargetPlayer.transform.position) || shipBoundaries.bounds.Contains(DriftwoodTargetPlayer.transform.position)) {
                         LogIfDebugBuild("Stop chasing target player");
                         StartSearch(transform.position);
                         previousStateIndex = currentBehaviourStateIndex;
@@ -360,7 +360,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
                 agent.speed = 0f;
                 break;
             case (int)State.RunningAway:
-                agent.speed = 25f;
+                agent.speed = 7f;
                 LogIfDebugBuild(isScared.ToString() + isScaredFromRedwood.ToString() + isScaredFromOldBird.ToString());
                 if (!isScared) {
                     DoAnimationClientRpc("startWalk");
@@ -380,7 +380,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
     }
     public IEnumerator ScareCooldown() {
         isScared = true;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(7.5f);
         isScared = false;
         isScaredFromOldBird = false;
         isScaredFromRedwood = false;
@@ -502,6 +502,7 @@ class DriftwoodGiantAI : EnemyAI, IVisibleThreat {
         // Throw the player
         LogIfDebugBuild("Launching Player");
         GiantPatches.thrownByGiant = true;
+        GiantPatches.playerControllerB = DriftwoodTargetPlayer;
         Rigidbody playerBody = DriftwoodTargetPlayer.GetComponent<Rigidbody>();
         DriftwoodTargetPlayer.GetComponent<Rigidbody>().isKinematic = false;
         playerBody.velocity = Vector3.zero; // Reset any existing velocity

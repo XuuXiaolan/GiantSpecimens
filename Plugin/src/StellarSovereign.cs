@@ -71,7 +71,7 @@ class StellarSovereignAI : EnemyAI {
         
         LogIfDebugBuild(levelName);
         shipBoundaries = StartOfRound.Instance.shipBounds.transform;
-        shipBoundaries.localScale *= 1.5f;
+        //shipBoundaries.localScale *= 1.5f;
         
         Color dustColor = Color.grey; // Default to grey if no color found
         string footstepColourValue = GiantSpecimensConfig.ConfigColourHexcode.Value;

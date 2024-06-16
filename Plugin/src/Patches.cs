@@ -13,6 +13,7 @@ namespace GiantSpecimens.Patches;
 public static class GiantPatches {
     public static bool thrownByGiant = false;
     public static bool grabbedByGiant = false;
+    public static PlayerControllerB playerControllerB;
     public static bool addedToDebug = false; // This method of initializing can be changed to your liking.
     public static void Init() {
         On.GameNetcodeStuff.PlayerControllerB.PlayerHitGroundEffects += PlayerControllerB_PlayerHitGroundEffects;
@@ -53,7 +54,7 @@ public static class GiantPatches {
     }*/
 
     private static void PlayerControllerB_PlayerHitGroundEffects(On.GameNetcodeStuff.PlayerControllerB.orig_PlayerHitGroundEffects orig, GameNetcodeStuff.PlayerControllerB self) {
-        if (thrownByGiant && self != null && self.fallValueUncapped < -39) {
+        if (playerControllerB != null && thrownByGiant && self != null && self == playerControllerB && self.fallValueUncapped < -39) {
             self.fallValueUncapped = -39;
             thrownByGiant = false;
             self.GetComponent<Rigidbody>().isKinematic = true;

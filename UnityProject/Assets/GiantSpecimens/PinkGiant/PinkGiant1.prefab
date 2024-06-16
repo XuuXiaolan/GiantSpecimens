@@ -20991,7 +20991,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3557904968736990047}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 5
+  m_Radius: 2
   m_Speed: 0.5
   m_Acceleration: 30
   avoidancePriority: 50
@@ -21000,9 +21000,9 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 24
+  m_Height: 5
   m_BaseOffset: 0
-  m_WalkableMask: 77
+  m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3836968317997771202
 MonoBehaviour:
@@ -21059,8 +21059,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: {fileID: 11400000, guid: d3a8a7be05ce94244bf588b4e8b8b689, type: 2}
-  skinnedMeshRenderers: []
-  meshRenderers: []
+  skinnedMeshRenderers:
+  - {fileID: 3098723955839697756}
+  - {fileID: 8310476242533131189}
+  - {fileID: 5826543644309899284}
+  - {fileID: 3373832423029692660}
+  - {fileID: 5536637051632259304}
+  - {fileID: 8923421347942871167}
+  - {fileID: 5550673595293552864}
+  - {fileID: 3095006825362638232}
+  - {fileID: 8936282266604861877}
+  - {fileID: 3996836258801234016}
+  - {fileID: 3092763017168453362}
+  meshRenderers:
+  - {fileID: 1121314222195145474}
+  - {fileID: 3779047040482105265}
   creatureAnimator: {fileID: 3685492749596531592}
   creatureVoice: {fileID: 4376876384329509322}
   creatureSFX: {fileID: 1084541392668071101}
