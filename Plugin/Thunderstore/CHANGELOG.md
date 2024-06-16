@@ -1,4 +1,9 @@
 
+## v 2.1.5
+- Fixed the weird buginess with the redwood (completely this time).
+- Moved some enemy speeds around.
+- Made enemies their appropriate size for the navmesh agent.
+
 ## v 2.1.4
 - Attempts to fix some redwood bug with movement.
 
