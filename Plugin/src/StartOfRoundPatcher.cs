@@ -58,4 +58,11 @@ internal static class StartOfRoundPatcher {
             }
         }
     }
+
+    [HarmonyPatch(nameof(StartOfRound.OnDisable))]
+    [HarmonyPostfix]
+    public static void OnDisable(StartOfRound __instance)
+    {
+        GiantSpecimensUtils.Instance = null;
+    }
 }

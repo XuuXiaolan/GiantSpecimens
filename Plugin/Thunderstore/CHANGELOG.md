@@ -1,3 +1,5 @@
+## v 2.1.6
+- Fixed a problem with rehosting.
 
 ## v 2.1.5
 - Fixed the weird buginess with the redwood (completely this time).
