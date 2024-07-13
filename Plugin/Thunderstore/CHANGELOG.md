@@ -1,3 +1,6 @@
+## v 2.1.7
+- Fixed rare bug with mods that change spawned enemies list.
+
 ## v 2.1.6
 - Fixed a problem with rehosting.
 

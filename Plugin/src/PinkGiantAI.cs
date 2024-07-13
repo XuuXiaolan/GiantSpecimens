@@ -88,6 +88,11 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
     public LineRenderer line;
     [NonSerialized]
     public bool canMove = true;
+    [NonSerialized]
+    public bool shockwaveDamageFromLeftFoot = false;
+    [NonSerialized]
+    public bool shockwaveDamageFromRightFoot = false;
+
     ThreatType IVisibleThreat.type => ThreatType.ForestGiant;
     int IVisibleThreat.SendSpecialBehaviour(int id) {
         return 0; 
@@ -212,6 +217,23 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         base.Update();
         if (isEnemyDead) {
             return;
+        }
+
+        if (shockwaveDamageFromLeftFoot) {
+            shockwaveDamageFromLeftFoot = false;
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
+                    DealEnemyDamageFromShockwave(enemy, "LeftFoot");
+                }
+            }
+        }
+        if (shockwaveDamageFromRightFoot) {
+            shockwaveDamageFromRightFoot = false;
+            foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
+                if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
+                    DealEnemyDamageFromShockwave(enemy, "RightFoot");
+                }
+            }
         }
     }
     public override void EnableEnemyMesh(bool enable, bool overrideDoNotSet = false) {
@@ -388,11 +410,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 player.DamagePlayer(15, causeOfDeath: Plugin.InternalBleed);
             }
         }
-        foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
-                DealEnemyDamageFromShockwave(enemy, "LeftFoot");
-            }
-        }
+        shockwaveDamageFromLeftFoot = true;
     }
     public void RightFootStepInteractions() {
         DustParticlesRight.Play(); // Play the particle system with the updated color
@@ -404,11 +422,7 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
                 player.DamagePlayer(15, causeOfDeath: Plugin.InternalBleed);
             }
         }
-        foreach (EnemyAI enemy in RoundManager.Instance.SpawnedEnemies) {
-            if (enemy.enemyType.canDie && enemy.enemyHP > 0 && !enemy.isEnemyDead && enemy.enemyType.enemyName != "RedWoodGiant" && enemy.enemyType.enemyName != "DriftWoodGiant" && enemy.enemyType.enemyName != "ForestGiant") {
-                DealEnemyDamageFromShockwave(enemy, "RightFoot");
-            }
-        }
+        shockwaveDamageFromRightFoot = true;
     }
 
     private Color HexToColor(string hexCode) {
