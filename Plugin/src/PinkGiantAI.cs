@@ -555,17 +555,8 @@ class PinkGiantAI : EnemyAI, IVisibleThreat {
         if (isEnemyDead) return;
         if (collidedEnemy == targetEnemy && !eatingEnemy && (currentBehaviourStateIndex == (int)State.RunningToGiant) && waitAfterChase) {
             eatingEnemy = true;
-            if (targetEnemy.enemyType.enemyName == "ForestGiant") {
-                targetEnemy.transform.Find("FGiantModelContainer").Find("AnimContainer").Find("metarig").Find("spine").Find("spine.003").Find("shoulder.R").Find("upper_arm.R").Find("forearm.R").Find("hand.R").GetComponent<BoxCollider>().enabled = false;
-                targetEnemy.transform.Find("FGiantModelContainer").GetComponent<CapsuleCollider>().enabled = false;   
-            }
-            if (targetEnemy.enemyType.enemyName == "DriftWoodGiant") {
-                targetEnemy.transform.Find("Armature").Find("Main Controller").Find("WristIK.L").Find("WristIK.L_end").Find("WristIK.L_end_end").Find("GrabAreaLeft").GetComponent<BoxCollider>().enabled = false;
-                targetEnemy.transform.Find("Armature").Find("Main Controller").Find("WristIK.R").Find("WristIK.R_end").Find("WristIK.R_end_end").Find("GrabAreaRight").GetComponent<BoxCollider>().enabled = false;
-            }
-            if (targetEnemy.enemyType.enemyName == "RadMech") {
-                targetEnemy.GetComponent<BoxCollider>().enabled = false;
-                targetEnemy.GetComponentInChildren<BoxCollider>().enabled = false;
+            foreach (Collider collider in other.GetComponentsInChildren<Collider>()) {
+                collider.enabled = false;
             }
             targetEnemy.agent.enabled = false;
             StartCoroutine(EatForestKeeper());
